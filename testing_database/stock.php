@@ -29,8 +29,6 @@ if (isset($_POST["cari"])) {
 <table class="tb1">
 	<tr class="trUpper">
 		<th>No.</th>
-		<th>Aksi</th>
-		<th>Kode Buku</th>
 		<th>Nama Buku</th>
 		<th>Stock</th>
 		<th>Status</th>
@@ -39,15 +37,10 @@ if (isset($_POST["cari"])) {
 	<?php foreach ($namaBuku as $oneView) : ?>
 	<tr class="trLower">
 		<td><?= $i; ?> </td>
-		<td>
-			<a href="ubah.php?id=<?= $oneView["id"]; ?>">ubah</a> | 
-			<a href="hapus.php?id=<?= $oneView["id"]; ?>" onclick="return confirm('apakah anda mau menghapus?');" >hapus</a>
-		</td>
-		<td><?= $oneView["kodeBuku"]; ?></td>
-		<td><?= $oneView["mataPelajaran"]; ?></td>
+		<td><?= $oneView["namaBuku"]; ?></td>
 
 		<?php
-			$mapel = $oneView["mataPelajaran"]; 
+			$mapel = $oneView["idBuku"]; 
 			$stock = query("SELECT COUNT(*) FROM $mapel WHERE status = '1'")[0]["COUNT(*)"];
 		  ?>
 

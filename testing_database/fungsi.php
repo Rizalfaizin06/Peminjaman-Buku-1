@@ -1,7 +1,7 @@
 <?php 
 
 //koneksi kedatabase
-$koneksi = mysqli_connect("127.0.0.1", "rizal", "rizal", "test2");
+$koneksi = mysqli_connect("127.0.0.1", "rizal", "rizal", "test3");
 
 //query
 function query($query){
