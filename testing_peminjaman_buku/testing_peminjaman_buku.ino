@@ -121,7 +121,6 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   String payload = http.getString();
 
   Serial.println(httpCode);
-  //Serial.println(payload);
   
   http.end();
   digitalWrite(Led_OnBoard, HIGH);

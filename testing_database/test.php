@@ -27,7 +27,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        
+        <title>View Table</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     
     <body>
