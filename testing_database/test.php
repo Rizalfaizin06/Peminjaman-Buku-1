@@ -35,7 +35,7 @@
         <table>
             <tr>
                 <th>No</th> 
-                <th>Test Value</th> 
+                <th>Data1</th> 
                 <th>Data2</th>
                 <th>Data3</th>
                 <th>Data4</th>
