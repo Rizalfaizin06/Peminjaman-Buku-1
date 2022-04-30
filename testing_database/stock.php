@@ -48,12 +48,11 @@ if (isset($_POST["cari"])) {
 
 		<?php 
 		if ($stock > 0) {
-
-			echo '<td style="background-color: rgba(0, 255, 100, 0.2);">Tersedia</td>';
-
+			$stat = 'Tersedia';
 		} else {
-			echo '<td style="background-color: rgba(255, 0, 0, 0.4);">Kosong</td>';
+			$stat = 'Kosong';
 		}?>
+		<td><?= $stat ?></td>">
 	</tr>
 	<?php $i++; endforeach; ?>
 
