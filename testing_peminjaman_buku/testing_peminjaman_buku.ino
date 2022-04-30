@@ -10,13 +10,13 @@
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 int Led_OnBoard = 2;
-String ldrvalue = "3r423r";
-String iData2 = "3r423r";
-String iData3 = "3r423r";
-String iData4 = "3r423r";
+String iData1 = "1";
+String iData2 = "2";
+String iData3 = "3";
+String iData4 = "4";
 const int buzz = 0;
-String LdrValueSend;
 String postData;
+String Data1;
 String Data2;
 String Data3;
 String Data4;
@@ -27,10 +27,7 @@ const char* host = "192.168.123.123";
 
 void setup() {
   Serial.begin(115200);
-  pinMode(Led_OnBoard, OUTPUT);
-  pinMode(buzz, OUTPUT);
-  SPI.begin();
-  mfrc522.PCD_Init();
+  
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.print("Connecting to Wi-Fi");
@@ -45,6 +42,10 @@ void setup() {
   Serial.println("Connected to Network/SSID");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  pinMode(Led_OnBoard, OUTPUT);
+  pinMode(buzz, OUTPUT);
+  SPI.begin();
+  mfrc522.PCD_Init();
 }
 
 void loop() {
@@ -57,10 +58,10 @@ void loop() {
   {
     return;
   }
-  iData2 = scann();
+  iData1 = scann();
   delay(1000);
-  iData3 = scann();
-  uploadDB(ldrvalue, iData2, iData3, iData4);
+  iData2 = scann();
+  uploadDB(iData1, iData2, iData3, iData4);
 }
 
 String scann() {
@@ -100,16 +101,16 @@ String scann() {
 
 void uploadDB(String satu,String dua, String tiga, String empat) {
   HTTPClient http;
-  LdrValueSend = String(satu);
+  Data1 = String(satu);
   Data2 = String(dua);
   Data3 = String(tiga);
   Data4 = String(empat);
   hostStr = String(host);
  
-  postData = "ldrvalue=" + LdrValueSend + "&Data2=" + Data2 + "&Data3=" + Data3 + "&Data4=" + Data4 ;
+  postData = "Data1=" + Data1 + "&Data2=" + Data2 + "&Data3=" + Data3 + "&Data4=" + Data4 ;
   Serial.println(postData);
-  
-  http.begin("http://" + hostStr + "/krenova/testing_database/test.php");
+ 
+  http.begin("http://" + hostStr + "/krenova/GitFolder/Peminjaman-Buku-1/testing_database/test.php");
   Serial.println("http://" + hostStr + "/krenova/testing_database/test.php");
   
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");

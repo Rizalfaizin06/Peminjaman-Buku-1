@@ -1,0 +1,98 @@
+*, *:before, *:after {
+  margin-top: : 10px;
+  padding: auto;
+}
+
+body {
+  background: #105469;
+  font-family: 'Open Sans', sans-serif;
+
+}
+
+a:link {
+  text-decoration: none;
+  color: white;
+}
+
+table{
+  background: #012B39;
+  border-radius: 10px;
+  border-collapse: collapse;
+}
+th {
+  border-right: 1px solid #364043;
+  border-left: 1px solid #364043;
+  border-bottom: 1px solid #364043;
+  color: #E2B842;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 20px;
+  text-align: left;
+  width: 100px;
+}
+th:first-child{
+  border-left: 0px solid #364043;
+  padding: 5px;
+  width: 30px;
+  text-align: center;
+}
+
+th:last-child{
+  border-right: 0px solid #364043;
+  text-align: center;
+  border-radius: 50px;
+}
+
+td {
+  color: #fff;
+  font-weight: 400;
+  padding: 15px 20px;
+  width: 100px;
+  text-align: left; 
+  border-right: 1px solid #364043;
+  border-left: 1px solid #364043;
+  
+}
+
+td:first-child{
+  border-left: 0px solid #364043;
+  padding: 5px;
+  width: 30px;
+  text-align: center;
+}
+
+
+td:last-child{
+  border-right: 0px solid #364043;
+  text-align: center;
+  border-radius: 50px;
+}
+
+tr {
+  width: 750px;
+  display: block;
+}
+
+.trUpper {
+  transition: background 0.25s ease;
+}
+
+.trUpper:hover {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: #014055;
+}
+
+.trLower   {
+  transition: background 0.25s ease;
+}
+
+.trLower:hover:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background: #014055;
+}
+
+tr:hover {
+ background: #014055; 
+}
