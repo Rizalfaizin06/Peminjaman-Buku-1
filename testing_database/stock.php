@@ -52,7 +52,7 @@ if (isset($_POST["cari"])) {
 		} else {
 			$stat = 'Kosong';
 		}?>
-		<td><?= $stat ?></td>">
+		<td><?= $stat; ?></td>
 	</tr>
 	<?php $i++; endforeach; ?>
 
