@@ -126,4 +126,32 @@ function upload() {
 
 }
 
+
+function pinjam($data){
+	global $koneksi;
+	$id = $data["id"];
+	$idBuku = htmlspecialchars($data["idBuku"]);
+	$namaBuku = htmlspecialchars($data["namaBuku"]);
+	
+	query("SELECT * FROM mapel");
+
+	//cek apakah user pilih gambar baru atau tidak
+	if ($_FILES['gambar']['error'] === 4) {
+		$gambar =$gambarLama;
+	} else {
+		$gambar = upload();
+	}
+
+	$query = "UPDATE mahasiswa SET nama = '$nama', nrp = '$nrp', jurusan = '$jurusan', gambar = '$gambar' WHERE id = $id";
+	
+	mysqli_query($koneksi, $query);
+
+	return mysqli_affected_rows($koneksi);
+}
+
+
+
+
+
+
 ?>

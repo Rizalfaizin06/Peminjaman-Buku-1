@@ -1,5 +1,3 @@
-
-
 body {
   background: #105469;
   font-family: 'Open Sans', sans-serif;
@@ -17,6 +15,7 @@ table {
   border-collapse: collapse;
   table-layout: fixed;
   width: 700px;
+  text-align: center;
 }
 
 table tr th {
@@ -27,7 +26,6 @@ table tr th {
   font-size: 15px;
   font-weight: 600;
   padding: 10px 20px;
-  text-align: left;
 }
 
 table tr th:first-child{
@@ -35,11 +33,11 @@ table tr th:first-child{
   margin-top: 6px;
   padding: 5px;
   width: 8%;
-  text-align: center;
 }
 
 table tr th:nth-child(2){
  width: 50%;
+ text-align: left;
 }
 
 table tr th:nth-child(3){
@@ -48,18 +46,15 @@ table tr th:nth-child(3){
 
 table tr th:last-child{
   border-right: 0px solid #364043;
-  text-align: center;
   width: 30%;
 }
 
 table tr td {
+  border-right: 1px solid #364043;
+  border-left: 1px solid #364043;
   color: #fff;
   font-weight: 400;
   padding: 15px 20px;
-  text-align: left; 
-  border-right: 1px solid #364043;
-  border-left: 1px solid #364043;
-  
 }
 
 table tr td:first-child{
@@ -67,11 +62,11 @@ table tr td:first-child{
   margin-top: 9px;
   padding: 5px;
   width: 8%;
-  text-align: center;
 }
 
 table tr td:nth-child(2){
  width: 50%;
+ text-align: left;
 }
 
 table tr td:nth-child(3){
@@ -81,12 +76,13 @@ table tr td:nth-child(3){
 
 table tr td:last-child{
   border-right: 0px solid #364043;
-  text-align: center;
   width: 30%;
 }
+
 tr {
   display: flex;
 }
+
 .trUpper {
   transition: background 0.25s ease;
 }

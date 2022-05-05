@@ -110,8 +110,8 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   postData = "Data1=" + Data1 + "&Data2=" + Data2 + "&Data3=" + Data3 + "&Data4=" + Data4 ;
   Serial.println(postData);
  
-  http.begin("http://" + hostStr + "/krenova/GitFolder/Peminjaman-Buku-1/testing_database/test.php");
-  Serial.println("http://" + hostStr + "/krenova/testing_database/test.php");
+  http.begin("http://" + hostStr + "/krenova/GitFolder/Peminjaman-Buku-1/PHP/test.php");
+  Serial.println("http://" + hostStr + "/krenova/PHP/test.php");
   
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
