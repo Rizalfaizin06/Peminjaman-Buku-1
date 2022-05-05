@@ -12,14 +12,15 @@
     $t = date("H:i:s");
 
     if(!empty($_POST['Data1']))
-    {
+    {   
+        var_dump($_POST["Data1"]);
 		$Da1 = $_POST['Data1'];
         $Da2 = $_POST['Data2'];
         $Da3 = $_POST['Data3'];
         $Da4 = $_POST['Data4'];
 	    $sql = "INSERT INTO  tabel_val VALUES ('', '$Da1', '$Da2', '$Da3', '$Da4', '$d', '$t')";
         mysqli_query($koneksi, $sql);
-		
+		var_dump($_POST["Data1"]);
 	}
 
 ?>

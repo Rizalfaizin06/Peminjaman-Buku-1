@@ -20,10 +20,11 @@ String Data1;
 String Data2;
 String Data3;
 String Data4;
-String hostStr;
+String host = "192.168.123.123";
 const char* ssid = "LIMITED";
 const char* password = "12344321";
-const char* host = "192.168.123.123";
+
+String url = "http://" + host + "/krenova/GitFolder/Peminjaman-Buku-1/PHP/stock.php";
 
 void setup() {
   Serial.begin(115200);
@@ -105,13 +106,12 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   Data2 = String(dua);
   Data3 = String(tiga);
   Data4 = String(empat);
-  hostStr = String(host);
  
   postData = "Data1=" + Data1 + "&Data2=" + Data2 + "&Data3=" + Data3 + "&Data4=" + Data4 ;
   Serial.println(postData);
  
-  http.begin("http://" + hostStr + "/krenova/GitFolder/Peminjaman-Buku-1/PHP/test.php");
-  Serial.println("http://" + hostStr + "/krenova/PHP/test.php");
+  http.begin(url);
+  Serial.println(url);
   
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 

@@ -4,9 +4,16 @@ require 'fungsi.php';
 $namaBuku = query("SELECT * FROM mapel");
 
 
-if (isset($_POST["cari"])) {
-	$buku = cari($_POST["keyword"]);
+if(!empty($_POST['Data1']))
+{
+	echo "kshdf";
+    pinjam($_POST);
+
 }
+
+
+
+
 ?>
 
 <!DOCTYPE html>
