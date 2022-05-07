@@ -64,6 +64,7 @@ void loop() {
   delay(1000);
   iData2 = scann();
   uploadDB(iData1, iData2, statusP, iData4);
+  delay(2000);
 }
 
 String scann() {

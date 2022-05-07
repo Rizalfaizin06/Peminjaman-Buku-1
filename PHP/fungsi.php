@@ -73,8 +73,9 @@ function pinjam($data){
 	$idBuku = $mapel['idBuku'];
 	$namaBuku = $mapel['namaBuku'];
 
-	if ($peminjam['status'] == '0') {
+		
 
+	if ($peminjam['status'] == '0') {
 		foreach ($mapel as $mpl) {
 		$mm = $mpl['idBuku'];
 		mysqli_query($koneksi,"UPDATE $mm SET status = 0 WHERE RFID = '$rfidB'");
