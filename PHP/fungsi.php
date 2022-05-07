@@ -59,8 +59,6 @@ function ubah($data){
 	return mysqli_affected_rows($koneksi);
 }
 
-
-
 function pinjam($data){
 	global $koneksi;
 	$rfidP = $data['Data1'];
@@ -68,19 +66,24 @@ function pinjam($data){
     $Da3 = $data['Data3'];
     $Da4 = $data['Data4'];
 
-    $mpq = query("SELECT * FROM mapel");
+    $mapel = query("SELECT * FROM mapel");
+    $peminjam = query("SELECT * FROM peminjam WHERE RFID = '$rfidP'");
 
-	$id = $mpq["id"];
-	$idBuku = $mpq["idBuku"];
-	$namaBuku = $mpq["namaBuku"];
+	$id = $mapel['id'];
+	$idBuku = $mapel['idBuku'];
+	$namaBuku = $mapel['namaBuku'];
 
-	foreach ($mpq as $mpl) {
+	if ($peminjam['status'] == '0') {
+
+		foreach ($mapel as $mpl) {
 		$mm = $mpl['idBuku'];
 		mysqli_query($koneksi,"UPDATE $mm SET status = 0 WHERE RFID = '$rfidB'");
-	}
+		}
 	
-	mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = '$rfidB', status = 1 WHERE RFID = '$rfidP'");
+		mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = '$rfidB', status = 1 WHERE RFID = '$rfidP'");
+	}
 
+	
 }
 
 function kembali($data){
@@ -90,13 +93,13 @@ function kembali($data){
     $Da3 = $data['Data3'];
     $Da4 = $data['Data4'];
 
-    $mpq = query("SELECT * FROM mapel");
+    $mapel = query("SELECT * FROM mapel");
 
-	$id = $mpq["id"];
-	$idBuku = $mpq["idBuku"];
-	$namaBuku = $mpq["namaBuku"];
+	$id = $mapel["id"];
+	$idBuku = $mapel["idBuku"];
+	$namaBuku = $mapel["namaBuku"];
 
-	foreach ($mpq as $mpl) {
+	foreach ($mapel as $mpl) {
 		$mm = $mpl['idBuku'];
 		mysqli_query($koneksi,"UPDATE $mm SET status = 1 WHERE RFID = '$rfidB'");
 	}

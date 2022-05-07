@@ -15,6 +15,7 @@ String iData2 = "2";
 String iData3 = "3";
 String iData4 = "4";
 const int buzz = 0;
+String statusP = "pinjam";
 String postData;
 String Data1;
 String Data2;
@@ -62,20 +63,16 @@ void loop() {
   iData1 = scann();
   delay(1000);
   iData2 = scann();
-  uploadDB(iData1, iData2, iData3, iData4);
+  uploadDB(iData1, iData2, statusP, iData4);
 }
 
 String scann() {
   while ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
-    Serial.print(".");
-    delay(250);
   }
   
   while ( ! mfrc522.PICC_ReadCardSerial()) 
   {
-    Serial.print(".");
-    delay(250);
   }
   digitalWrite(buzz, HIGH);
   delay(100);

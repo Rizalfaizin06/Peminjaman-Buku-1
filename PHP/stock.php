@@ -2,15 +2,31 @@
 require 'fungsi.php';
 
 $namaBuku = query("SELECT * FROM mapel");
+$statusPost = 0;
+// if(!empty($_POST['Data1'])) {
+// 	if ($_POST['Data3'] == 'pinjam') {
+// 		pinjam($_POST);
+// 	} elseif ($_POST['Data3'] == 'kembali') {
+// 	 	kembali($_POST);
+// 	} else {
+// 		echo "Gagal";
+
+// 	}
+    
+// }
 
 
-if(!empty($_POST['Data1']))
-{
-	echo "kshdf";
-    pinjam($_POST);
-
+if($_POST['Data1'] != '') {
+	if ($_POST['Data3'] == 'pinjam') {
+		var_dump($_POST);
+		pinjam($_POST);
+	} elseif ($_POST['Data3'] == 'kembali') {
+	 	kembali($_POST);
+	} else {
+		echo "Gagal";
+	}
+    
 }
-
 
 
 
