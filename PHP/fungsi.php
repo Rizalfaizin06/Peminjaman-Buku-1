@@ -64,15 +64,25 @@ function pinjam($data){
 
     $mapel = query("SELECT * FROM mapel");
     $peminjam = query("SELECT * FROM peminjam WHERE RFID = '$rfidP'")[0];
-
+  	foreach ($mapel as $mpl) {
+		$mp = $mpl['idBuku'];
+		$statusBuku = query("SELECT * FROM $mp WHERE RFID = '$rfidB'");
+		if (empty($statusBuku)) {
+			continue;
+		}
+		if (!empty($statusBuku)) {
+			break;
+		}
+	}
+// && $statusBuku[0]['status'] == '1'
 	$id = $mapel['id'];
 	$idBuku = $mapel['idBuku'];
 	$namaBuku = $mapel['namaBuku'];
 
-	if ($peminjam['status'] == '0') {
+	if ($peminjam['status'] == '0' && $statusBuku[0]['status'] == '1') {
 		foreach ($mapel as $mpl) {
-		$mm = $mpl['idBuku'];
-		mysqli_query($koneksi,"UPDATE $mm SET status = 0 WHERE RFID = '$rfidB'");
+		$mp = $mpl['idBuku'];
+		mysqli_query($koneksi,"UPDATE $mp SET status = 0 WHERE RFID = '$rfidB'");
 		}
 	
 		mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = '$rfidB', status = 1 WHERE RFID = '$rfidP'");
