@@ -3,9 +3,6 @@
 //koneksi kedatabase
 $koneksi = mysqli_connect("127.0.0.1", "rizal", "rizal", "test3");
 
-
-
-
 //query
 function query($query){
 	global $koneksi;
@@ -26,7 +23,6 @@ function tambah($data){
 	if (!$gambar) {
 		return false;
 	}
-
 
 	$query = "INSERT INTO mahasiswa VALUES ('', '$nama', '$nrp', '$jurusan', '$gambar')";
 	
@@ -67,13 +63,11 @@ function pinjam($data){
     $Da4 = $data['Data4'];
 
     $mapel = query("SELECT * FROM mapel");
-    $peminjam = query("SELECT * FROM peminjam WHERE RFID = '$rfidP'");
+    $peminjam = query("SELECT * FROM peminjam WHERE RFID = '$rfidP'")[0];
 
 	$id = $mapel['id'];
 	$idBuku = $mapel['idBuku'];
 	$namaBuku = $mapel['namaBuku'];
-
-		
 
 	if ($peminjam['status'] == '0') {
 		foreach ($mapel as $mpl) {
@@ -82,8 +76,10 @@ function pinjam($data){
 		}
 	
 		mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = '$rfidB', status = 1 WHERE RFID = '$rfidP'");
+		return mysqli_affected_rows($koneksi);
 	}
-
+	echo "gafgall";
+	return false;
 	
 }
 

@@ -7,36 +7,31 @@ $statusPost = 0;
 // 	$statusPost = 1;
 // }
 
-// if (isset($_POST['Data1'])) {
-// 	if ($_POST['Data1'] != '') {
-// 		$statusPost = 1;
-// 		var_dump($statusPost);
-// 	}
-	
-// }
-
-// if ($statusPost == 1) {
-// 	echo "Gagal";
-// 	if ($_POST['Data3'] == 'pinjam') {
-// 		var_dump($_POST);
-// 		pinjam($_POST);
-// 		$statusPost = 0;
-// 	} elseif ($_POST['Data3'] == 'kembali') {
-// 	 	kembali($_POST);
-// 	 	$statusPost = 0;
-// 	} else {
-// 		echo "Gagal";
-// 	}
-// }
-  $pmjj = query("SELECT * FROM peminjam WHERE RFID = 'B17BC726'")[0];
-  var_dump($pmjj['status']);
-  $sss = $pmjj['status'];
-  var_dump($sss);
-  if ($sss == 'm') {
-	var_dump($pmjj['status']);
+if (isset($_POST['Data1'])) {
+	if ($_POST['Data1'] != '') {
+		$statusPost = 1;
+		var_dump($statusPost);
 	}
-	  
+	
+}
 
+if ($statusPost == 1) {
+	echo "Gagal";
+	if ($_POST['Data3'] == 'pinjam') {
+		var_dump($_POST);
+		// pinjam($_POST);
+	} elseif ($_POST['Data3'] == 'kembali') {
+	 	kembali($_POST);
+	 	$statusPost = 0;
+	} else {
+		echo "Gagal";
+	}
+}
+ //  $pmjj = query("SELECT * FROM peminjam WHERE RFID = 'B17BC726'")[0];
+ //  var_dump($pmjj['status']);
+ //  if ($pmjj['status'] == '0') {
+	// var_dump($pmjj['status']);
+	// }
 ?>
 
 <!DOCTYPE html>
