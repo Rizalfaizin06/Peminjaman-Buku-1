@@ -1,4 +1,7 @@
 List RFID
+Orang:
+1. B17BC726
+2. 90A6361A
 
 MTK:
 1. 4C159EEE
