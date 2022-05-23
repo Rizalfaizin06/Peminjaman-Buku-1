@@ -38,6 +38,7 @@ table tr th {
   font-size: 15px;
   font-weight: 600;
   padding: 10px 20px;
+  position: center;
 }
 
 table tr th:first-child{
