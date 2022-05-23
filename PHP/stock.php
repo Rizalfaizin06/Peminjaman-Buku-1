@@ -5,8 +5,8 @@ $namaBuku = query("SELECT * FROM mapel");
 
 if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
-		pinjam($_POST);
-	} elseif ($_POST['Data3'] == 'kembali') {
+	// 	pinjam($_POST);
+	// } elseif ($_POST['Data3'] == 'kembali') {
 	 	kembali($_POST);
 	} else {
 		echo "Gagal";
@@ -73,6 +73,8 @@ if (!empty($_POST['Data1'])) {
 	<input type="text" name="keyword" size="40" autofocus placeholder="masukkan keyword" autocomplete="off">
 	<button type="submit" name="cari">Cari</button>
 </form> -->
+<h1>WIRAPUSTAKA</h1>
+<h3 class="ssss">SMKN 1 WIROSARI</h3>
 <br>
 <table class="tb1">
 	<tr class="trUpper">
