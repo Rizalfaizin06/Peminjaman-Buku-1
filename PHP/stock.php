@@ -1,7 +1,7 @@
 <?php 
 require 'fungsi.php';
 
-$namaBuku = query("SELECT * FROM mapel");
+$namaBuku = query("SELECT * FROM buku, mapel WHERE buku.idBuku=mapel.idBuku");
 
 if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
@@ -91,7 +91,7 @@ if (!empty($_POST['Data1'])) {
 
 		<?php
 			$mapel = $oneView["idBuku"]; 
-			$stock = query("SELECT COUNT(*) FROM $mapel WHERE status = '1'")[0]["COUNT(*)"];
+			$stock = query("SELECT COUNT(*) FROM $mapel buku, mapel WHERE buku.idBuku=mapel.idBuku status = '1'")[0]["COUNT(*)"];
 		  ?>
 
 		<td><?= $stock ?></td>
