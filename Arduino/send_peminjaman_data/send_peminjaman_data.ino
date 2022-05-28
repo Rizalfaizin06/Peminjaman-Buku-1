@@ -13,7 +13,7 @@ int Led_OnBoard = 2;
 String iData1 = "1";
 String iData2 = "2";
 String iData3 = "3";
-String iData4 = "4";
+String iData4 = "36";
 const int buzz = 0;
 String statusP = "pinjam";
 String postData;
@@ -21,11 +21,13 @@ String Data1;
 String Data2;
 String Data3;
 String Data4;
-String host = "192.168.100.222";
+//String host = "192.168.100.222";
+String host = "testingstarproject.000webhostapp.com";
 const char* ssid = "LIMITED";
 const char* password = "12344321";
 
-String url = "http://" + host + "/krenova/GitFolder/Peminjaman-Buku-1/PHP/stock.php";
+//String url = "http://" + host + "/krenova/GitFolder/Peminjaman-Buku-1/PHP/stock.php";
+String url = "https://" + host + "/index.php";
 
 void setup() {
   Serial.begin(115200);
@@ -116,6 +118,10 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   digitalWrite(Led_OnBoard, LOW);
   
   int httpCode = http.POST(postData);
+  if (httpCode != 200){
+    Serial.println("Reset..");
+    ESP.restart();
+  }
   String payload = http.getString();
 
   Serial.println(httpCode);

@@ -5,10 +5,10 @@ $namaBuku = query("SELECT * FROM mapel");
 
 if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
-	// 	pinjam($_POST);
-	// } elseif ($_POST['Data3'] == 'kembali') {
-	//  	kembali($_POST);
-	// } elseif ($_POST['Data3'] == 'absen') {
+		pinjam($_POST);
+	} elseif ($_POST['Data3'] == 'kembali') {
+	 	kembali($_POST);
+	} elseif ($_POST['Data3'] == 'absen') {
 	 	absen($_POST);
 	} else {
 		echo "Gagal";
@@ -108,22 +108,22 @@ if (!empty($_POST['Data1'])) {
 	</tr>
 	<?php $i++; endforeach; ?>
 </table>
-
-<?php 
-
-
-$warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.namaBuku, kelas,  namaAnggota, tanggalPinjam, tanggalKembali, CURRENT_DATE() AS tgl_sekarang, datediff(CURRENT_DATE(), tanggalPinjam) AS selisih FROM peminjaman, anggota, buku, mapel WHERE peminjaman.RFIDP=anggota.RFIDP AND peminjaman.RFIDB=buku.RFIDB AND buku.idBuku=mapel.idBuku AND datediff(CURRENT_DATE(), tanggalPinjam) >= 3 AND tanggalKembali LIKE '0000-00-00' ");
-
-if (!empty($warning)) { ?>
-
 <table>
 	<tr>
 		<tr><td><br></td></tr>
 		<td>Warning table</td>
 	</tr>
+<?php 
+
+
+$warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.namaBuku, kelas,  namaAnggota, tanggalPinjam, tanggalKembali, CURRENT_DATE() AS tgl_sekarang, datediff(CURRENT_DATE(), tanggalPinjam) AS selisih FROM peminjaman, anggota, buku, mapel WHERE peminjaman.RFIDP=anggota.RFIDP AND peminjaman.RFIDB=buku.RFIDB AND buku.idBuku=mapel.idBuku AND datediff(CURRENT_DATE(), tanggalPinjam) >= 7 AND tanggalKembali LIKE '0000-00-00' ");
+
+if (!empty($warning)) { ?>
+
+
 	<?php foreach ($warning as $oneView) : ?>
 	<tr>
-		<td><?php printf("Warning!! Atas Nama %s dari kelas %s untuk segera mengembalikan buku %s.\n\n\n",$oneView["namaAnggota"], $oneView["kelas"], $oneView["namaBuku"]); ?></td>
+		<td><?php printf("Warning!! Atas Nama %s dari kelas %s untuk segera mengembalikan buku %s.",$oneView["namaAnggota"], $oneView["kelas"], $oneView["namaBuku"]); ?></td>
 
 	</tr>
 	<?php endforeach;
@@ -148,7 +148,7 @@ if (!empty($warning)) { ?>
  <?php 
 
 
-$absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP");
+$absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP ORDER BY id");
 
 if (!empty($warning)) { ?>
 

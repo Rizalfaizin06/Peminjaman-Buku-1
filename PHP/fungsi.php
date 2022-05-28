@@ -1,11 +1,13 @@
 <?php 
 
 //koneksi kedatabase
+// $koneksi = mysqli_connect("localhost", "id18952921_rizal", ">R(xFzvAW#ln~1YB", "id18952921_krenova");
+
 $koneksi = mysqli_connect("127.0.0.1", "rizal", "rizal", "test4");
 
 date_default_timezone_set('Asia/Jakarta');
     $tanggal = date("Y-m-d");
-    $t = date("H:i:s");
+    $Jam = date("H:i:s");
 
 //query
 function query($query){
@@ -28,7 +30,7 @@ function tambah($data){
 		return false;
 	}
 
-	$query = "INSERT INTO mahasiswa VALUES ('', '$nama', '$nrp', '$jurusan', '$gambar')";
+	$query = "INSERT INTO mahasiswa VALUES (NULL, '$nama', '$nrp', '$jurusan', '$gambar')";
 	
 	mysqli_query($koneksi, $query);
 
@@ -62,13 +64,14 @@ function ubah($data){
 function pinjam($data){
 	global $koneksi;
 	global $tanggal;
+	global $jam;
 	$rfidP = $data['Data1'];
     $rfidB = $data['Data2'];
     $mode = $data['Data3'];
     $Da4 = $data['Data4'];
 
 	
-	mysqli_query($koneksi, "INSERT INTO peminjaman VALUES ('', '$rfidP', '$rfidB', '2022-05-22','')");
+	mysqli_query($koneksi, "INSERT INTO peminjaman VALUES (NULL, '$rfidP', '$rfidB', '2022-05-20','0000-00-00')");
 
 	mysqli_query($koneksi,"UPDATE buku SET status = 0 WHERE RFIDB = '$rfidB'");
 
@@ -109,6 +112,7 @@ function pinjam($data){
 function kembali($data){
 	global $koneksi;
 	global $tanggal;
+	global $jam;
 	$rfidP = $data['Data1'];
     $rfidB = $data['Data2'];
     $mode = $data['Data3'];
@@ -127,7 +131,7 @@ function kembali($data){
 	// 	mysqli_query($koneksi,"UPDATE $mm SET status = 1 WHERE RFID = '$rfidB'");
 	// }
 	
-	// mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = '', status = 0 WHERE RFID = '$rfidP'");
+	// mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = NULL, status = 0 WHERE RFID = '$rfidP'");
 
 }
 
@@ -135,14 +139,16 @@ function kembali($data){
 function absen($data){
 	global $koneksi;
 	global $tanggal;
+	global $jam;
 	$rfidP = $data['Data1'];
     $rfidB = $data['Data2'];
     $mode = $data['Data3'];
     $Da4 = $data['Data4'];
 
 	
-	mysqli_query($koneksi, "INSERT INTO absensi VALUES ('', '$rfidP', CURRENT_DATE(), CURRENT_TIME(),'36')");
+	mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', CURRENT_DATE(), CURRENT_TIME(),'$Da4')");
 
 }
-
+// SELECT CURRENT_TIME() - INTERVAL '5' HOUR atau SELECT SUBTIME(CURRENT_TIME, '05:00:00')
 ?>
+
