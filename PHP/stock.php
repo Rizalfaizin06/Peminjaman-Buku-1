@@ -5,8 +5,8 @@ $namaBuku = query("SELECT * FROM mapel");
 
 if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
-		pinjam($_POST);
-	} elseif ($_POST['Data3'] == 'kembali') {
+	// 	pinjam($_POST);
+	// } elseif ($_POST['Data3'] == 'kembali') {
 	 	kembali($_POST);
 	} else {
 		echo "Gagal";
@@ -110,16 +110,14 @@ if (!empty($_POST['Data1'])) {
 <?php 
 
 
-$warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.namaBuku, namaAnggota, tanggalPinjam, CURRENT_DATE() AS tgl_sekarang, datediff(CURRENT_DATE(), tanggalPinjam) AS selisih FROM peminjaman, anggota, buku, mapel WHERE peminjaman.RFIDP=anggota.RFIDP AND peminjaman.RFIDB=buku.RFIDB AND buku.idBuku=mapel.idBuku AND datediff(CURRENT_DATE(), tanggalPinjam) >= 3");
+$warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.namaBuku, kelas,  namaAnggota, tanggalPinjam, tanggalKembali, CURRENT_DATE() AS tgl_sekarang, datediff(CURRENT_DATE(), tanggalPinjam) AS selisih FROM peminjaman, anggota, buku, mapel WHERE peminjaman.RFIDP=anggota.RFIDP AND peminjaman.RFIDB=buku.RFIDB AND buku.idBuku=mapel.idBuku AND datediff(CURRENT_DATE(), tanggalPinjam) >= 3 AND tanggalKembali LIKE '0000-00-00' ");
 
 if (!empty($warning)) { ?>
 
-	<!-- foreach ($warning as $oneView) :
-		printf("Warning Atas Nama %s untuk segera mengembalikan buku %s.\n\n\n",$oneView["namaAnggota"], $oneView["namaBuku"]); -->
 <table>
 	<?php foreach ($warning as $oneView) : ?>
 	<tr>
-		<td><?php printf("Warning!! Atas Nama %s untuk segera mengembalikan buku %s.\n\n\n",$oneView["namaAnggota"], $oneView["namaBuku"]); ?></td>
+		<td><?php printf("Warning!! Atas Nama %s dari kelas %s untuk segera mengembalikan buku %s.\n\n\n",$oneView["namaAnggota"], $oneView["kelas"], $oneView["namaBuku"]); ?></td>
 
 	</tr>
 	<?php endforeach;

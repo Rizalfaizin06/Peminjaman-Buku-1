@@ -108,23 +108,25 @@ function pinjam($data){
 
 function kembali($data){
 	global $koneksi;
+	global $tanggal;
 	$rfidP = $data['Data1'];
     $rfidB = $data['Data2'];
     $mode = $data['Data3'];
     $Da4 = $data['Data4'];
 
-    $mapel = query("SELECT * FROM mapel");
+    mysqli_query($koneksi,"UPDATE peminjaman SET tanggalKembali=CURRENT_DATE() WHERE kodePinjam=23");
+ //    $mapel = query("SELECT * FROM mapel");
 
-	$id = $mapel["id"];
-	$idBuku = $mapel["idBuku"];
-	$namaBuku = $mapel["namaBuku"];
+	// $id = $mapel["id"];
+	// $idBuku = $mapel["idBuku"];
+	// $namaBuku = $mapel["namaBuku"];
 
-	foreach ($mapel as $mpl) {
-		$mm = $mpl['idBuku'];
-		mysqli_query($koneksi,"UPDATE $mm SET status = 1 WHERE RFID = '$rfidB'");
-	}
+	// foreach ($mapel as $mpl) {
+	// 	$mm = $mpl['idBuku'];
+	// 	mysqli_query($koneksi,"UPDATE $mm SET status = 1 WHERE RFID = '$rfidB'");
+	// }
 	
-	mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = '', status = 0 WHERE RFID = '$rfidP'");
+	// mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = '', status = 0 WHERE RFID = '$rfidP'");
 
 }
 

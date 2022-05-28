@@ -93,7 +93,7 @@ h1 {
   width: 30%;
 }
 
-tr {
+.tb1 tr {
   display: flex;
 }
 
@@ -117,6 +117,6 @@ tr {
   border-bottom-right-radius: 10px;
 }
 
-tr:hover {
+.tb1 tr:hover {
   background: #014055;
 }
