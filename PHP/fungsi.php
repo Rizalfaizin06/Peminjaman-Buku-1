@@ -114,7 +114,8 @@ function kembali($data){
     $mode = $data['Data3'];
     $Da4 = $data['Data4'];
 
-    mysqli_query($koneksi,"UPDATE peminjaman SET tanggalKembali=CURRENT_DATE() WHERE kodePinjam=23");
+    mysqli_query($koneksi,"UPDATE peminjaman, buku SET tanggalKembali=CURRENT_DATE(), status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='$rfidP' AND buku.RFIDB='$rfidB' AND tanggalKembali='0000-00-00'");
+// UPDATE peminjaman, buku SET tanggalKembali=CURRENT_DATE(), status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='90A6361A' AND buku.RFIDB='6CA9A2EE'
  //    $mapel = query("SELECT * FROM mapel");
 
 	// $id = $mapel["id"];
