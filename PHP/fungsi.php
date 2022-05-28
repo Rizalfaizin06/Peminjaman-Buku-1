@@ -131,4 +131,18 @@ function kembali($data){
 
 }
 
+
+function absen($data){
+	global $koneksi;
+	global $tanggal;
+	$rfidP = $data['Data1'];
+    $rfidB = $data['Data2'];
+    $mode = $data['Data3'];
+    $Da4 = $data['Data4'];
+
+	
+	mysqli_query($koneksi, "INSERT INTO absensi VALUES ('', '$rfidP', CURRENT_DATE(), CURRENT_TIME(),'36')");
+
+}
+
 ?>

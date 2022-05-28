@@ -7,7 +7,9 @@ if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
 	// 	pinjam($_POST);
 	// } elseif ($_POST['Data3'] == 'kembali') {
-	 	kembali($_POST);
+	//  	kembali($_POST);
+	// } elseif ($_POST['Data3'] == 'absen') {
+	 	absen($_POST);
 	} else {
 		echo "Gagal";
 	}
@@ -115,9 +117,48 @@ $warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.
 if (!empty($warning)) { ?>
 
 <table>
+	<tr>
+		<tr><td><br></td></tr>
+		<td>Warning table</td>
+	</tr>
 	<?php foreach ($warning as $oneView) : ?>
 	<tr>
 		<td><?php printf("Warning!! Atas Nama %s dari kelas %s untuk segera mengembalikan buku %s.\n\n\n",$oneView["namaAnggota"], $oneView["kelas"], $oneView["namaBuku"]); ?></td>
+
+	</tr>
+	<?php endforeach;
+}
+
+ ?>
+ </table>
+<table>
+	<tr><td><br></td></tr>
+	<tr>
+		<td>Absensi Table</td>
+	</tr>
+	<tr>
+		<th>Nama</th>
+		<th>Tanggal</th>
+		<th>Jam</th>
+		<th>Suhu</th>
+	</tr>
+
+
+
+ <?php 
+
+
+$absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP");
+
+if (!empty($warning)) { ?>
+
+
+	<?php foreach ($absen as $oneView) : ?>
+	<tr>
+		<td><?= $oneView["namaAnggota"]; ?></td>
+		<td><?= $oneView["tanggal"]; ?></td>
+		<td><?= $oneView["jam"]; ?></td>
+		<td><?= $oneView["suhu"]; ?></td>
 
 	</tr>
 	<?php endforeach;
