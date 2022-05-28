@@ -1,12 +1,12 @@
 <?php 
 require 'fungsi.php';
 
-$namaBuku = query("SELECT * FROM buku, mapel WHERE buku.idBuku=mapel.idBuku");
+$namaBuku = query("SELECT * FROM mapel");
 
 if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
-	// 	pinjam($_POST);
-	// } elseif ($_POST['Data3'] == 'kembali') {
+		pinjam($_POST);
+	} elseif ($_POST['Data3'] == 'kembali') {
 	 	kembali($_POST);
 	} else {
 		echo "Gagal";
@@ -91,7 +91,7 @@ if (!empty($_POST['Data1'])) {
 
 		<?php
 			$mapel = $oneView["idBuku"]; 
-			$stock = query("SELECT COUNT(*) FROM $mapel buku, mapel WHERE buku.idBuku=mapel.idBuku status = '1'")[0]["COUNT(*)"];
+			$stock = query("SELECT COUNT(*) FROM buku WHERE idBuku = '$mapel' AND status = '1'")[0]["COUNT(*)"];
 		  ?>
 
 		<td><?= $stock ?></td>
@@ -105,7 +105,27 @@ if (!empty($_POST['Data1'])) {
 		<td><?= $stat; ?></td>
 	</tr>
 	<?php $i++; endforeach; ?>
-
 </table>
+
+<?php 
+
+
+$warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.namaBuku, namaAnggota, tanggalPinjam, CURRENT_DATE() AS tgl_sekarang, datediff(CURRENT_DATE(), tanggalPinjam) AS selisih FROM peminjaman, anggota, buku, mapel WHERE peminjaman.RFIDP=anggota.RFIDP AND peminjaman.RFIDB=buku.RFIDB AND buku.idBuku=mapel.idBuku AND datediff(CURRENT_DATE(), tanggalPinjam) >= 3");
+
+if (!empty($warning)) { ?>
+
+	<!-- foreach ($warning as $oneView) :
+		printf("Warning Atas Nama %s untuk segera mengembalikan buku %s.\n\n\n",$oneView["namaAnggota"], $oneView["namaBuku"]); -->
+<table>
+	<?php foreach ($warning as $oneView) : ?>
+	<tr>
+		<td><?php printf("Warning!! Atas Nama %s untuk segera mengembalikan buku %s.\n\n\n",$oneView["namaAnggota"], $oneView["namaBuku"]); ?></td>
+
+	</tr>
+	<?php endforeach;
+}
+
+ ?>
+ </table>
 </body>
 </html>

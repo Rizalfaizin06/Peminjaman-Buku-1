@@ -21,7 +21,7 @@ String Data1;
 String Data2;
 String Data3;
 String Data4;
-String host = "192.168.123.123";
+String host = "192.168.100.222";
 const char* ssid = "LIMITED";
 const char* password = "12344321";
 
