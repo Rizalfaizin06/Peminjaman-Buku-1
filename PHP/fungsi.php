@@ -7,7 +7,7 @@ $koneksi = mysqli_connect("127.0.0.1", "rizal", "rizal", "test4");
 
 date_default_timezone_set('Asia/Jakarta');
     $tanggal = date("Y-m-d");
-    $Jam = date("H:i:s");
+    $jam = date("H:i:s");
 
 //query
 function query($query){
@@ -118,8 +118,8 @@ function kembali($data){
     $mode = $data['Data3'];
     $Da4 = $data['Data4'];
 
-    mysqli_query($koneksi,"UPDATE peminjaman, buku SET tanggalKembali=CURRENT_DATE(), status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='$rfidP' AND buku.RFIDB='$rfidB' AND tanggalKembali='0000-00-00'");
-// UPDATE peminjaman, buku SET tanggalKembali=CURRENT_DATE(), status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='90A6361A' AND buku.RFIDB='6CA9A2EE'
+    mysqli_query($koneksi,"UPDATE peminjaman, buku SET tanggalKembali='$tanggal', status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='$rfidP' AND buku.RFIDB='$rfidB' AND tanggalKembali='0000-00-00'");
+// UPDATE peminjaman, buku SET tanggalKembali='$tanggal', status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='90A6361A' AND buku.RFIDB='6CA9A2EE'
  //    $mapel = query("SELECT * FROM mapel");
 
 	// $id = $mapel["id"];
@@ -146,9 +146,9 @@ function absen($data){
     $Da4 = $data['Data4'];
 
 	
-	mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', CURRENT_DATE(), CURRENT_TIME(),'$Da4')");
+	mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', '$tanggal', '$jam','$Da4')");
 
 }
-// SELECT CURRENT_TIME() - INTERVAL '5' HOUR atau SELECT SUBTIME(CURRENT_TIME, '05:00:00')
+// SELECT '$jam' - INTERVAL '5' HOUR atau SELECT SUBTIME(CURRENT_TIME, '05:00:00')
 ?>
 
