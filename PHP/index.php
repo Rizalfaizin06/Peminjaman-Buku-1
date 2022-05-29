@@ -113,7 +113,7 @@ if (!empty($_POST['Data1'])) {
 			<?php 
 
 
-			$absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP ORDER BY id LIMIT 15");
+			$absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP ORDER BY id DESC LIMIT 5");
 
 			foreach ($absen as $oneView) : ?>
 				<tr class="trLower">
