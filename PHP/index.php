@@ -1,7 +1,6 @@
 <?php 
 require 'fungsi.php';
 
-$namaBuku = query("SELECT * FROM mapel");
 
 if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
@@ -21,7 +20,7 @@ if (!empty($_POST['Data1'])) {
 <html>
 <head>
 	<title>Krenova</title>
-	<link rel="stylesheet" type="text/css" href="css2.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
@@ -61,8 +60,8 @@ if (!empty($_POST['Data1'])) {
 
 				$jumlahPengunjung = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal'")[0]["COUNT(*)"];
 				$jumlahPengunjungWaspada = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal' AND suhu > 36")[0]["COUNT(*)"]; ?>
-				<td><?= "Jumlah pengunjung saat ini adalah : ",$jumlahPengunjung; ?></td>
-				 <td><?= "pengunjung waspada saat ini adalah : ",$jumlahPengunjungWaspada; ?></td>
+				<td><?= "Jumlah pengunjung hari ini adalah : ",$jumlahPengunjung; ?></td>
+				 <td><?= "Jumlah pengunjung waspada adalah : ",$jumlahPengunjungWaspada; ?></td>
 			</table>
 		</div>
 		
@@ -76,8 +75,11 @@ if (!empty($_POST['Data1'])) {
 				<th>Stock</th>
 				<th>Status</th>
 			</tr>
-			<?php $i = 1; ?>
-			<?php foreach ($namaBuku as $oneView) : ?>
+			<?php 
+
+			$namaBuku = query("SELECT * FROM mapel");
+			$i = 1;
+			foreach ($namaBuku as $oneView) : ?>
 			<tr class="trLower">
 				<td><?= $i; ?> </td>
 				<td><?= $oneView["namaBuku"]; ?></td>
@@ -142,6 +144,7 @@ if (!empty($_POST['Data1'])) {
 
 
 
-
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
