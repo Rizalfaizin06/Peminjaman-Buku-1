@@ -4,10 +4,10 @@ require 'fungsi.php';
 
 if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
-	// 	pinjam($_POST);
-	// } elseif ($_POST['Data3'] == 'kembali') {
-	//  	kembali($_POST);
-	// } elseif ($_POST['Data3'] == 'absen') {
+		pinjam($_POST);
+	} elseif ($_POST['Data3'] == 'kembali') {
+	 	kembali($_POST);
+	} elseif ($_POST['Data3'] == 'absen') {
 	 	absen($_POST);
 	} else {
 		echo "Gagal";
