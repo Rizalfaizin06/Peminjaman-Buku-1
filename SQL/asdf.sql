@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 28 Bulan Mei 2022 pada 10.16
+-- Waktu pembuatan: 03 Jun 2022 pada 16.11
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.4.6
 
@@ -40,9 +40,10 @@ CREATE TABLE `absensi` (
 --
 
 INSERT INTO `absensi` (`id`, `RFIDP`, `tanggal`, `jam`, `suhu`) VALUES
-(2, '90A6361A', '2022-05-28', '15:11:52', 36),
 (3, '90A6361A', '2022-05-28', '15:13:34', 36),
-(4, 'B17BC726', '2022-05-28', '15:13:38', 36);
+(4, 'B17BC726', '2022-05-28', '15:13:38', 36),
+(16, '90A6361A', '2022-06-03', '15:18:45', 38),
+(17, '90A6361A', '2022-06-03', '15:19:42', 33);
 
 -- --------------------------------------------------------
 
@@ -53,16 +54,17 @@ INSERT INTO `absensi` (`id`, `RFIDP`, `tanggal`, `jam`, `suhu`) VALUES
 CREATE TABLE `anggota` (
   `RFIDP` varchar(10) NOT NULL,
   `namaAnggota` text NOT NULL,
-  `kelas` varchar(11) NOT NULL
+  `kelas` varchar(11) NOT NULL,
+  `email` varchar(75) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `anggota`
 --
 
-INSERT INTO `anggota` (`RFIDP`, `namaAnggota`, `kelas`) VALUES
-('90A6361A', 'Ahmad Dwi', 'XII TKJ 1'),
-('B17BC726', 'Rizal Faizin Firdaus', 'XII TKJ 2');
+INSERT INTO `anggota` (`RFIDP`, `namaAnggota`, `kelas`, `email`) VALUES
+('90A6361A', 'Ahmad Dwiyanto', 'XII TKJ 1', 'pantatbabibersinar06@gmail.com'),
+('B17BC726', 'Rizal Faizin Firdaus', 'XII TKJ 2', 'rizalfaizinfirdaus@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -81,11 +83,11 @@ CREATE TABLE `buku` (
 --
 
 INSERT INTO `buku` (`RFIDB`, `idBuku`, `status`) VALUES
-('0CC5A4EE', 'B002', 0),
-('0CE5A4EE', 'B001', 0),
-('4C159EEE', 'B001', 1),
+('0CC5A4EE', 'B002', 1),
+('0CE5A4EE', 'B001', 1),
+('4C159EEE', 'B001', 0),
 ('4CDCA2EE', 'B002', 1),
-('6CA9A2EE', 'B002', 1),
+('6CA9A2EE', 'B002', 0),
 ('6CB3A2EE', 'B002', 1),
 ('AC0F9CEE', 'B001', 1);
 
@@ -119,20 +121,23 @@ CREATE TABLE `peminjaman` (
   `RFIDP` varchar(20) NOT NULL,
   `RFIDB` varchar(20) NOT NULL,
   `tanggalPinjam` date NOT NULL,
-  `tanggalKembali` date NOT NULL
+  `tanggalKembali` date NOT NULL,
+  `warning` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `peminjaman`
 --
 
-INSERT INTO `peminjaman` (`kodePinjam`, `RFIDP`, `RFIDB`, `tanggalPinjam`, `tanggalKembali`) VALUES
-(25, 'B17BC726', '0CE5A4EE', '2022-05-22', '2022-05-28'),
-(26, 'B17BC726', '0CE5A4EE', '2022-05-22', '2022-05-28'),
-(27, 'B17BC726', '0CE5A4EE', '2022-05-22', '2022-05-28'),
-(28, 'B17BC726', '6CB3A2EE', '2022-05-22', '2022-05-28'),
-(29, 'B17BC726', '0CE5A4EE', '2022-05-22', '0000-00-00'),
-(30, 'B17BC726', '0CC5A4EE', '2022-05-22', '0000-00-00');
+INSERT INTO `peminjaman` (`kodePinjam`, `RFIDP`, `RFIDB`, `tanggalPinjam`, `tanggalKembali`, `warning`) VALUES
+(25, 'B17BC726', '0CE5A4EE', '2022-05-22', '2022-05-28', 0),
+(27, 'B17BC726', '0CE5A4EE', '2022-05-22', '2022-05-28', 0),
+(28, 'B17BC726', '6CB3A2EE', '2022-05-22', '2022-05-28', 0),
+(29, 'B17BC726', '0CE5A4EE', '2022-05-22', '2022-05-28', 0),
+(30, 'B17BC726', '0CC5A4EE', '2022-05-22', '2022-05-28', 0),
+(31, 'B17BC726', '0CC5A4EE', '2022-05-20', '0000-00-00', 1),
+(32, 'B17BC726', '0CE5A4EE', '2022-05-20', '0000-00-00', 1),
+(33, '90A6361A', '0CE5A4EE', '2022-05-20', '0000-00-00', 1);
 
 --
 -- Indexes for dumped tables
@@ -181,13 +186,13 @@ ALTER TABLE `peminjaman`
 -- AUTO_INCREMENT untuk tabel `absensi`
 --
 ALTER TABLE `absensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `kodePinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `kodePinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

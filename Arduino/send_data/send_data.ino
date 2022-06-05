@@ -19,15 +19,16 @@ const int ir = 25;
 const int b1 = 26;
 const int b2 = 27;
 
+
+bool quit = 0;
 String iData1 = "1";
 String iData2 = "2";
 String iData3 = "3";
 String iData4 = "36";
 
-
-
 float temp;
-String sendMode = "pinjam";
+String stats = "";
+String sendMode = "absen";
 String postData;
 String Data1;
 String Data2;
@@ -74,13 +75,25 @@ void setup() {
 
 
 void loop() {
-//  int hb1 = digitalRead(b1);
-//  int hb2 = digitalRead(b2);
-//  int hir = digitalRead(ir);
-//  Serial.print(hir);
-//  Serial.print(hb1);
-//  Serial.println(hb2);
-//  delay(1000);
+  int hb1 = digitalRead(b1);
+  int hb2 = digitalRead(b2);
+  int hir = digitalRead(ir);
+  Serial.print(hir);
+  Serial.print(hb1);
+  Serial.println(hb2);
+  delay(50);
+  if ( hb1 == 0 ) {
+    Serial.println("Pinjam");
+    sendMode = "pinjam";
+    perpus();
+    sendMode = "absen";
+  }
+  else if ( hb2 == 0 ) {
+    Serial.println("Kembali");
+    sendMode = "kembali";
+    perpus();
+    sendMode = "absen";
+  }
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
     return;
@@ -90,7 +103,15 @@ void loop() {
   {
     return;
   }
-  pinjam();
+  if (quit == 1 ) {
+    quit = 0;
+    
+    return;
+  }
+  buzer1();
+  absen();
+  
+  
   Serial.print("suadah enddd");
 //  iData1 = scann();
 //  delay(1000);
@@ -100,16 +121,14 @@ void loop() {
 }
 
 String scann() {
+  int hir = digitalRead(ir);
   while ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
   }
-  
   while ( ! mfrc522.PICC_ReadCardSerial()) 
   {
   }
-  digitalWrite(buzz, HIGH);
-  delay(100);
-  digitalWrite(buzz, LOW);
+  buzer1();
 //  Serial.print("UID :");
   String guid;
   String content= "";
@@ -149,14 +168,25 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   
   int httpCode = http.POST(postData);
   Serial.print("uploading");
+  int c = 0;
   while (httpCode != 200){
             Serial.print(".");
+            Serial.print(httpCode);
+            httpCode = http.POST(postData);
             delay(500);
+            c++;
+            if (c == 10 ) {
+              http.begin(url);
+              Serial.println(url);
+              http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+              digitalWrite(Led_OnBoard, LOW);
+              httpCode = http.POST(postData);
+            }
+            if (c == 35 ) {
+              Serial.println("Reset..");
+              ESP.restart();
+            }
           }
-  if (httpCode != 200){
-    Serial.println("Reset..");
-    ESP.restart();
-  }
   String payload = http.getString();
 
   Serial.println(httpCode);
@@ -166,7 +196,8 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
 }
 
 
-void pinjam() {
+void perpus() {
+  buzer1();
   dataUpload[0] = scann();
   Serial.print(dataUpload[0]);
   delay(700);
@@ -193,15 +224,76 @@ void pinjam() {
   switch (i) {
     case 1:
       Serial.print("satuuuuuu");
-      uploadDB(dataUpload[0], dataUpload[1], "pinjam", iData4);
+      uploadDB(dataUpload[0], dataUpload[1], sendMode, iData4);
       break;
       
     default:
       Serial.print("duaaaaaaaaaa");
       for(int a=1;a<u;a++){
-        uploadDB(dataUpload[0], dataUpload[a], "pinjam", iData4);
+        uploadDB(dataUpload[0], dataUpload[a], sendMode, iData4);
        }
       break;
   }
  
+}
+
+void absen() {
+  Serial.print("UID :");
+  String guid;
+  String content= "";
+  byte letter;
+  
+  for (byte i = 0; i < mfrc522.uid.size; i++) 
+  {
+     Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
+     Serial.print(mfrc522.uid.uidByte[i], HEX);
+     content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+     content.concat(String(mfrc522.uid.uidByte[i], HEX));
+  }
+  
+  Serial.println();
+  content.toUpperCase();
+  guid = content.substring(1);
+  guid.replace(" ", "");
+  Serial.print("Dekatkan tanganmu");
+  int hir = digitalRead(ir);
+  while (hir == 1 ) {
+    Serial.print(".");
+    delay(100);
+    hir = digitalRead(ir);
+    Serial.print(hir);
+  }
+  Serial.println("");
+  delay(400);
+  temp = mlx.readObjectTempC();
+  temp = temp + 1.7;
+  Serial.println(temp);
+  buzer1();
+  if (temp >= 37){
+    stats = "Bahaya";
+  }
+  else {
+    stats = "Aman";
+  }
+  
+  lcd.clear();
+  lcd.setCursor (0,0);
+  lcd.print("Uploading..");
+  lcd.setCursor (0,1);
+  lcd.print("Suhu : ");
+  lcd.print(temp);
+  lcd.print((char)223);
+  lcd.print("C");
+  Serial.println("uploading..");
+  String te = String(temp);
+  uploadDB(guid, iData2, sendMode, te);
+  lcd.clear();
+}
+
+
+void buzer1() {
+  digitalWrite(buzz, HIGH);
+  delay(100);
+  digitalWrite(buzz, LOW);
+  delay(100);
 }
