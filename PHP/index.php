@@ -6,9 +6,9 @@ if (!empty($_POST['Data1'])) {
 	if ($_POST['Data3'] == 'pinjam') {
 		pinjam($_POST);
 	} elseif ($_POST['Data3'] == 'kembali') {
-	 	kembali($_POST);
+		kembali($_POST);
 	} elseif ($_POST['Data3'] == 'absen') {
-	 	absen($_POST);
+		absen($_POST);
 	} else {
 		echo "Gagal";
 	}
@@ -61,7 +61,7 @@ if (!empty($_POST['Data1'])) {
 				$jumlahPengunjung = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal'")[0]["COUNT(*)"];
 				$jumlahPengunjungWaspada = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal' AND suhu > 36")[0]["COUNT(*)"]; ?>
 				<td><?= "Jumlah pengunjung hari ini adalah : ",$jumlahPengunjung; ?></td>
-				 <td><?= "Jumlah pengunjung waspada adalah : ",$jumlahPengunjungWaspada; ?></td>
+				<td><?= "Jumlah pengunjung waspada adalah : ",$jumlahPengunjungWaspada; ?></td>
 			</table>
 		</div>
 		
@@ -87,7 +87,7 @@ if (!empty($_POST['Data1'])) {
 				<?php
 					$mapel = $oneView["idBuku"]; 
 					$stock = query("SELECT COUNT(*) FROM buku WHERE idBuku = '$mapel' AND status = '1'")[0]["COUNT(*)"];
-				  ?>
+				?>
 
 				<td><?= $stock ?></td>
 
@@ -135,13 +135,6 @@ if (!empty($_POST['Data1'])) {
 		<p>Copyright (c) 2022 SMKN 1 Wirosari All right reserved</p>
 	</div>
 </div>
-
-
-
-
-
-
-
 
 
 <script src="js/jquery-3.6.0.min.js"></script>
