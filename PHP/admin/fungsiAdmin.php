@@ -65,6 +65,49 @@ function query($query)
 // }
 
 
+function tambahAnggota($data)
+{
+    global $koneksi;
+    $RFIDP = $data["RFIDP"];
+    $namaAnggota = $data["namaAnggota"];
+    $kelas = $data["kelas"];
+    $email = $data["email"];
+    
+    $query = "INSERT INTO anggota VALUES ('$RFIDP', '$namaAnggota', '$kelas', '$email')";
+    
+    mysqli_query($koneksi, $query);
+
+    return mysqli_affected_rows($koneksi);
+}
+
+function ubahAnggota($data)
+{
+    global $koneksi;
+    $RFIDP = $data["RFIDP"];
+    $RFIDPBaru = $data["RFIDPBaru"];
+    $namaAnggota = $data["namaAnggota"];
+    $kelas = $data["kelas"];
+    $email = $data["email"];
+
+    $query = "UPDATE anggota SET RFIDP = '$RFIDPBaru', namaAnggota = '$namaAnggota', kelas = '$kelas', email = '$email' WHERE RFIDP = '$RFIDP'";
+    
+    mysqli_query($koneksi, $query);
+
+    return mysqli_affected_rows($koneksi);
+}
+
+function hapusAnggota($data)
+{
+    global $koneksi;
+
+    $query = "DELETE FROM anggota WHERE RFIDP = '$data'";
+    
+    mysqli_query($koneksi, $query);
+
+    return mysqli_affected_rows($koneksi);
+}
+
+
 function tambahMapel($data)
 {
     global $koneksi;

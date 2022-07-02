@@ -37,7 +37,7 @@ if (isset($_POST["submit"])) {
 
                     <form action="" method="post">
                         <div class="mb-3">
-                            <label for="RFIDBBaru" class="form-label">RFIDB</label>
+                            <label for="RFIDBBaru" class="form-label">RFID Buku</label>
                             <input type="text" class="form-control" id="RFIDBBaru" name="RFIDBBaru"
                                 placeholder="Masukkan RFIDBBaru"
                                 value="<?= $RFIDB; ?>">

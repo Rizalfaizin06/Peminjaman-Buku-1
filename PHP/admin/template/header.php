@@ -35,10 +35,10 @@ include "fungsiAdmin.php";
                         <a class="nav-link" href="kelolaMapel.php">Kelola Mapel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="peminjam.php">Kelola Peminjam</a>
+                        <a class="nav-link" href="kelolaPeminjam.php">Kelola Peminjam</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="peminjam.php">Kelola Anggota</a>
+                        <a class="nav-link" href="kelolaAnggota.php">Kelola Anggota</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="rekap.php">Rekap Pengunjung</a>
