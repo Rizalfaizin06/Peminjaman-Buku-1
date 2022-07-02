@@ -1,6 +1,6 @@
 <?php
 
-include "../fungsi.php";
+include "fungsiAdmin.php";
 
 ?>
 
@@ -16,7 +16,7 @@ include "../fungsi.php";
 </head>
 
 <body>
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="index.php">Wirapustaka</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
@@ -29,19 +29,19 @@ include "../fungsi.php";
                         <a class="nav-link" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="tambah.php">Tambah Buku</a>
+                        <a class="nav-link" href="kelolaBuku.php">Kelola Buku</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="tambah.php">Tambah Mapel</a>
+                        <a class="nav-link" href="kelolaMapel.php">Kelola Mapel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="peminjam.php">Edit Peminjam</a>
+                        <a class="nav-link" href="peminjam.php">Kelola Peminjam</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="peminjam.php">Kelola Anggota</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="rekap.php">Rekap Pengunjung</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
                     </li>
                 </ul>
                 <!-- <form class="d-flex" role="search">
