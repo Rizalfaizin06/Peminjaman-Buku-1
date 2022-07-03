@@ -6,47 +6,66 @@ $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
 $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
 $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
-$absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP LIMIT $awalData, $jumlahDataPerHalaman");
 
 ?>
 
-<!-- navigasi -->
-<?php if ($halamanAktif > 1) : ?>
-<a href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
-<?php endif; ?>
 
-<?php for ($i = 1; $i <= $jumlahHalaman; $i++) : if ($i == $halamanAktif) :?>
-<a href="?halaman=<?= $i ?>"
-    style="font-size: 20px; color: red;"><?= $i ?></a>
-<?php else : ?>
-<a href="?halaman=<?= $i ?>"><?= $i ?></a>
-<?php endif;?>
-<?php endfor;?>
 
-<?php if ($halamanAktif < $jumlahHalaman) : ?>
-<a href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
-<?php endif; ?>
+----------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
 <form action="" method="post" id="tahunTok">
-    <select name="tahun" id="tahun">
-        <option value="" selected hidden>Pilih Tahun</option>
-    </select>
+    <div class="filter">
+        <label>Filter Berdasarkan</label><br>
+        <select name="filter" id="filter">
+            <option value="0">Semua</option>
+            <option value="1">Per Tanggal</option>
+            <option value="2">Per Bulan</option>
+            <option value="3">Per Tahun</option>
+        </select>
+    </div>
 
-    <script>
-        var year = 2020;
-        var till = 2040;
-        var strOption = "<option selected hidden>Pilih Tahun</option>";
-        for (var y = year; y <= till; y++) {
-            strOption += "<option value=" + y + ">" + y + "</option>";
-        }
-        document.getElementById("tahun").innerHTML = strOption;
-    </script>
+    <div class="tanggalTok">
+        <input class="fTanggal" type="date" name="tanggal" id="tanggal">
+    </div>
 
-    <button type="submit"></button>
+    <div class="bulanTok">
+        <input type="month" id="bulan" name="bulan">
+    </div>
+
+    <div class="tahunTok">
+        <select name="tahun" id="tahun">
+            <!-- <option value="" selected hidden>Pilih Tahun</option> -->
+        </select>
+        <script>
+            var year = 2020;
+            var till = 2040;
+            var strOption = "<option selected hidden>Pilih Tahun</option>";
+            for (var y = year; y <= till; y++) {
+                strOption += "<option value=" + y + ">" + y + "</option>";
+            }
+            document.getElementById("tahun").innerHTML = strOption;
+        </script>
+    </div>
+
+    <button type="submit">Submit</button>
 </form>
 
 
@@ -54,6 +73,63 @@ $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP
 
 
 
+
+
+
+<?php
+    if (isset($_POST['filter']) && ! empty($_POST['filter'])) {
+        $filter = $_POST['filter'];
+
+        if ($filter == '1') {
+            $tgl = date("Y-m-d", strtotime($_POST['tanggal']));
+            
+            echo '<b>Data Transaksi Tanggal '.$_POST['tanggal'].'</b><br /><br />';
+            echo '<a href="print.php?filter=1&tanggal='.$tgl.'">Cetak PDF</a><br /><br />';
+
+            $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tgl' LIMIT $awalData, $jumlahDataPerHalaman");
+
+            $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$_POST['tanggal']."'"; //
+    //     } elseif ($filter == '2') { // Jika filter nya 2 (per bulan)
+    //         $nama_bulan = array('', 'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+    //         echo '<b>Data Transaksi Bulan '.$nama_bulan[$_POST['bulan']].' '.$_POST['tahun'].'</b><br /><br />';
+    //         echo '<a href="print.php?filter=2&bulan='.$_POST['bulan'].'&tahun='.$_POST['tahun'].'">Cetak PDF</a><br /><br />';
+    //         $query = "SELECT * FROM transaksi WHERE MONTH(tgl)='".$_POST['bulan']."' AND YEAR(tgl)='".$_POST['tahun']."'"; // Tampilkan data transaksi sesuai bulan dan tahun yang diinput oleh user pada filter
+    //     } else { // Jika filter nya 3 (per tahun)
+    //         echo '<b>Data Transaksi Tahun '.$_POST['tahun'].'</b><br /><br />';
+    //         echo '<a href="print.php?filter=3&tahun='.$_POST['tahun'].'">Cetak PDF</a><br /><br />';
+    //         $query = "SELECT * FROM transaksi WHERE YEAR(tgl)='".$_POST['tahun']."'"; // Tampilkan data transaksi sesuai tahun yang diinput oleh user pada filter
+    //     }
+    // } else { // Jika user tidak mengklik tombol tampilkan
+    //     echo '<b>Semua Data Transaksi</b><br /><br />';
+    //     echo '<a href="print.php">Cetak PDF</a><br /><br />';
+    //     $query = "SELECT * FROM transaksi ORDER BY tgl"; // Tampilkan semua data transaksi diurutkan berdasarkan tanggal
+        }
+    }
+    ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 
 
 
@@ -106,11 +182,10 @@ $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP
                     echo '<option value="'.$data['tahun'].'">'.$data['tahun'].'</option>';
                 }
                 ?>
-        </select>
-        <br /><br />
-    </div>
-    <button type="submit">Tampilkan</button>
-    <a href="index.php">Reset Filter</a>
+</select>
+<br /><br />
+</div>
+<button type="submit">Tampilkan</button>
 </form>
 <hr />
 <?php
@@ -143,7 +218,7 @@ $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP
 
 
 
-
+-->
 
 
 
@@ -163,7 +238,7 @@ $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP
 
 
 <h1>Filter>hariinidate/tanggal/tahun</h1>
-<input type="month" id="start" name="start">
+<!-- $tanggalLahir = date("Y-m-d", strtotime($data['tanggalLahir'])); -->
 
 <br>
 
@@ -193,10 +268,53 @@ $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP
     <?php endforeach; ?>
 </table>
 
-<?php include "template/footer.php";?>
-<script>
+<!-- navigasi -->
+<?php if ($halamanAktif > 1) : ?>
+<a href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
+<?php endif; ?>
+
+<?php for ($i = 1; $i <= $jumlahHalaman; $i++) : if ($i == $halamanAktif) :?>
+<a href="?halaman=<?= $i ?>"
+    style="font-size: 20px; color: red;"><?= $i ?></a>
+<?php else : ?>
+<a href="?halaman=<?= $i ?>"><?= $i ?></a>
+<?php endif;?>
+<?php endfor;?>
+
+<?php if ($halamanAktif < $jumlahHalaman) : ?>
+<a href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
+<?php endif; ?>
+
+
+<!-- <script>
     $(document).ready(function() { // Ketika halaman selesai di load
-        $('.input-tanggal').datepicker({
+        $('.fTanggal').datepicker({
+            dateFormat: 'yy-mm-dd' // Set format tanggalnya jadi yyyy-mm-dd
+        });
+        $('.tanggalTok, .bulanTok, .tahunTok')
+            .hide(); // Sebagai default kita sembunyikan form filter tanggal, bulan & tahunnya
+        $('.filter').change(function() { // Ketika user memilih filter
+            if ($(this).val() == '1') { // Jika filter nya 1 (per tanggal)
+                $('.bulanTok, .tahunTok').hide(); // Sembunyikan form bulan dan tahun
+                $('.tanggalTok').show(); // Tampilkan form tanggal
+            } else if ($(this).val() == '2') { // Jika filter nya 2 (per bulan)
+                $('.tanggalTok, .tahunTok').hide(); // Sembunyikan form tanggal
+                $('.bulanTok').show(); // Tampilkan form bulan dan tahun
+            } else if ($(this).val() == '3') { // Jika filter nya 2 (per bulan)
+                $('.tanggalTok, .bulanTok').hide(); // Sembunyikan form tanggal dan bulan
+                $('.tahunTok').show(); // Tampilkan form tahun
+            } else { // Jika filternya 3 (per tahun)
+                $('.tanggalTok, .bulanTok, .tahunTok')
+                    .hide(); // Sembunyikan form tanggal dan bula// Tampilkan form tahun
+            }
+            $('.tanggalTok input, .bulanTok select, .tahunTok select').val(
+                ''); // Clear data pada textbox tanggal, combobox bulan & tahun
+        })
+    })
+</script> -->
+<!-- <script>
+    $(document).ready(function() { // Ketika halaman selesai di load
+        $('.fTanggal').datepicker({
             dateFormat: 'yy-mm-dd' // Set format tanggalnya jadi yyyy-mm-dd
         });
         $('#form-tanggal, #form-bulan, #form-tahun')
@@ -216,4 +334,5 @@ $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP
                 ''); // Clear data pada textbox tanggal, combobox bulan & tahun
         })
     })
-</script>
+</script> -->
+<?php include "template/footer.php";
