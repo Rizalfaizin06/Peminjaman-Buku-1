@@ -1,17 +1,11 @@
-<?php
-
-include "fungsiAdmin.php";
-
-?>
-
 <!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="icon/bootstrap-icons.css">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/icon/bootstrap-icons.css">
     <title>Bootstrap demo</title>
 </head>
 
@@ -29,16 +23,16 @@ include "fungsiAdmin.php";
                         <a class="nav-link" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="kelolaBuku.php">Kelola Buku</a>
+                        <a class="nav-link" href="kelola/kelolaBuku.php">Kelola Buku</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="kelolaMapel.php">Kelola Mapel</a>
+                        <a class="nav-link" href="kelola/kelolaMapel.php">Kelola Mapel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="kelolaPeminjam.php">Kelola Peminjam</a>
+                        <a class="nav-link" href="kelola/kelolaPeminjam.php">Kelola Peminjam</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="kelolaAnggota.php">Kelola Anggota</a>
+                        <a class="nav-link" href="kelola/kelolaAnggota.php">Kelola Anggota</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="rekap.php">Rekap Pengunjung</a>

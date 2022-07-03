@@ -1,5 +1,6 @@
-<?php include "template/header.php";
-
+<?php
+include "template/header.php";
+include "fungsiAdmin.php";
 $jumlahData = count(query("SELECT * FROM absensi"));
 $jumlahDataPerHalaman = 8;
 $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);

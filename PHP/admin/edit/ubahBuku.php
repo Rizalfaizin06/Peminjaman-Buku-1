@@ -1,5 +1,5 @@
 <?php
-include "template/header.php";
+include "../template/header.php";
 //ambil data url
 $RFIDB = $_GET["rfidb"];
 
@@ -82,4 +82,4 @@ if (isset($_POST["submit"])) {
 
 
 
-<?php include "template/footer.php";
+<?php include "../template/footer.php";

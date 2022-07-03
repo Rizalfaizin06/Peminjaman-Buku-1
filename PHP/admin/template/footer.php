@@ -36,7 +36,7 @@
         <!-- Copyright -->
     </footer>
 
-    <script src="js/bootstrap.bundle.min.js">
+    <script src="assets/js/bootstrap.bundle.min.js">
     </script>
     </body>
 
