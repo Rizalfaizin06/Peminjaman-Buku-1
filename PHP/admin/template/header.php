@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/icon/bootstrap-icons.css">
-    <title>Bootstrap demo</title>
+    <title>Wirapustaka</title>
 </head>
 
 <body>
