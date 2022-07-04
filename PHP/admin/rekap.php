@@ -1,11 +1,5 @@
 <?php include "template/header.php";
-
-$jumlahData = count(query("SELECT * FROM absensi"));
-$jumlahDataPerHalaman = 8;
-$jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
-$halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
-$awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
-
+session_start();
 
 ?>
 
@@ -78,13 +72,21 @@ $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
 <?php
     if (isset($_POST['filter']) && ! empty($_POST['filter'])) {
-        $filter = $_POST['filter'];
+        $_SESSION['filter'] = $_POST['filter'];
+        $filter = $_SESSION['filter'];
+
 
         if ($filter == '1') {
             $tgl = date("Y-m-d", strtotime($_POST['tanggal']));
             
+            $jumlahData = count(query("SELECT * FROM absensi WHERE DATE(tanggal)= '$tgl'"));
+            $jumlahDataPerHalaman = 8;
+            $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+            $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+            $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+
+
             echo '<b>Data Transaksi Tanggal '.$_POST['tanggal'].'</b><br /><br />';
-            echo '<a href="print.php?filter=1&tanggal='.$tgl.'">Cetak PDF</a><br /><br />';
 
             $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tgl' LIMIT $awalData, $jumlahDataPerHalaman");
 
@@ -105,6 +107,10 @@ $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
     //     $query = "SELECT * FROM transaksi ORDER BY tgl"; // Tampilkan semua data transaksi diurutkan berdasarkan tanggal
         }
     }
+
+
+
+
     ?>
 
 

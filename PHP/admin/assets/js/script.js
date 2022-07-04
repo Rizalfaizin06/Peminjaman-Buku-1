@@ -1,13 +1,14 @@
 $(document).ready(function () {
-	$('.tanggalTok, .bulanTok, .tahunTok')
-		.hide();
+	// $('.tanggalTok, .bulanTok, .tahunTok')
+	// 	.hide();
+	// console.log("oke");
 	$('#filter').change(function () {
-
+		// console.log($(this).val());
 		if ($(this).val() == '1') {
+			// console.log($(this).val());
 
 			$('.bulanTok, .tahunTok').hide();
 			$('.tanggalTok').show();
-
 
 		} else if ($(this).val() == '2') {
 
@@ -19,12 +20,12 @@ $(document).ready(function () {
 			$('.tanggalTok, .bulanTok').hide();
 			$('.tahunTok').show();
 
-		} else {
+		} else if ($(this).val() == '0') {
 			$('.tanggalTok, .bulanTok, .tahunTok')
 				.hide();
 		}
-		$('.tanggalTok input, .bulanTok input, .tahunTok select').val(
-			'');
+		// $('.tanggalTok input, .bulanTok input, .tahunTok select').val(
+		// 	'');
 	});
 
 });
