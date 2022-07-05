@@ -1,26 +1,11 @@
 <?php include "template/header.php";
 session_start();
+if (isset($_SESSION['filter'])) {
+    $filter = $_SESSION['filter'];
+    $tgl = $_SESSION['tanggal'];
+}
 
 ?>
-
-
-
-----------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -65,32 +50,36 @@ session_start();
 
 
 
-
-
-
-
-
 <?php
-    if (isset($_POST['filter']) && ! empty($_POST['filter'])) {
-        $_SESSION['filter'] = $_POST['filter'];
-        $filter = $_SESSION['filter'];
+    if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['filter'])) {
+        if (empty($_SESSION['filter'])) {
+            $filter = $_POST['filter'];
+        } else {
+            $filter = $_SESSION['filter'];
+        }
+        
 
 
-        if ($filter == '1') {
-            $tgl = date("Y-m-d", strtotime($_POST['tanggal']));
+        if ($filter == '1' || $_SESSION['filter'] == '1') {
+            if (!isset($_SESSION['tanggal']) || !empty($_POST['tanggal'])) {
+                $_SESSION['filter'] = $filter;
+                $tgl= date("Y-m-d", strtotime($_POST['tanggal']));
+                $_SESSION['tanggal'] = $tgl;
+            }
+            $tgls = $_SESSION['tanggal'];
             
-            $jumlahData = count(query("SELECT * FROM absensi WHERE DATE(tanggal)= '$tgl'"));
+            $jumlahData = count(query("SELECT * FROM absensi WHERE DATE(tanggal)= '$tgls'"));
             $jumlahDataPerHalaman = 8;
             $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
             $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
+            echo $_SESSION['tanggal'];
+            echo '<b>Data Transaksi Tanggal '.$tgls.'</b><br /><br />';
 
-            echo '<b>Data Transaksi Tanggal '.$_POST['tanggal'].'</b><br /><br />';
+            $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tgls' LIMIT $awalData, $jumlahDataPerHalaman");
 
-            $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tgl' LIMIT $awalData, $jumlahDataPerHalaman");
-
-            $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$_POST['tanggal']."'"; //
+            $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$tgls."'"; //
     //     } elseif ($filter == '2') { // Jika filter nya 2 (per bulan)
     //         $nama_bulan = array('', 'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
     //         echo '<b>Data Transaksi Bulan '.$nama_bulan[$_POST['bulan']].' '.$_POST['tahun'].'</b><br /><br />';
@@ -258,7 +247,7 @@ session_start();
     </tr>
 
     <?php
-
+        
             foreach ($absen as $oneView) : ?>
     <tr class="trLower">
         <td><?= $oneView["namaAnggota"]; ?>
@@ -271,11 +260,16 @@ session_start();
         </td>
 
     </tr>
-    <?php endforeach; ?>
+    <?php endforeach; if ($jumlahData == '0') {
+                echo "<tr>
+                <td colspan='4' align='center' style='color: red; font-style: italic; font-size: 20px;'>Data tidak ditemukan</td>
+            </tr>";
+            }?>
+
 </table>
 
 <!-- navigasi -->
-<?php if ($halamanAktif > 1) : ?>
+<?php if ($halamanAktif > 1 && $jumlahData !=0) : ?>
 <a href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
 <?php endif; ?>
 

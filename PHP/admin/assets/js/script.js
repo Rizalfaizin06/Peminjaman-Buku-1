@@ -1,12 +1,11 @@
 $(document).ready(function () {
-	// $('.tanggalTok, .bulanTok, .tahunTok')
-	// 	.hide();
+	$('.tanggalTok, .bulanTok, .tahunTok')
+		.hide();
 	// console.log("oke");
+
 	$('#filter').change(function () {
 		// console.log($(this).val());
 		if ($(this).val() == '1') {
-			// console.log($(this).val());
-
 			$('.bulanTok, .tahunTok').hide();
 			$('.tanggalTok').show();
 
