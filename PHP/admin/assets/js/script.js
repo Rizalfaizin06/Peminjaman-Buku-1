@@ -1,7 +1,6 @@
 $(document).ready(function () {
-	$('.tanggalTok, .bulanTok, .tahunTok')
-		.hide();
-	// console.log("oke");
+	// $('.tanggalTok, .bulanTok, .tahunTok')
+	// 	.hide();
 
 	$('#filter').change(function () {
 		// console.log($(this).val());
