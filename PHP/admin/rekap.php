@@ -4,25 +4,28 @@ session_start();
 //     $filter = $_SESSION['filter'];
 //     $tgl = $_SESSION['tanggal'];
 // }
+echo $_SESSION['filter'];
 ?>
 
 
 
 
-<form action="" method="post" id="tahunTok">
+<form action="" method="post">
     <div class="filter">
         <label>Filter Berdasarkan</label><br>
         <select name="filter" id="filter">
             <option value="4">Semua</option>
-            <option value="1">Per Tanggal</option>
-            <option value="2" <?= ($_SESSION['filter'] == "2") ? "selected" : ""; ?>)>Per
+            <option value="1">Per
+                Tanggal
+            </option>
+            <option value="2">Per
                 Bulan</option>
             <option value="3">Per Tahun</option>
         </select>
     </div>
 
     <div class="tanggalTok">
-        <input style="display: block" class="fTanggal" type="date" name="tanggal" id="tanggal">
+        <input class="fTanggal" type="date" name="tanggal" id="tanggal">
     </div>
 
     <div class="bulanTok">
@@ -44,7 +47,7 @@ session_start();
         </script>
     </div>
 
-    <button type="submit">Submit</button>
+    <button type="submit" s>Submit</button>
 </form>
 
 
@@ -81,15 +84,15 @@ session_start();
             $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$tgls."'";
         } elseif ($filter == '2') {
             echo "masuk";
-            if (!isset($_SESSION['bulan']) || !empty($_POST['bulan'])) {
+            if (!isset($_SESSION['bulanTahun']) || !empty($_POST['bulan'])) {
                 $_SESSION['filter'] = $filter;
                 $bln= $_POST['bulan'];
-                $_SESSION['bulan'] = $bln;
+                $_SESSION['bulanTahun'] = $bln;
             }
-            
-            $bln = date("m", strtotime($_SESSION['bulan']));
 
-            $thn = date("Y", strtotime($_SESSION['bulan']));
+            $bln = date("m", strtotime($_SESSION['bulanTahun']));
+
+            $thn = date("Y", strtotime($_SESSION['bulanTahun']));
 
             
             $jumlahData = count(query("SELECT * FROM absensi WHERE MONTH(tanggal)= '$bln' AND YEAR(tanggal)='$thn'"));
@@ -98,7 +101,7 @@ session_start();
             $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
-            echo '<b>Data Transaksi Bulan '.date("F", strtotime($_SESSION['bulan'])).', Tahun '.$thn.'</b><br /><br />';
+            echo '<b>Data Transaksi Bulan '.date("F", strtotime($_SESSION['bulanTahun'])).', Tahun '.$thn.'</b><br /><br />';
 
             $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND MONTH(tanggal)= '$bln' AND YEAR(tanggal)='$thn' LIMIT $awalData, $jumlahDataPerHalaman");
 
@@ -143,125 +146,10 @@ session_start();
             $query = "SELECT * FROM absensi";
         }
     }
-
-
-
-
+    
     ?>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-
-
-
-
-
-
-
-
-<form method="get" action="">
-    <label>Filter Berdasarkan</label><br>
-    <select name="filter" id="filter">
-        <option value="">Pilih</option>
-        <option value="1">Per Tanggal</option>
-        <option value="2">Per Bulan</option>
-        <option value="3">Per Tahun</option>
-    </select>
-    <br /><br />
-    <div id="form-tanggal">
-        <label>Tanggal</label><br>
-        <input type="text" name="tanggal" class="input-tanggal" />
-        <br /><br />
-    </div>
-    <div id="form-bulan">
-        <label>Bulan</label><br>
-        <select name="bulan">
-            <option value="">Pilih</option>
-            <option value="1">Januari</option>
-            <option value="2">Februari</option>
-            <option value="3">Maret</option>
-            <option value="4">April</option>
-            <option value="5">Mei</option>
-            <option value="6">Juni</option>
-            <option value="7">Juli</option>
-            <option value="8">Agustus</option>
-            <option value="9">September</option>
-            <option value="10">Oktober</option>
-            <option value="11">November</option>
-            <option value="12">Desember</option>
-        </select>
-        <br /><br />
-    </div>
-    <div id="form-tahun">
-        <label>Tahun</label><br>
-        <select name="tahun">
-            <option value="">Pilih</option>
-            <?php
-                $query = "SELECT YEAR(tgl) AS tahun FROM transaksi GROUP BY YEAR(tgl)"; // Tampilkan tahun sesuai di tabel transaksi
-                $sql = mysqli_query($connect, $query); // Eksekusi/Jalankan query dari variabel $query
-                while ($data = mysqli_fetch_array($sql)) { // Ambil semua data dari hasil eksekusi $sql
-                    echo '<option value="'.$data['tahun'].'">'.$data['tahun'].'</option>';
-                }
-                ?>
-</select>
-<br /><br />
-</div>
-<button type="submit">Tampilkan</button>
-</form>
-<hr />
-<?php
-    if (isset($_GET['filter']) && ! empty($_GET['filter'])) { // Cek apakah user telah memilih filter dan klik tombol tampilkan
-        $filter = $_GET['filter']; // Ambil data filder yang dipilih user
-        if ($filter == '1') { // Jika filter nya 1 (per tanggal)
-            echo "satu masuk";
-            $tgl = date('d-m-y', strtotime($_GET['tanggal']));
-            echo '<b>Data Transaksi Tanggal '.$tgl.'</b><br /><br />';
-            echo '<a href="print.php?filter=1&tanggal='.$_GET['tanggal'].'">Cetak PDF</a><br /><br />';
-            $query = "SELECT * FROM transaksi WHERE DATE(tgl)='".$_GET['tanggal']."'"; // Tampilkan data transaksi sesuai tanggal yang diinput oleh user pada filter
-        } elseif ($filter == '2') { // Jika filter nya 2 (per bulan)
-            $nama_bulan = array('', 'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
-            echo '<b>Data Transaksi Bulan '.$nama_bulan[$_GET['bulan']].' '.$_GET['tahun'].'</b><br /><br />';
-            echo '<a href="print.php?filter=2&bulan='.$_GET['bulan'].'&tahun='.$_GET['tahun'].'">Cetak PDF</a><br /><br />';
-            $query = "SELECT * FROM transaksi WHERE MONTH(tgl)='".$_GET['bulan']."' AND YEAR(tgl)='".$_GET['tahun']."'"; // Tampilkan data transaksi sesuai bulan dan tahun yang diinput oleh user pada filter
-        } else { // Jika filter nya 3 (per tahun)
-            echo '<b>Data Transaksi Tahun '.$_GET['tahun'].'</b><br /><br />';
-            echo '<a href="print.php?filter=3&tahun='.$_GET['tahun'].'">Cetak PDF</a><br /><br />';
-            $query = "SELECT * FROM transaksi WHERE YEAR(tgl)='".$_GET['tahun']."'"; // Tampilkan data transaksi sesuai tahun yang diinput oleh user pada filter
-        }
-    } else { // Jika user tidak mengklik tombol tampilkan
-        echo '<b>Semua Data Transaksi</b><br /><br />';
-        echo '<a href="print.php">Cetak PDF</a><br /><br />';
-        $query = "SELECT * FROM transaksi ORDER BY tgl"; // Tampilkan semua data transaksi diurutkan berdasarkan tanggal
-    }
-    ?>
-
-
-
-
-
-
--->
 
 
 
@@ -331,59 +219,15 @@ session_start();
 
 <?php if ($halamanAktif < $jumlahHalaman) : ?>
 <a href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
-<?php endif; echo "Total Data : ". $jumlahData?>
+
+<?php endif; ?>
+
+<?php if ($jumlahData != 0) :
+    echo "Total Data : ". $jumlahData;
+endif; ?>
 
 
 
-<!-- <script>
-    $(document).ready(function() { // Ketika halaman selesai di load
-        $('.fTanggal').datepicker({
-            dateFormat: 'yy-mm-dd' // Set format tanggalnya jadi yyyy-mm-dd
-        });
-        $('.tanggalTok, .bulanTok, .tahunTok')
-            .hide(); // Sebagai default kita sembunyikan form filter tanggal, bulan & tahunnya
-        $('.filter').change(function() { // Ketika user memilih filter
-            if ($(this).val() == '1') { // Jika filter nya 1 (per tanggal)
-                $('.bulanTok, .tahunTok').hide(); // Sembunyikan form bulan dan tahun
-                $('f.tanggalTok').show(); // Tampilkan form tanggal
-            } else if ($(this).val() == '2') { // Jika filter nya 2 (per bulan)
-                $('.tanggalTok, .tahunTok').hide(); // Sembunyikan form tanggal
-                $('.bulanTok').show(); // Tampilkan form bulan dan tahun
-            } else if ($(this).val() == '3') { // Jika filter nya 2 (per bulan)
-                $('.tanggalTok, .bulanTok').hide(); // Sembunyikan form tanggal dan bulan
-                $('.tahunTok').show(); // Tampilkan form tahun
-            } else { // Jika filternya 3 (per tahun)
-                $('.tanggalTok, .bulanTok, .tahunTok')
-                    .hide(); // Sembunyikan form tanggal dan bula// Tampilkan form tahun
-            }
-            $('.tanggalTok input, .bulanTok select, .tahunTok select').val(
-                ''); // Clear data pada textbox tanggal, combobox bulan & tahun
-        })
-    })
-</script> -->
-<!-- <script>
-    $(document).ready(function() { // Ketika halaman selesai di load
-        $('.fTanggal').datepicker({
-            dateFormat: 'yy-mm-dd' // Set format tanggalnya jadi yyyy-mm-dd
-        });
-        $('#form-tanggal, #form-bulan, #form-tahun')
-            .hide(); // Sebagai default kita sembunyikan form filter tanggal, bulan & tahunnya
-        $('#filter').change(function() { // Ketika user memilih filter
-            if ($(this).val() == '1') { // Jika filter nya 1 (per tanggal)
-                $('#form-bulan, #form-tahun').hide(); // Sembunyikan form bulan dan tahun
-                $('#form-tanggal').show(); // Tampilkan form tanggal
-            } else if ($(this).val() == '2') { // Jika filter nya 2 (per bulan)
-                $('#form-tanggal').hide(); // Sembunyikan form tanggal
-                $('#form-bulan, #form-tahun').show(); // Tampilkan form bulan dan tahun
-            } else { // Jika filternya 3 (per tahun)
-                $('#form-tanggal, #form-bulan').hide(); // Sembunyikan form tanggal dan bulan
-                $('#form-tahun').show(); // Tampilkan form tahun
-            }
-            $('#form-tanggal input, #form-bulan select, #form-tahun select').val(
-                ''); // Clear data pada textbox tanggal, combobox bulan & tahun
-        })
-    })
-</script> -->
 <script src="assets/js/jquery-3.6.0.min.js"></script>
 <script src="assets/js/script.js">
 </script>
@@ -391,16 +235,40 @@ session_start();
     $('.tanggalTok, .bulanTok, .tahunTok')
         .hide();
 </script>
+<!-- <script>
+    $('#tanggal').attr('value', $('#tanggal').val());
+    console.log($('#tanggal').val());
+    $('.tanggalTok').show();
+</script> -->
+<!-- <script>
+    $('#filter option[value="1"]').prop('selected', true);
+    $('.tanggalTok').show();
+</script>" -->
+<?php
+if ($filter == '1') {
+    $bT = 'option[value="1"]';
+    echo "<script>
+    $('#filter ".$bT."').prop('selected', true);
+    $('#tanggal').attr('value', '".$_SESSION['tanggal']."');
+    $('.tanggalTok').show();
+   </script>";
+} elseif ($filter == '2') {
+    $bB = 'option[value="2"]';
+    echo "<script>
+    $('#filter ".$bB."').prop('selected', true);
+    $('#bulan').attr('value', '".$_SESSION['bulanTahun']."');
+    $('.bulanTok').show();
+   </script>";
+} elseif ($filter == '3') {
+    $thn = $_SESSION['tahun'];
+    $bT = 'option[value="3"]';
+    $a = 'option[value="'.$thn.'"]';
+    echo "<script>
+    $('#filter ".$bT."').prop('selected', true);
+    $('#tahun').find('".$a."').prop('selected', true);
+    $('.tahunTok').show();
+   </script>";
+}
 
-<?php include "template/footer.php";
-// if ($filter == '1') {
-//                 echo "<script>			$('.tanggalTok').show();
-//    </script>";
-//             } elseif ($filter == '2') {
-//                 echo "<script>						$('.bulanTok').show();
 
-//    </script>";
-//             } elseif ($filter == '3') {
-//                 echo "<script>			$('.tahunTok').show();
-//    </script>";
-//             }
+include "template/footer.php";

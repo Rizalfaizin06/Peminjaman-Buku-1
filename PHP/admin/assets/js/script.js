@@ -1,12 +1,30 @@
 $(document).ready(function () {
 	// $('.tanggalTok, .bulanTok, .tahunTok')
 	// 	.hide();
+	// var select = document.getElementById('filter');
+	// var option;
+	// console.log(select);
+	// for (var i = 0; i < select.options.length; i++) {
+	// 	option = select.options[i];
+
+	// 	if (option.value == '2') {
+	// 		// or
+	// 		// if (option.text == 'Malaysia') {
+	// 		option.selected = true;
+
+	// 		// For a single select, the job's done
+	// 		return;
+	// 	}
+	// }
 
 	$('#filter').change(function () {
 		// console.log($(this).val());
 		if ($(this).val() == '1') {
+
+
 			$('.bulanTok, .tahunTok').hide();
 			$('.tanggalTok').show();
+
 
 		} else if ($(this).val() == '2') {
 
@@ -18,10 +36,11 @@ $(document).ready(function () {
 			$('.tanggalTok, .bulanTok').hide();
 			$('.tahunTok').show();
 
-		} else if ($(this).val() == '0') {
+		} else if ($(this).val() == '4') {
 			$('.tanggalTok, .bulanTok, .tahunTok')
 				.hide();
 		}
+
 		// $('.tanggalTok input, .bulanTok input, .tahunTok select').val(
 		// 	'');
 	});
