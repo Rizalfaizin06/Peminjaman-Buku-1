@@ -55,12 +55,12 @@ String Data1;
 String Data2;
 String Data3;
 String Data4;
-String host = "192.168.100.222";
+String host = "192.168.123.105";
 //String host = "testingstarproject.000webhostapp.com";
 const char* ssid = "LIMITED";
 const char* password = "12344321";
 
-String url = "http://" + host + "/krenova/GitFolder/Peminjaman-Buku-1/PHP/index.php";
+String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
 String dataUpload[10];
 

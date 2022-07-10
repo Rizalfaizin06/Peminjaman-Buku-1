@@ -1,13 +1,6 @@
 <?php
-if (!empty($_POST['Data1'])) {
-    if ($_POST['sendMode'] == 'tambahBuku') {
-        tambahBukuArduino($_POST);
-    } elseif ($_POST['sendMode'] == 'tambahAnggota') {
-        tambahAnggotaArduino($_POST);
-    } else {
-        echo "Gagal";
-    }
-}
+
+
 //koneksi kedatabase
 // $koneksi = mysqli_connect("localhost", "id18952921_rizal", ">R(xFzvAW#ln~1YB", "id18952921_krenova");
 // $koneksi = mysqli_connect("localhost", "ninb9915_rizal", ">R(xFzvAW#ln~1YB", "ninb9915_Krenova");
@@ -19,6 +12,24 @@ date_default_timezone_set('Asia/Jakarta');
     $jam = date("H:i:s");
 
 
+
+    if (!empty($_POST['Data1'])) {
+        // absen($_POST);
+        if ($_POST['sendMode'] == 'tambahBuku') {
+            tambahBukuArduino($_POST);
+        } elseif ($_POST['sendMode'] == 'tambahAnggota') {
+            tambahAnggotaArduino($_POST);
+        } elseif ($_POST['sendMode'] == 'pinjam') {
+            pinjam($_POST);
+        } elseif ($_POST['sendMode'] == 'kembali') {
+            kembali($_POST);
+        } elseif ($_POST['sendMode'] == 'absen') {
+            absen($_POST);
+        } else {
+            echo "Gagal";
+        }
+    }
+    
 //query
 function query($query)
 {
@@ -229,8 +240,8 @@ function pinjam($data)
     global $jam;
     $rfidP = $data['Data1'];
     $rfidB = $data['Data2'];
-    $mode = $data['Data3'];
-    $Da4 = $data['Data4'];
+    $Da4 = $data['Data3'];
+    $mode = $data['sendMode'];
 
     
     mysqli_query($koneksi, "INSERT INTO peminjaman VALUES (NULL, '$rfidP', '$rfidB', '2022-05-02','0000-00-00', 0)");
@@ -245,8 +256,8 @@ function kembali($data)
     global $jam;
     $rfidP = $data['Data1'];
     $rfidB = $data['Data2'];
-    $mode = $data['Data3'];
-    $Da4 = $data['Data4'];
+    $Da4 = $data['Data3'];
+    $mode = $data['sendMode'];
 
     mysqli_query($koneksi, "UPDATE peminjaman, buku SET tanggalKembali='$tanggal', status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='$rfidP' AND buku.RFIDB='$rfidB' AND tanggalKembali='0000-00-00'");
 }
@@ -257,12 +268,12 @@ function absen($data)
     global $tanggal;
     global $jam;
     $rfidP = $data['Data1'];
-    $rfidB = $data['Data2'];
+    $temp = $data['Data2'];
     $Da4 = $data['Data3'];
-    $mode = $data['Data4'];
+    $mode = $data['sendMode'];
 
     
-    mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', '$tanggal', '$jam','$Da4')");
+    mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', '$tanggal', '$jam','$temp')");
 }
 // function pinjam($data){
 // 	global $koneksi;
