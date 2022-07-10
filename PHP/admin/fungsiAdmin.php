@@ -1,7 +1,16 @@
 <?php
-
+if (!empty($_POST['Data1'])) {
+    if ($_POST['sendMode'] == 'tambahBuku') {
+        tambahBukuArduino($_POST);
+    } elseif ($_POST['sendMode'] == 'tambahAnggota') {
+        tambahAnggotaArduino($_POST);
+    } else {
+        echo "Gagal";
+    }
+}
 //koneksi kedatabase
 // $koneksi = mysqli_connect("localhost", "id18952921_rizal", ">R(xFzvAW#ln~1YB", "id18952921_krenova");
+// $koneksi = mysqli_connect("localhost", "ninb9915_rizal", ">R(xFzvAW#ln~1YB", "ninb9915_Krenova");
 
 $koneksi = mysqli_connect("127.0.0.1", "rizal", "rizal", "test4");
 
@@ -64,6 +73,18 @@ function query($query)
 //     return mysqli_affected_rows($koneksi);
 // }
 
+
+function tambahAnggotaArduino($data)
+{
+    global $koneksi;
+    $RFIDP = $data["Data1"];
+    
+    $query = "INSERT INTO anggota VALUES ('$RFIDP', '', '', '')";
+    
+    mysqli_query($koneksi, $query);
+
+    return mysqli_affected_rows($koneksi);
+}
 
 function tambahAnggota($data)
 {
@@ -163,6 +184,18 @@ function tambahBuku($data)
     return mysqli_affected_rows($koneksi);
 }
 
+function tambahBukuArduino($data)
+{
+    global $koneksi;
+    $RFIDB = $data["Data1"];
+
+    $query = "INSERT INTO buku VALUES ('$RFIDB', NULL, 1)";
+    
+    mysqli_query($koneksi, $query);
+
+    return mysqli_affected_rows($koneksi);
+}
+
 function ubahBuku($data)
 {
     global $koneksi;
@@ -189,6 +222,48 @@ function hapusBuku($data)
     return mysqli_affected_rows($koneksi);
 }
 
+function pinjam($data)
+{
+    global $koneksi;
+    global $tanggal;
+    global $jam;
+    $rfidP = $data['Data1'];
+    $rfidB = $data['Data2'];
+    $mode = $data['Data3'];
+    $Da4 = $data['Data4'];
+
+    
+    mysqli_query($koneksi, "INSERT INTO peminjaman VALUES (NULL, '$rfidP', '$rfidB', '2022-05-02','0000-00-00', 0)");
+
+    mysqli_query($koneksi, "UPDATE buku SET status = 0 WHERE RFIDB = '$rfidB'");
+}
+
+function kembali($data)
+{
+    global $koneksi;
+    global $tanggal;
+    global $jam;
+    $rfidP = $data['Data1'];
+    $rfidB = $data['Data2'];
+    $mode = $data['Data3'];
+    $Da4 = $data['Data4'];
+
+    mysqli_query($koneksi, "UPDATE peminjaman, buku SET tanggalKembali='$tanggal', status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='$rfidP' AND buku.RFIDB='$rfidB' AND tanggalKembali='0000-00-00'");
+}
+
+function absen($data)
+{
+    global $koneksi;
+    global $tanggal;
+    global $jam;
+    $rfidP = $data['Data1'];
+    $rfidB = $data['Data2'];
+    $Da4 = $data['Data3'];
+    $mode = $data['Data4'];
+
+    
+    mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', '$tanggal', '$jam','$Da4')");
+}
 // function pinjam($data){
 // 	global $koneksi;
 // 	global $tanggal;
@@ -281,6 +356,3 @@ function hapusBuku($data)
 // 	mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', '$tanggal', '$jam','$Da4')");
 
 // }
-
-?>
-

@@ -9,6 +9,27 @@
 #define RST_PIN 4
 #define SS_PIN  5
 
+//SUHU && LCD
+//SDA - G21
+//SCL - G22
+//
+//RFID
+//RST - G4
+//MISO - G19
+//MOSI - G23
+//SDA - G5
+//SCK - G18
+//
+//IR
+//OUT - G25
+//
+//BUTTON
+//1 - G26
+//2 - G27
+//
+//BUZZ
+//+ - G0
+
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 LiquidCrystal_I2C lcd (0x27, 16, 2);
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
@@ -55,6 +76,7 @@ void setup() {
     delay(250);
     Serial.print(".");
   }
+  
   Serial.println("OK.");
   digitalWrite(Led_OnBoard, HIGH);
   Serial.println("Connected to Network/SSID");
@@ -72,8 +94,6 @@ void setup() {
   lcd.backlight();
 }
 
-
-
 void loop() {
   int hb1 = digitalRead(b1);
   int hb2 = digitalRead(b2);
@@ -84,15 +104,12 @@ void loop() {
   delay(50);
   if ( hb1 == 0 ) {
     Serial.println("Pinjam");
-    sendMode = "pinjam";
-    perpus();
-    sendMode = "absen";
+    
+    perpus("pinjam");
   }
   else if ( hb2 == 0 ) {
     Serial.println("Kembali");
-    sendMode = "kembali";
-    perpus();
-    sendMode = "absen";
+    perpus("kembali");
   }
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
@@ -156,7 +173,7 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   Data3 = String(tiga);
   Data4 = String(empat);
  
-  postData = "Data1=" + Data1 + "&Data2=" + Data2 + "&Data3=" + Data3 + "&Data4=" + Data4 ;
+  postData = "Data1=" + Data1 + "&Data2=" + Data2 + "&Data3=" + Data3 + "&sendMode=" + Data4 ;
   Serial.println(postData);
  
   http.begin(url);
@@ -196,7 +213,8 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
 }
 
 
-void perpus() {
+void perpus(String SM) {
+  sendMode = SM;
   buzer1();
   dataUpload[0] = scann();
   Serial.print(dataUpload[0]);
@@ -224,17 +242,18 @@ void perpus() {
   switch (i) {
     case 1:
       Serial.print("satuuuuuu");
-      uploadDB(dataUpload[0], dataUpload[1], sendMode, iData4);
+      uploadDB(dataUpload[0], dataUpload[1], iData4, sendMode);
       break;
       
     default:
       Serial.print("duaaaaaaaaaa");
       for(int a=1;a<u;a++){
-        uploadDB(dataUpload[0], dataUpload[a], sendMode, iData4);
+        uploadDB(dataUpload[0], dataUpload[a], iData4, sendMode);
        }
       break;
   }
  
+    sendMode = "absen";
 }
 
 void absen() {
@@ -286,7 +305,7 @@ void absen() {
   lcd.print("C");
   Serial.println("uploading..");
   String te = String(temp);
-  uploadDB(guid, iData2, sendMode, te);
+  uploadDB(guid, te, iData2, sendMode);
   lcd.clear();
 }
 

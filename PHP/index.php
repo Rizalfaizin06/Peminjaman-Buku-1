@@ -1,13 +1,13 @@
 <?php
-require 'fungsi.php';
+require 'admin/fungsiAdmin.php';
 
 
 if (!empty($_POST['Data1'])) {
-    if ($_POST['Data3'] == 'pinjam') {
+    if ($_POST['sendMode'] == 'pinjam') {
         pinjam($_POST);
-    } elseif ($_POST['Data3'] == 'kembali') {
+    } elseif ($_POST['sendMode'] == 'kembali') {
         kembali($_POST);
-    } elseif ($_POST['Data3'] == 'absen') {
+    } elseif ($_POST['sendMode'] == 'absen') {
         absen($_POST);
     } else {
         echo "Gagal";
