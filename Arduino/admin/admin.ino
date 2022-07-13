@@ -206,7 +206,8 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
     lcd.print(payload);
   } else {
     lcd.setCursor (5,1);
-    lcd.print(payload);
+    lcd.print("GAGAL");
+    Serial.println(payload);
   }
   
   delay(1000);
