@@ -169,21 +169,50 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
   Serial.print("uploading");
   int c = 0;
   while (httpCode != 200){
-            Serial.print(".");
-            Serial.println(httpCode);
-            httpCode = http.POST(postData);
-            delay(500);
             c++;
+            if (c == 3 ) {
+              WiFi.disconnect();
+              WiFi.begin(ssid, password);
+              Serial.print("Connecting to Wi-Fi");
+              
+              while (WiFi.status() != WL_CONNECTED) {
+                lcd.clear();
+                lcd.setCursor (1,0);
+                lcd.print("TUNGGU SESAAT");
+                lcd.setCursor (5,1);
+                lcd.print(".     ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print(" .    ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("  .   ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("   . ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("    . ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("     .");
+                delay(100);
+              }
+            }
             if (c == 10 ) {
               http.begin(url);
               Serial.println(url);
               http.addHeader("Content-Type", "application/x-www-form-urlencoded");
               httpCode = http.POST(postData);
             }
-            if (c == 35 ) {
+            if (c == 25 ) {
               Serial.println("Reset..");
               ESP.restart();
             }
+            
+            Serial.print(".");
+            Serial.println(httpCode);
+            httpCode = http.POST(postData);
           }
   String payload = http.getString();
 
