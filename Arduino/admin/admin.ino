@@ -36,12 +36,12 @@ String Data1;
 String Data2;
 String Data3;
 String Data4;
-String host = "192.168.100.101";
+String host = "192.168.43.160";
 //String host = "testingstarproject.000webhostapp.com";
-const char* ssid = "LIMITED";
-const char* password = "12344321";
+const char* ssid = "Redmi Note 10S";
+const char* password = "11111111";
 
-String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/index.php";
+String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
 String dataUpload[10];
 
@@ -49,42 +49,56 @@ String dataUpload[10];
 void setup() {
   Serial.begin(115200);
   pinMode(btn, INPUT);
+  lcd.init();
+  lcd.backlight();
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.print("Connecting to Wi-Fi");
-  
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    lcd.setCursor (2,0);
+    lcd.print("Connecting  ");
+    delay(250);
+    lcd.setCursor (2,0);
+    lcd.print("Connecting. ");
+    delay(250);
+    lcd.setCursor (2,0);
+    lcd.print("Connecting..");
     Serial.print(".");
+    delay(250);
   }
   
-  Serial.println("OK.");
   Serial.println("Connected to Network/SSID");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
   SPI.begin(); // Init SPI bus
   mfrc522.PCD_Init(); // Init MFRC522
-  
-  lcd.init();
-  lcd.backlight();
   lcd.clear();
+  lcd.setCursor (3,0);
+    lcd.print("Connected");
+    delay(500);
+    lcd.clear();
+  
+  
 }
 
 void loop() {
-  lcd.setCursor (0,0);
-  lcd.print("staty..");
+  lcd.setCursor (1,0);
+  lcd.print("DEKATKAN BUKU");
   lcd.setCursor (0,1);
-  lcd.print("Suhu : ");
-  lcd.print((char)223);
-  lcd.print("C");
+  lcd.print("UNTUK  MENAMBAH");
+  
   button = digitalRead(btn);
   Serial.println(button);
   delay(50);
   if ( button == 1 ) {
+    lcd.clear();
     lcd.setCursor (0,0);
-  lcd.print("tambahAnggota..");
+    lcd.print("DEKATKAN  KARTU");
+    lcd.setCursor (0,1);
+    lcd.print("UNTUK  MENAMBAH");
     sendMode = "tambahAnggota";
     tambahAnggota();
+    sendMode = "tambahBuku";
   }
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
@@ -97,21 +111,11 @@ void loop() {
   }
   if (quit == 1 ) {
     quit = 0;
-    
     return;
   }
   buzer1();
-  lcd.setCursor (0,0);
-  lcd.print("TambajBUku..");
-  sendMode = "tambahBuku";
   tambahBuku();
   
-  Serial.print("suadah enddd");
-//  iData1 = scann();
-//  delay(1000);
-//  iData2 = scann();
-//  uploadDB(iData1, iData2, sendMode, iData4);
-//  delay(2000);
 }
 
 String scann() {
@@ -158,13 +162,15 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
   Serial.println(url);
   
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-
+  lcd.clear();
+  lcd.setCursor (1,0);
+  lcd.print("MENGIRIM DATA");
   int httpCode = http.POST(postData);
   Serial.print("uploading");
   int c = 0;
   while (httpCode != 200){
             Serial.print(".");
-            Serial.print(httpCode);
+            Serial.println(httpCode);
             httpCode = http.POST(postData);
             delay(500);
             c++;
@@ -182,7 +188,30 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
   String payload = http.getString();
 
   Serial.println(httpCode);
+  Serial.println(payload);
+  if (Data4 == "tambahBuku") {
+    lcd.clear();
+    lcd.setCursor (2,0);
+    lcd.print("TAMBAH BUKU");
+
+  }
+  else if (Data4 == "tambahAnggota") {
+    lcd.clear();
+    lcd.setCursor (0,0);
+    lcd.print("TAMBAH ANGGOTA");
+
+  }
+  if (payload == "BERHASIL") {
+    lcd.setCursor (4,1);
+    lcd.print(payload);
+  } else {
+    lcd.setCursor (5,1);
+    lcd.print(payload);
+  }
   
+  delay(1000);
+  
+  lcd.clear();
   http.end();
 }
 

@@ -13,20 +13,40 @@ date_default_timezone_set('Asia/Jakarta');
 
 
 
-    if (!empty($_POST['Data1'])) {
+    if (isset($_POST['Data1']) && !empty($_POST['Data1'])) {
         // absen($_POST);
         if ($_POST['sendMode'] == 'tambahBuku') {
-            tambahBukuArduino($_POST);
+            if (tambahBukuArduino($_POST) > 0) {
+                echo "BERHASIL";
+            } else {
+                echo "GAGAL";
+            }
         } elseif ($_POST['sendMode'] == 'tambahAnggota') {
-            tambahAnggotaArduino($_POST);
+            if (tambahAnggotaArduino($_POST) > 0) {
+                echo "BERHASIL";
+            } else {
+                echo "GAGAL";
+            }
         } elseif ($_POST['sendMode'] == 'pinjam') {
-            pinjam($_POST);
+            if (pinjam($_POST) > 0) {
+                echo "BERHASIL";
+            } else {
+                echo "GAGAL";
+            }
         } elseif ($_POST['sendMode'] == 'kembali') {
-            kembali($_POST);
+            if (kembali($_POST) > 0) {
+                echo "BERHASIL";
+            } else {
+                echo "GAGAL";
+            }
         } elseif ($_POST['sendMode'] == 'absen') {
-            absen($_POST);
+            if (absen($_POST) > 0) {
+                echo "BERHASIL";
+            } else {
+                echo "GAGAL";
+            }
         } else {
-            echo "Gagal";
+            echo "GAGAL";
         }
     }
     
@@ -199,7 +219,9 @@ function tambahBukuArduino($data)
 {
     global $koneksi;
     $RFIDB = $data["Data1"];
-
+    if (empty($RFIDB)) {
+        return 0;
+    }
     $query = "INSERT INTO buku VALUES ('$RFIDB', NULL, 1)";
     
     mysqli_query($koneksi, $query);
@@ -247,6 +269,7 @@ function pinjam($data)
     mysqli_query($koneksi, "INSERT INTO peminjaman VALUES (NULL, '$rfidP', '$rfidB', '2022-05-02','0000-00-00', 0)");
 
     mysqli_query($koneksi, "UPDATE buku SET status = 0 WHERE RFIDB = '$rfidB'");
+    return "Pinjam Berhasil";
 }
 
 function kembali($data)
