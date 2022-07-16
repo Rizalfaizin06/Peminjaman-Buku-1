@@ -1,6 +1,5 @@
 <?php
 
-
 //koneksi kedatabase
 // $koneksi = mysqli_connect("localhost", "id18952921_rizal", ">R(xFzvAW#ln~1YB", "id18952921_krenova");
 // $koneksi = mysqli_connect("localhost", "ninb9915_rizal", ">R(xFzvAW#ln~1YB", "ninb9915_Krenova");
@@ -17,36 +16,36 @@ date_default_timezone_set('Asia/Jakarta');
         // absen($_POST);
         if ($_POST['sendMode'] == 'tambahBuku') {
             if (tambahBukuArduino($_POST) > 0) {
-                echo "BERHASIL";
+                echo "status:BERHASIL|";
             } else {
-                echo "GAGAL";
+                echo "status:GAGAL|";
             }
         } elseif ($_POST['sendMode'] == 'tambahAnggota') {
             if (tambahAnggotaArduino($_POST) > 0) {
-                echo "BERHASIL";
+                echo "status:BERHASIL|";
             } else {
-                echo "GAGAL";
+                echo "status:GAGAL|";
             }
         } elseif ($_POST['sendMode'] == 'pinjam') {
             if (pinjam($_POST) > 0) {
-                echo "BERHASIL";
+                echo "Status :BERHASIL";
             } else {
-                echo "GAGAL";
+                echo "status:GAGAL|";
             }
         } elseif ($_POST['sendMode'] == 'kembali') {
             if (kembali($_POST) > 0) {
-                echo "BERHASIL";
+                echo "status:BERHASIL|";
             } else {
-                echo "GAGAL";
+                echo "status:GAGAL|";
             }
         } elseif ($_POST['sendMode'] == 'absen') {
             if (absen($_POST) > 0) {
-                echo "BERHASIL";
+                echo "status:BERHASIL|";
             } else {
-                echo "GAGAL";
+                echo "status:GAGAL|";
             }
         } else {
-            echo "GAGAL";
+            echo "status:GAGAL|";
         }
     }
     
@@ -169,7 +168,6 @@ function tambahMapel($data)
     $query = "INSERT INTO mapel VALUES ('$idBuku', '$namaBuku')";
     
     mysqli_query($koneksi, $query);
-
     return mysqli_affected_rows($koneksi);
 }
 
@@ -269,7 +267,7 @@ function pinjam($data)
     mysqli_query($koneksi, "INSERT INTO peminjaman VALUES (NULL, '$rfidP', '$rfidB', '2022-05-02','0000-00-00', 0)");
 
     mysqli_query($koneksi, "UPDATE buku SET status = 0 WHERE RFIDB = '$rfidB'");
-    return "Pinjam Berhasil";
+    return mysqli_affected_rows($koneksi);
 }
 
 function kembali($data)
@@ -294,9 +292,13 @@ function absen($data)
     $temp = $data['Data2'];
     $Da4 = $data['Data3'];
     $mode = $data['sendMode'];
-
     
     mysqli_query($koneksi, "INSERT INTO absensi VALUES (NULL, '$rfidP', '$tanggal', '$jam','$temp')");
+    
+    $nama = query("SELECT namaAnggota FROM anggota WHERE RFIDP = '$rfidP'")[0];
+    echo "nama:". $nama['namaAnggota']."|";
+
+    return mysqli_affected_rows($koneksi);
 }
 // function pinjam($data){
 // 	global $koneksi;

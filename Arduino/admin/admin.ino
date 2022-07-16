@@ -36,13 +36,15 @@ String Data1;
 String Data2;
 String Data3;
 String Data4;
-String host = "192.168.43.160";
+//String host = "192.168.43.160";
 //String host = "testingstarproject.000webhostapp.com";
-const char* ssid = "Redmi Note 10S";
-const char* password = "11111111";
+String host = "wirapustaka.ninapst.com";
+const char* ssid = "LIMITEeD";
+const char* password = "12344321";
 
-String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
+//String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
+String url = "http://" + host + "/admin/fungsiAdmin.php";
 String dataUpload[10];
 
 
@@ -74,9 +76,9 @@ void setup() {
   mfrc522.PCD_Init(); // Init MFRC522
   lcd.clear();
   lcd.setCursor (3,0);
-    lcd.print("Connected");
-    delay(500);
-    lcd.clear();
+  lcd.print("Connected");
+  delay(500);
+  lcd.clear();
   
   
 }
@@ -174,30 +176,38 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
               WiFi.disconnect();
               WiFi.begin(ssid, password);
               Serial.print("Connecting to Wi-Fi");
-              
+              int d = 0;
+              lcd.clear();
               while (WiFi.status() != WL_CONNECTED) {
-                lcd.clear();
-                lcd.setCursor (1,0);
-                lcd.print("TUNGGU SESAAT");
-                lcd.setCursor (5,1);
-                lcd.print(".     ");
-                delay(100);
-                lcd.setCursor (5,1);
-                lcd.print(" .    ");
-                delay(100);
-                lcd.setCursor (5,1);
-                lcd.print("  .   ");
-                delay(100);
-                lcd.setCursor (5,1);
-                lcd.print("   . ");
-                delay(100);
-                lcd.setCursor (5,1);
-                lcd.print("    . ");
-                delay(100);
-                lcd.setCursor (5,1);
-                lcd.print("     .");
-                delay(100);
+              d++;
+              lcd.setCursor (1,0);
+              lcd.print("TUNGGU SESAAT");
+              lcd.setCursor (5,1);
+              lcd.print("      ");
+              delay(100);
+              lcd.setCursor (5,1);
+              lcd.print(".     ");
+              delay(100);
+              lcd.setCursor (5,1);
+              lcd.print("..    ");
+              delay(100);
+              lcd.setCursor (5,1);
+              lcd.print("...   ");
+              delay(100);
+              lcd.setCursor (5,1);
+              lcd.print(".... ");
+              delay(100);
+              lcd.setCursor (5,1);
+              lcd.print("..... ");
+              delay(100);
+              lcd.setCursor (5,1);
+              lcd.print("......");
+              delay(250);
+              if (d == 18) {
+                Serial.println("Reset..");
+                ESP.restart();
               }
+            }
             }
             if (c == 10 ) {
               http.begin(url);
@@ -216,8 +226,29 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
           }
   String payload = http.getString();
 
+
+//  String namaAnggota = payload;
+//  int namaAnggotaStart = namaAnggota.indexOf("nama:")+5;
+//  Serial.println(namaAnggotaStart);
+//  int namaAnggotaEnd = namaAnggotaStart + namaAnggota.substring(namaAnggotaStart).indexOf("|");
+//  Serial.println(namaAnggotaEnd);
+//  namaAnggota = namaAnggota.substring(namaAnggotaStart,namaAnggotaEnd);
+//  Serial.println(namaAnggota);
+//
+//  String statusKirim = payload;
+//  int statusKirimStart = statusKirim.indexOf("status:")+7;
+//  Serial.println(statusKirimStart);
+//  int statusKirimEnd = statusKirimStart + statusKirim.substring(statusKirimStart).indexOf("|");
+//  Serial.println(statusKirimEnd);
+//  statusKirim = statusKirim.substring(statusKirimStart,statusKirimEnd);
+//  Serial.println(statusKirim);
+
+  
   Serial.println(httpCode);
   Serial.println(payload);
+  
+  String statusKirim = ambilData(payload, "status");
+  
   if (Data4 == "tambahBuku") {
     lcd.clear();
     lcd.setCursor (2,0);
@@ -230,19 +261,18 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
     lcd.print("TAMBAH ANGGOTA");
 
   }
-  if (payload == "BERHASIL") {
+  if (statusKirim == "BERHASIL") {
     lcd.setCursor (4,1);
-    lcd.print(payload);
+    lcd.print("BERHASIL");
   } else {
     lcd.setCursor (5,1);
     lcd.print("GAGAL");
-    Serial.println(payload);
   }
-  
+  http.end();
   delay(1000);
   
   lcd.clear();
-  http.end();
+  
 }
 
 void tambahBuku() {
@@ -264,4 +294,15 @@ void tambahAnggota() {
 }
 
 void buzer1() {
+}
+
+String ambilData(String dataPayload, String varr) {
+  String data = dataPayload;
+  int dataStart = data.indexOf(String(varr)+":")+ varr.length() + 1;
+//  Serial.println(dataStart);
+  int dataEnd = dataStart + data.substring(dataStart).indexOf("|");
+//  Serial.println(dataEnd);
+  data = data.substring(dataStart,dataEnd);
+//  Serial.println(data);
+  return data;
 }

@@ -55,10 +55,10 @@ String Data1;
 String Data2;
 String Data3;
 String Data4;
-String host = "192.168.123.105";
+String host = "192.168.149.135";
 //String host = "testingstarproject.000webhostapp.com";
-const char* ssid = "LIMITED";
-const char* password = "12344321";
+const char* ssid = "Redmi Note 10S";
+const char* password = "11111111";
 
 String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
@@ -66,22 +66,6 @@ String dataUpload[10];
 
 void setup() {
   Serial.begin(115200);
-  
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to Wi-Fi");
-  
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(250);
-    delay(250);
-    Serial.print(".");
-  }
-  
-  Serial.println("OK.");
-  digitalWrite(Led_OnBoard, HIGH);
-  Serial.println("Connected to Network/SSID");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
   pinMode(Led_OnBoard, OUTPUT);
   pinMode(b1, INPUT_PULLUP);
   pinMode(b2, INPUT_PULLUP);
@@ -92,6 +76,28 @@ void setup() {
   mlx.begin();
   lcd.init();
   lcd.backlight();
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to Wi-Fi");
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    lcd.setCursor (2,0);
+    lcd.print("Connecting  ");
+    delay(250);
+    lcd.setCursor (2,0);
+    lcd.print("Connecting. ");
+    delay(250);
+    lcd.setCursor (2,0);
+    lcd.print("Connecting..");
+    Serial.print(".");
+    delay(250);
+  }
+  
+  Serial.println("OK.");
+  digitalWrite(Led_OnBoard, HIGH);
+  Serial.println("Connected to Network/SSID");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void loop() {
