@@ -191,14 +191,14 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   
   digitalWrite(Led_OnBoard, LOW);
   lcd.clear();
-  lcd.setCursor (2,0);
+  lcd.setCursor (3,0);
   lcd.print("MEMPROSES");
 
   if (Data4 == "kembali") {
-    lcd.setCursor (2,0);
+    lcd.setCursor (2,1);
     lcd.print("PENGEMBALIAN");
   } else {
-    lcd.setCursor (3,0);
+    lcd.setCursor (3,1);
     lcd.print("PEMINJAMAN");
   }
   
@@ -265,6 +265,7 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   Serial.println(httpCode);
   Serial.println(payload);
   String statusKirim = ambilData(payload, "status");
+  Serial.println(statusKirim);
   lcd.clear();
   if (Data4 == "kembali") {
     lcd.setCursor (2,0);
@@ -296,7 +297,7 @@ void perpus(String SM) {
   Serial.print(dataUpload[0]);
   delay(700);
   lcd.clear();
-  lcd.setCursor (4,0);
+  lcd.setCursor (3,0);
   lcd.print("TEMPELKAN");
   lcd.setCursor (6,1);
   lcd.print("BUKU");

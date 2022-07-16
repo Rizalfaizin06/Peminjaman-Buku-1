@@ -28,7 +28,7 @@ date_default_timezone_set('Asia/Jakarta');
             }
         } elseif ($_POST['sendMode'] == 'pinjam') {
             if (pinjam($_POST) > 0) {
-                echo "Status:BERHASIL|";
+                echo "status:BERHASIL|";
             } else {
                 echo "status:GAGAL|";
             }
