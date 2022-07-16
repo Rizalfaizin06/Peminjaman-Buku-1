@@ -55,6 +55,9 @@ String Data4;
 //String host = "192.168.149.135";
 //String host = "testingstarproject.000webhostapp.com";
 String host = "wirapustaka.ninapst.com";
+
+//const char* ssid = "LIMITED";
+//const char* password = "12344321";
 const char* ssid = "Redmi Note 10S";
 const char* password = "11111111";
 
@@ -255,23 +258,29 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
 ////  char pl[payload.length()+1];
 ////  payload.toCharArray(pl, payload.length()+1);
 //////  Serial.println(pl);
+//
+//  String namaAnggota = payload;
+//  int namaAnggotaStart = namaAnggota.indexOf("nama:")+5;
+//  Serial.println(namaAnggotaStart);
+//  int namaAnggotaEnd = namaAnggotaStart + namaAnggota.substring(namaAnggotaStart).indexOf("|");
+//  Serial.println(namaAnggotaEnd);
+//  namaAnggota = namaAnggota.substring(namaAnggotaStart,namaAnggotaEnd);
+//  Serial.println(namaAnggota);
+//
+//  String statusKirim = payload;
+//  int statusKirimStart = statusKirim.indexOf("status:")+7;
+//  Serial.println(statusKirimStart);
+//  int statusKirimEnd = statusKirimStart + statusKirim.substring(statusKirimStart).indexOf("|");
+//  Serial.println(statusKirimEnd);
+//  statusKirim = statusKirim.substring(statusKirimStart,statusKirimEnd);
+//  Serial.println(statusKirim);
 
-  String namaAnggota = payload;
-  int namaAnggotaStart = namaAnggota.indexOf("nama:")+5;
-  Serial.println(namaAnggotaStart);
-  int namaAnggotaEnd = namaAnggotaStart + namaAnggota.substring(namaAnggotaStart).indexOf("|");
-  Serial.println(namaAnggotaEnd);
-  namaAnggota = namaAnggota.substring(namaAnggotaStart,namaAnggotaEnd);
+
+  String namaAnggota = ambilData(payload, "nama");
+  String statusKirim = ambilData(payload, "status");
+
   Serial.println(namaAnggota);
-
-  String statusKirim = payload;
-  int statusKirimStart = statusKirim.indexOf("status:")+7;
-  Serial.println(statusKirimStart);
-  int statusKirimEnd = statusKirimStart + statusKirim.substring(statusKirimStart).indexOf("|");
-  Serial.println(statusKirimEnd);
-  statusKirim = statusKirim.substring(statusKirimStart,statusKirimEnd);
   Serial.println(statusKirim);
-  
   lcd.clear();
   lcd.setCursor (0,0);
   lcd.print("ABSENSI");
@@ -393,6 +402,16 @@ void absen() {
   lcd.clear();
 }
 
+String ambilData(String dataPayload, String varr) {
+  String responseData = dataPayload;
+  int responseDataStart = responseData.indexOf(String(varr)+":")+ varr.length() + 1;
+//  Serial.println(responseDataStart);
+  int responseDataEnd = responseDataStart + responseData.substring(responseDataStart).indexOf("|");
+//  Serial.println(responseDataEnd);
+  responseData = responseData.substring(responseDataStart,responseDataEnd);
+//  Serial.println(responseData);
+  return responseData;
+}
 
 void buzer1() {
   digitalWrite(buzz, HIGH);

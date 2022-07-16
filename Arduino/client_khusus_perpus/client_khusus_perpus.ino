@@ -36,9 +36,7 @@ Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 int Led_OnBoard = 2;
 const int buzz = 0;
-const int ir = 25;
-const int b1 = 26;
-const int b2 = 27;
+const int btn = 25;
 
 
 bool quit = 0;
@@ -49,67 +47,81 @@ String iData4 = "36";
 
 float temp;
 String stats = "";
-String sendMode = "absen";
+String sendMode;
 String postData;
 String Data1;
 String Data2;
 String Data3;
 String Data4;
+
 //String host = "192.168.149.135";
 //String host = "testingstarproject.000webhostapp.com";
 String host = "wirapustaka.ninapst.com";
-const char* ssid = "LIMITEeD";
-const char* password = "12344321";
+
+//const char* ssid = "LIMITED";
+//const char* password = "12344321";
+const char* ssid = "Redmi Note 10S";
+const char* password = "11111111";
 
 //String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
-String url = "http://" + host + "/admin/fungsiAdmin.php";
+String url = "https://" + host + "/admin/fungsiAdmin.php";
 String dataUpload[10];
 
 void setup() {
   Serial.begin(115200);
-  
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to Wi-Fi");
-  
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(250);
-    delay(250);
-    Serial.print(".");
-  }
-  
-  Serial.println("OK.");
-  digitalWrite(Led_OnBoard, HIGH);
-  Serial.println("Connected to Network/SSID");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
+  pinMode(btn, INPUT_PULLUP);
   pinMode(Led_OnBoard, OUTPUT);
-  pinMode(b1, INPUT_PULLUP);
-  pinMode(b2, INPUT_PULLUP);
-  pinMode(ir, INPUT_PULLUP);
   pinMode(buzz, OUTPUT);
   SPI.begin();
   mfrc522.PCD_Init();
   mlx.begin();
   lcd.init();
   lcd.backlight();
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to Wi-Fi");
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    lcd.setCursor (2,0);
+    lcd.print("Connecting  ");
+    delay(250);
+    lcd.setCursor (2,0);
+    lcd.print("Connecting. ");
+    delay(250);
+    lcd.setCursor (2,0);
+    lcd.print("Connecting..");
+    Serial.print(".");
+    delay(250);
+  }
+  
+  Serial.println("OK.");
+  Serial.println("Connected to Network/SSID");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  digitalWrite(Led_OnBoard, HIGH);
+  lcd.clear();
+  lcd.setCursor (3,0);
+  lcd.print("Connected");
+  delay(500);
+  lcd.clear();
+  
 }
 
 void loop() {
-  int hb1 = digitalRead(b1);
-  int hb2 = digitalRead(b2);
-  int hir = digitalRead(ir);
-  Serial.print(hir);
-  Serial.print(hb1);
-  Serial.println(hb2);
+  lcd.setCursor (3,0);
+  lcd.print("PEMINJAMAN");
+  lcd.setCursor (6,1);
+  lcd.print("BUKU");
+  int button = digitalRead(btn);
   delay(50);
-  if ( hb1 == 0 ) {
-    Serial.println("Pinjam");
-    
-    perpus("pinjam");
-  }
-  else if ( hb2 == 0 ) {
+  if ( button == 0 ) {
+    lcd.clear();
+    lcd.setCursor (2,0);
+    lcd.print("PENGEMBALIAN");
+    lcd.setCursor (6,1);
+    lcd.print("BUKU");
+    buzer1();
     Serial.println("Kembali");
     perpus("kembali");
   }
@@ -118,17 +130,8 @@ void loop() {
     return;
   }
   
-  if ( ! mfrc522.PICC_ReadCardSerial()) 
-  {
-    return;
-  }
-  if (quit == 1 ) {
-    quit = 0;
-    
-    return;
-  }
-  buzer1();
-  absen();
+  Serial.println("Pinjam");
+  perpus("pinjam");
   
   
   Serial.print("suadah enddd");
@@ -140,12 +143,13 @@ void loop() {
 }
 
 String scann() {
-  int hir = digitalRead(ir);
   while ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
+    delay(50);
   }
   while ( ! mfrc522.PICC_ReadCardSerial()) 
   {
+    delay(50);
   }
   buzer1();
 //  Serial.print("UID :");
@@ -185,42 +189,117 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
 
   digitalWrite(Led_OnBoard, LOW);
   
+  digitalWrite(Led_OnBoard, LOW);
+  lcd.clear();
+  lcd.setCursor (2,0);
+  lcd.print("MEMPROSES");
+
+  if (Data4 == "kembali") {
+    lcd.setCursor (2,0);
+    lcd.print("PENGEMBALIAN");
+  } else {
+    lcd.setCursor (3,0);
+    lcd.print("PEMINJAMAN");
+  }
+  
+  Serial.println("uploading..");
+
   int httpCode = http.POST(postData);
-  Serial.print("uploading");
+  delay(1500);
   int c = 0;
   while (httpCode != 200){
-            Serial.print(".");
-            Serial.print(httpCode);
-            httpCode = http.POST(postData);
-            delay(500);
             c++;
-            if (c == 10 ) {
+            if (c == 4 ) {
+              WiFi.disconnect();
+              WiFi.begin(ssid, password);
+              Serial.print("Connecting to Wi-Fi");
+              int d = 0;
+              lcd.clear();
+              while (WiFi.status() != WL_CONNECTED) {
+                d++;
+                lcd.setCursor (1,0);
+                lcd.print("TUNGGU SESAAT");
+                lcd.setCursor (5,1);
+                lcd.print("      ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print(".     ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("..    ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("...   ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print(".... ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("..... ");
+                delay(100);
+                lcd.setCursor (5,1);
+                lcd.print("......");
+                delay(250);
+                if (d == 18) {
+                  Serial.println("Reset..");
+                  ESP.restart();
+                }
+              }
+            }
+            if (c == 5 ) {
               http.begin(url);
               Serial.println(url);
               http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-              digitalWrite(Led_OnBoard, LOW);
               httpCode = http.POST(postData);
             }
-            if (c == 35 ) {
+            if (c == 8 ) {
               Serial.println("Reset..");
               ESP.restart();
             }
+            
+            Serial.print(".");
+            Serial.println(httpCode);
+            httpCode = http.POST(postData);
           }
   String payload = http.getString();
-
   Serial.println(httpCode);
-  
+  Serial.println(payload);
+  String statusKirim = ambilData(payload, "status");
+  lcd.clear();
+  if (Data4 == "kembali") {
+    lcd.setCursor (2,0);
+    lcd.print("PENGEMBALIAN");
+  } else {
+    lcd.setCursor (3,0);
+    lcd.print("PEMINJAMAN");
+  }
+  if (statusKirim == "BERHASIL") {
+    lcd.setCursor (4,1);
+    lcd.print("BERHASIL");
+  } else {
+    lcd.setCursor (5,1);
+    lcd.print("GAGAL");
+  }
   http.end();
+  delay(1000);
+  
+  lcd.clear();
+  
   digitalWrite(Led_OnBoard, HIGH);
 }
 
 
 void perpus(String SM) {
   sendMode = SM;
-  buzer1();
+  
   dataUpload[0] = scann();
   Serial.print(dataUpload[0]);
   delay(700);
+  lcd.clear();
+  lcd.setCursor (4,0);
+  lcd.print("TEMPELKAN");
+  lcd.setCursor (6,1);
+  lcd.print("BUKU");
   int i = 1;
   dataUpload[i] = scann();
   delay(700);
@@ -255,62 +334,71 @@ void perpus(String SM) {
       break;
   }
  
-    sendMode = "absen";
 }
 
-void absen() {
-  Serial.print("UID :");
-  String guid;
-  String content= "";
-  byte letter;
-  
-  for (byte i = 0; i < mfrc522.uid.size; i++) 
-  {
-     Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
-     Serial.print(mfrc522.uid.uidByte[i], HEX);
-     content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
-     content.concat(String(mfrc522.uid.uidByte[i], HEX));
-  }
-  
-  Serial.println();
-  content.toUpperCase();
-  guid = content.substring(1);
-  guid.replace(" ", "");
-  Serial.print("Dekatkan tanganmu");
-  int hir = digitalRead(ir);
-  while (hir == 1 ) {
-    Serial.print(".");
-    delay(100);
-    hir = digitalRead(ir);
-    Serial.print(hir);
-  }
-  Serial.println("");
-  delay(400);
-  temp = mlx.readObjectTempC();
-  temp = temp + 1.7;
-  Serial.println(temp);
-  buzer1();
-  if (temp >= 37){
-    stats = "Bahaya";
-  }
-  else {
-    stats = "Aman";
-  }
-  
-  lcd.clear();
-  lcd.setCursor (0,0);
-  lcd.print("Uploading..");
-  lcd.setCursor (0,1);
-  lcd.print("Suhu : ");
-  lcd.print(temp);
-  lcd.print((char)223);
-  lcd.print("C");
-  Serial.println("uploading..");
-  String te = String(temp);
-  uploadDB(guid, te, iData2, sendMode);
-  lcd.clear();
-}
+//void absen() {
+//  Serial.print("UID :");
+//  String guid;
+//  String content= "";
+//  byte letter;
+//  
+//  for (byte i = 0; i < mfrc522.uid.size; i++) 
+//  {
+//     Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
+//     Serial.print(mfrc522.uid.uidByte[i], HEX);
+//     content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+//     content.concat(String(mfrc522.uid.uidByte[i], HEX));
+//  }
+//  
+//  Serial.println();
+//  content.toUpperCase();
+//  guid = content.substring(1);
+//  guid.replace(" ", "");
+//  Serial.print("Dekatkan tanganmu");
+//  int hir = digitalRead(ir);
+//  while (hir == 1 ) {
+//    Serial.print(".");
+//    delay(100);
+//    hir = digitalRead(ir);
+//    Serial.print(hir);
+//  }
+//  Serial.println("");
+//  delay(400);
+//  temp = mlx.readObjectTempC();
+//  temp = temp + 1.7;
+//  Serial.println(temp);
+//  buzer1();
+//  if (temp >= 37){
+//    stats = "Bahaya";
+//  }
+//  else {
+//    stats = "Aman";
+//  }
+//  
+//  lcd.clear();
+//  lcd.setCursor (0,0);
+//  lcd.print("Uploading..");
+//  lcd.setCursor (0,1);
+//  lcd.print("Suhu : ");
+//  lcd.print(temp);
+//  lcd.print((char)223);
+//  lcd.print("C");
+//  Serial.println("uploading..");
+//  String te = String(temp);
+//  uploadDB(guid, te, iData2, sendMode);
+//  lcd.clear();
+//}
 
+String ambilData(String dataPayload, String varr) {
+  String responseData = dataPayload;
+  int responseDataStart = responseData.indexOf(String(varr)+":")+ varr.length() + 1;
+//  Serial.println(responseDataStart);
+  int responseDataEnd = responseDataStart + responseData.substring(responseDataStart).indexOf("|");
+//  Serial.println(responseDataEnd);
+  responseData = responseData.substring(responseDataStart,responseDataEnd);
+//  Serial.println(responseData);
+  return responseData;
+}
 
 void buzer1() {
   digitalWrite(buzz, HIGH);

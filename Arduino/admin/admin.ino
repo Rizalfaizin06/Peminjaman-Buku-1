@@ -297,12 +297,12 @@ void buzer1() {
 }
 
 String ambilData(String dataPayload, String varr) {
-  String data = dataPayload;
-  int dataStart = data.indexOf(String(varr)+":")+ varr.length() + 1;
-//  Serial.println(dataStart);
-  int dataEnd = dataStart + data.substring(dataStart).indexOf("|");
-//  Serial.println(dataEnd);
-  data = data.substring(dataStart,dataEnd);
-//  Serial.println(data);
-  return data;
+  String responseData = dataPayload;
+  int responseDataStart = responseData.indexOf(String(varr)+":")+ varr.length() + 1;
+//  Serial.println(responseDataStart);
+  int responseDataEnd = responseDataStart + responseData.substring(responseDataStart).indexOf("|");
+//  Serial.println(responseDataEnd);
+  responseData = responseData.substring(responseDataStart,responseDataEnd);
+//  Serial.println(responseData);
+  return responseData;
 }

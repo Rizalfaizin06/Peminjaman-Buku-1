@@ -98,6 +98,11 @@ void setup() {
   Serial.println("Connected to Network/SSID");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  lcd.clear();
+  lcd.setCursor (3,0);
+  lcd.print("Connected");
+  delay(500);
+  lcd.clear();
 }
 
 void loop() {
@@ -147,9 +152,11 @@ String scann() {
   int hir = digitalRead(ir);
   while ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
+    delay(50);
   }
   while ( ! mfrc522.PICC_ReadCardSerial()) 
   {
+    delay(50);
   }
   buzer1();
 //  Serial.print("UID :");

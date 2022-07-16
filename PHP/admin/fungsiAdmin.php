@@ -28,7 +28,7 @@ date_default_timezone_set('Asia/Jakarta');
             }
         } elseif ($_POST['sendMode'] == 'pinjam') {
             if (pinjam($_POST) > 0) {
-                echo "Status :BERHASIL";
+                echo "Status:BERHASIL|";
             } else {
                 echo "status:GAGAL|";
             }
@@ -281,6 +281,7 @@ function kembali($data)
     $mode = $data['sendMode'];
 
     mysqli_query($koneksi, "UPDATE peminjaman, buku SET tanggalKembali='$tanggal', status=1 WHERE peminjaman.RFIDB=buku.RFIDB AND RFIDP='$rfidP' AND buku.RFIDB='$rfidB' AND tanggalKembali='0000-00-00'");
+    return mysqli_affected_rows($koneksi);
 }
 
 function absen($data)
