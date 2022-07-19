@@ -1,5 +1,5 @@
 <?php include "template/header.php";
-session_start();
+
 // if (isset($_SESSION['filter'])) {
 //     $filter = $_SESSION['filter'];
 //     $tgl = $_SESSION['tanggal'];
@@ -147,7 +147,7 @@ echo $_SESSION['filter'];
         }
     }
     
-    ?>
+?>
 
 
 
@@ -184,7 +184,7 @@ echo $_SESSION['filter'];
 
     <?php
         
-            foreach ($absen as $oneView) : ?>
+        foreach ($absen as $oneView) : ?>
     <tr class="trLower">
         <td><?= $oneView["namaAnggota"]; ?>
         </td>
@@ -197,10 +197,10 @@ echo $_SESSION['filter'];
 
     </tr>
     <?php endforeach; if ($jumlahData == '0') {
-                echo "<tr>
+        echo "<tr>
                 <td colspan='4' align='center' style='color: red; font-style: italic; font-size: 20px;'>Data tidak ditemukan</td>
             </tr>";
-            }?>
+    }?>
 
 </table>
 

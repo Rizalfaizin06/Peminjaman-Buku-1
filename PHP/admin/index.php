@@ -13,7 +13,6 @@
         et,
         dolorem, consectetur id voluptatibus sed nihil a at unde, veniam non amet magnam aliquam qui mollitia?</p>
     <?php include "home.php"; ?>
-    <div style="height: 1000px;"></div>
 </div>
 
 <?php include "template/footer.php";

@@ -2,7 +2,7 @@
 
 
 
-<div class="container" style="min-height: 600px;">
+<div class="container" style="min-height: 405px;">
     <h1>Kelola Buku</h1>
 
     <div class="row">
@@ -22,8 +22,8 @@
         <tbody>
             <?php
         $namaBuku = query("SELECT RFIDB, mapel.idBuku, namaBuku, status FROM mapel RIGHT JOIN buku ON buku.idBuku = mapel.idBuku ORDER BY idBuku, status DESC, RFIDB");
-        $i = 1;
-        foreach ($namaBuku as $oneView) : ?>
+$i = 1;
+foreach ($namaBuku as $oneView) : ?>
             <tr>
                 <td><?= $i; ?>
                 </td>
@@ -34,11 +34,11 @@
                 <td><?= $oneView["namaBuku"]; ?>
                 </td>
                 <?php
-                if ($oneView["status"] == 1) {
-                    $stat = 'Tersedia';
-                } else {
-                    $stat = 'Dipinjam';
-                }?>
+        if ($oneView["status"] == 1) {
+            $stat = 'Tersedia';
+        } else {
+            $stat = 'Dipinjam';
+        }?>
                 <td><?= $stat; ?>
                 </td>
                 <td>
