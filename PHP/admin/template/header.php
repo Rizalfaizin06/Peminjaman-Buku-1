@@ -43,6 +43,9 @@ include "fungsiAdmin.php";
                     <li class="nav-item">
                         <a class="nav-link" href="rekapPengunjung.php">Rekap Pengunjung</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold" href="logout.php">Logout</a>
+                    </li>
                 </ul>
                 <!-- <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

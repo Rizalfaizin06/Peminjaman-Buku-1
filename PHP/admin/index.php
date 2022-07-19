@@ -1,5 +1,9 @@
 <?php include "template/header.php";
 
+if (!isset($_SESSION["login"])) {
+    header("location: login.php");
+    exit;
+}
 
 
 
@@ -7,11 +11,11 @@
 
 
 
-<div class="container">
-    <h1>Hello, world!</h1>
-    <p>rizal faizisfd Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam accusamus odit quam dicta
-        et,
-        dolorem, consectetur id voluptatibus sed nihil a at unde, veniam non amet magnam aliquam qui mollitia?</p>
+<div class="container" style="min-height: 405px;">
+    <div class="text-center mb-3">
+        <h1>WIRAPUSTAKA</h1>
+        <h3>SMKN 1 WIROSARI</h3>
+    </div>
     <?php include "home.php"; ?>
 </div>
 

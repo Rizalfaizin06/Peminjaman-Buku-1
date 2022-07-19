@@ -7,7 +7,7 @@
 // echo $_SESSION['filter'];
 ?>
 
-<div class="container">
+<div class="container" style=" min-height: 405px;">
 
 
     <form action="?halaman=1" method="post">
@@ -200,7 +200,7 @@ foreach ($absen as $oneView) : ?>
         </tr>
         <?php endforeach; if ($jumlahData == '0') {
             echo "<tr>
-                <td colspan='4' align='center' style='color: red; font-style: italic; font-size: 20px;'>Data tidak ditemukan</td>
+                <td colspan='5' align='center' style='color: red; font-style: italic; font-size: 20px;'>Data tidak ditemukan</td>
             </tr>";
         }?>
 
