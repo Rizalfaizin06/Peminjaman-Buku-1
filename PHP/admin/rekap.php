@@ -175,6 +175,7 @@
     <table class="table">
 
         <tr class="table-dark">
+            <th>No.</th>
             <th>Nama</th>
             <th>Tanggal</th>
             <th>Jam</th>
@@ -182,17 +183,19 @@
         </tr>
 
         <?php
-        
-        foreach ($absen as $oneView) : ?>
+        $i = $awalData + 1;
+foreach ($absen as $oneView) : ?>
         <tr class="trLower">
+            <td><?= $i; $i++?>
+            </td>
             <td><?= $oneView["namaAnggota"]; ?>
             </td>
             <td><?= $oneView["tanggal"]; ?>
             </td>
             <td><?= $oneView["jam"]; ?>
             </td>
-            <td><?= $oneView["suhu"]; ?>
-            </td>
+            <?php $suhu = $oneView['suhu']; ?>
+            <?= ($suhu > 36)? "<td style='color: red; font-style: italic;'>". $suhu ."</td>" : "<td>". $suhu ."</td>" ; ?>
 
         </tr>
         <?php endforeach; if ($jumlahData == '0') {
