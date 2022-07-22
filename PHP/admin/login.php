@@ -1,70 +1,149 @@
 <?php
 session_start();
+include "fungsiAdmin.php";
 
-require 'fungsiAdmin.php';
+?>
 
-if (isset($_SESSION["login"])) {
-    header("location: index.php");
-    exit;
-}
+<!doctype html>
+<html lang="en">
 
-if (isset($_POST["login"])) {
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/icon/bootstrap-icons.css">
+    <title>Wirapustaka</title>
+</head>
 
-    $result = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username' ");
-    //cek username
-    if (mysqli_num_rows($result) === 1) {
-        //cek password
-        $row = mysqli_fetch_assoc($result);
-        if (password_verify($password, $row["password"])) {
-            //set session
-            $_SESSION["login"] = true;
-            $_SESSION["filter"] = "4";
-            $_SESSION["filterPeminjaman"] = "4";
+<body>
 
-            header("location: index.php");
-            exit;
-        }
+    <?php
+    if (isset($_SESSION["login"])) {
+        header("location: index.php");
+        exit;
     }
 
-    $error = true;
-}
+    if (isset($_POST["login"])) {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
 
+        $result = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username' ");
+        //cek username
+        if (mysqli_num_rows($result) === 1) {
+            //cek password
+            $row = mysqli_fetch_assoc($result);
+            if (password_verify($password, $row["password"])) {
+                //set session
+                $_SESSION["login"] = true;
+                $_SESSION["filter"] = "4";
+                $_SESSION["filterPeminjaman"] = "4";
+
+                header("location: index.php");
+                exit;
+            }
+        }
+
+        $error = true;
+    }
 
 ?>
 
 
+    <!-- <form action="" method="post">
+    <ul>
+        <li>
+            <label for="username">username :</label>
+            <input type="text" name="username" id="username">
+        </li>
+        <li>
+            <label for="password">password :</label>
+            <input type="password" name="password" id="password">
+        </li>
+        <li>
+            <button type="submit" name="login">Login</button>
+        </li>
+    </ul>
+</form> -->
 
-<!DOCTYPE html>
-<html>
+    <!-- Section: Design Block -->
+    <section class="">
+        <!-- Jumbotron -->
+        <div class="px-4 py-5 px-md-5 text-center text-lg-start">
+            <div class="container">
+                <div class="row gx-lg-5 align-items-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <h1 class="my-5 display-3 fw-bold ls-tight">
+                            WIRAPUSTAKA<br />
+                            <span class="text-primary fs-1">SMKN 1 WIROSARI</span>
+                        </h1>
+                        <!-- <p style="color: hsl(217, 10%, 50.8%)">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Eveniet, itaque accusantium odio, soluta, corrupti aliquam
+                        quibusdam tempora at cupiditate quis eum maiores libero
+                        veritatis? Dicta facilis sint aliquid ipsum atque?
+                    </p> -->
+                    </div>
 
-<head>
-    <title>Login</title>
-</head>
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="card">
 
-<body>
-    <h1>login</h1>
-    <?php if (isset($error)) : ?>
-    <p style="color: red; font-style: italic;">Username / password salah</p>
-    <?php endif; ?>
-    <form action="" method="post">
-        <ul>
-            <li>
-                <label for="username">username :</label>
-                <input type="text" name="username" id="username">
-            </li>
-            <li>
-                <label for="password">password :</label>
-                <input type="password" name="password" id="password">
-            </li>
-            <li>
-                <button type="submit" name="login">Login</button>
-            </li>
-        </ul>
+                            <div class="card-body py-5 px-md-5">
+                                <form action="" method="post">
+                                    <!-- 2 column grid layout with text inputs for the first and last names -->
+                                    <h1 class="mb-3 fw-bold">LOGIN</h1>
+                                    <?php if (isset($error)) : ?>
+                                    <p style="color: red; font-style: italic;">Username / password salah</p>
+                                    <?php endif; ?>
+                                    <!-- Email input -->
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="username">Username</label>
+                                        <input type="text" id="username" name="username"
+                                            class="form-control text-center text-lg-start">
+                                    </div>
 
+                                    <!-- Password input -->
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="password">Password</label>
+                                        <input type="password" id="password" name="password"
+                                            class="form-control text-center text-lg-start">
+                                    </div>
 
-    </form>
-</body>
+                                    <!-- Checkbox -->
+                                    <div class="form-check d-flex justify-content-center mb-4">
+                                        <input class="form-check-input me-2" type="checkbox" value=""
+                                            id="form2Example33" checked />
+                                        <label class="form-check-label" for="form2Example33">
+                                            Remember me
+                                        </label>
+                                    </div>
 
-</html>
+                                    <!-- Submit button -->
+                                    <div class="text-center">
+
+                                        <button type="submit" name="login" class="btn btn-primary btn-block mb-4 ">
+                                            Sign In
+                                        </button>
+                                    </div>
+
+                                    <!-- Register buttons -->
+
+                                    <div class="text-center">
+                                        <p>Or sign up with :
+
+                                            <a href="registrasi.php"
+                                                class="text-decoration-none text text-black fw-bold">
+                                                Sign
+                                                Up</a>
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Jumbotron -->
+    </section>
+    <!-- Section: Design Block -->
+    <?php include "template/footer.php";
