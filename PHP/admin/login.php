@@ -1,7 +1,33 @@
 <?php
 session_start();
 include "fungsiAdmin.php";
+if (isset($_SESSION["login"])) {
+    header("location: index.php");
+    exit;
+}
 
+if (isset($_POST["login"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    $result = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username' ");
+    //cek username
+    if (mysqli_num_rows($result) === 1) {
+        //cek password
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($password, $row["password"])) {
+            //set session
+            $_SESSION["login"] = true;
+            $_SESSION["filter"] = "4";
+            $_SESSION["filterPeminjaman"] = "4";
+
+            header("location: index.php");
+            exit;
+        }
+    }
+
+    $error = true;
+}
 ?>
 
 <!doctype html>
@@ -16,37 +42,6 @@ include "fungsiAdmin.php";
 </head>
 
 <body>
-
-    <?php
-    if (isset($_SESSION["login"])) {
-        header("location: index.php");
-        exit;
-    }
-
-    if (isset($_POST["login"])) {
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-
-        $result = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username' ");
-        //cek username
-        if (mysqli_num_rows($result) === 1) {
-            //cek password
-            $row = mysqli_fetch_assoc($result);
-            if (password_verify($password, $row["password"])) {
-                //set session
-                $_SESSION["login"] = true;
-                $_SESSION["filter"] = "4";
-                $_SESSION["filterPeminjaman"] = "4";
-
-                header("location: index.php");
-                exit;
-            }
-        }
-
-        $error = true;
-    }
-
-?>
 
 
     <!-- <form action="" method="post">
