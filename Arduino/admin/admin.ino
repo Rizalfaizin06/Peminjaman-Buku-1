@@ -19,8 +19,11 @@ LiquidCrystal_I2C lcd (0x27, 16, 2);
 #define SS_PIN          2
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
-const int btn = 16;
-int button;
+const int buzz = 3;
+const int btn1 = 15;
+int button1;
+const int btn2 = 16;
+int button2;
 
 bool quit = 0;
 String iData1 = "1";
@@ -39,8 +42,8 @@ String Data4;
 //String host = "192.168.43.160";
 //String host = "testingstarproject.000webhostapp.com";
 String host = "wirapustaka.ninapst.com";
-const char* ssid = "LIMITEeD";
-const char* password = "12344321";
+const char* ssid = "Redmi Note 10S";
+const char* password = "11111111";
 
 //String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
@@ -50,9 +53,13 @@ String dataUpload[10];
 
 void setup() {
   Serial.begin(115200);
-  pinMode(btn, INPUT);
+  pinMode(btn1, INPUT);
+  pinMode(btn2, INPUT);
+  pinMode(buzz, OUTPUT);
   lcd.init();
   lcd.backlight();
+  SPI.begin(); // Init SPI bus
+  mfrc522.PCD_Init(); // Init MFRC522
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.print("Connecting to Wi-Fi");
@@ -72,35 +79,32 @@ void setup() {
   Serial.println("Connected to Network/SSID");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  SPI.begin(); // Init SPI bus
-  mfrc522.PCD_Init(); // Init MFRC522
+  
   lcd.clear();
   lcd.setCursor (3,0);
   lcd.print("Connected");
   delay(500);
   lcd.clear();
   
-  
+  buzer(1);
 }
 
 void loop() {
-  lcd.setCursor (1,0);
-  lcd.print("DEKATKAN BUKU");
-  lcd.setCursor (0,1);
-  lcd.print("UNTUK  MENAMBAH");
+  jalan();
   
-  button = digitalRead(btn);
-  Serial.println(button);
+}
+
+void jalan() {
+  lcd.setCursor (2,0);
+  lcd.print("TAMBAH BUKU");
+  
+  button1 = digitalRead(btn1);
+  Serial.println(button1);
   delay(50);
-  if ( button == 1 ) {
-    lcd.clear();
-    lcd.setCursor (0,0);
-    lcd.print("DEKATKAN  KARTU");
-    lcd.setCursor (0,1);
-    lcd.print("UNTUK  MENAMBAH");
-    sendMode = "tambahAnggota";
+  if ( button1 == 1 ) {
+    
     tambahAnggota();
-    sendMode = "tambahBuku";
+    
   }
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
@@ -115,21 +119,21 @@ void loop() {
     quit = 0;
     return;
   }
-  buzer1();
   tambahBuku();
-  
 }
+
 
 String scann() {
   while ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
     delay(50);
+    
   }
   while ( ! mfrc522.PICC_ReadCardSerial()) 
   {
     delay(50);
   }
-  buzer1();
+  buzer(1);
 //  Serial.print("UID :");
   String guid;
   String content= "";
@@ -257,44 +261,71 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
   }
   else if (Data4 == "tambahAnggota") {
     lcd.clear();
-    lcd.setCursor (0,0);
+    lcd.setCursor (1,0);
     lcd.print("TAMBAH ANGGOTA");
 
   }
   if (statusKirim == "BERHASIL") {
     lcd.setCursor (4,1);
     lcd.print("BERHASIL");
+    buzer(1);
   } else {
     lcd.setCursor (5,1);
     lcd.print("GAGAL");
+    buzer(5);
   }
   http.end();
   delay(1000);
-  
   lcd.clear();
   
 }
 
 void tambahBuku() {
-  buzer1();
+  sendMode = "tambahBuku";
   dataUpload[0] = scann();
   Serial.print(dataUpload[0]);
   delay(700);
   uploadDB(dataUpload[0], iData2, iData4, sendMode);
- 
 }
 
 void tambahAnggota() {
-  buzer1();
+  lcd.clear();
+  lcd.setCursor (1,0);
+  lcd.print("TAMBAH ANGGOTA");
+  sendMode = "tambahAnggota";
+  while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
+  {
+    delay(50);
+    button2 = digitalRead(btn2);
+    Serial.println("b2"+button2);
+    delay(50);
+    if ( button2 == 1 ) {
+      lcd.clear();
+      return jalan();
+    }
+
+  }
+  
   dataUpload[0] = scann();
   Serial.print(dataUpload[0]);
   delay(700);
   uploadDB(dataUpload[0], iData2, iData4, sendMode);
- 
+  sendMode = "tambahBuku";
 }
 
-void buzer1() {
+void buzer(int banyakLoop) {
+//  digitalWrite(buzz, HIGH);
+//  delay(100);
+//  digitalWrite(buzz, LOW);
+//  delay(100);
+  for (int i = 1; i <= banyakLoop; i++) {
+    digitalWrite(buzz, HIGH);
+    delay(100);
+    digitalWrite(buzz, LOW);
+    delay(100); 
+  }
 }
+
 
 String ambilData(String dataPayload, String varr) {
   String responseData = dataPayload;
