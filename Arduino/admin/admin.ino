@@ -86,7 +86,7 @@ void setup() {
   delay(500);
   lcd.clear();
   
-  buzer(1);
+  buzzer(1);
 }
 
 void loop() {
@@ -102,7 +102,7 @@ void jalan() {
   Serial.println(button1);
   delay(50);
   if ( button1 == 1 ) {
-    
+    buzzer(1);
     tambahAnggota();
     
   }
@@ -133,7 +133,7 @@ String scann() {
   {
     delay(50);
   }
-  buzer(1);
+  buzzer(1);
 //  Serial.print("UID :");
   String guid;
   String content= "";
@@ -268,11 +268,11 @@ void uploadDB(String satu, String dua, String tiga, String empat) {
   if (statusKirim == "BERHASIL") {
     lcd.setCursor (4,1);
     lcd.print("BERHASIL");
-    buzer(1);
+    buzzer(1);
   } else {
     lcd.setCursor (5,1);
     lcd.print("GAGAL");
-    buzer(5);
+    buzzer(5);
   }
   http.end();
   delay(1000);
@@ -301,6 +301,7 @@ void tambahAnggota() {
     delay(50);
     if ( button2 == 1 ) {
       lcd.clear();
+      buzzer(1);
       return jalan();
     }
 
@@ -313,7 +314,7 @@ void tambahAnggota() {
   sendMode = "tambahBuku";
 }
 
-void buzer(int banyakLoop) {
+void buzzer(int banyakLoop) {
 //  digitalWrite(buzz, HIGH);
 //  delay(100);
 //  digitalWrite(buzz, LOW);
