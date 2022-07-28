@@ -1,8 +1,10 @@
 <?php
+include "assets/classes/class.phpmailer.php";
 
 //koneksi kedatabase
 // $koneksi = mysqli_connect("localhost", "id18952921_rizal", ">R(xFzvAW#ln~1YB", "id18952921_krenova");
 // $koneksi = mysqli_connect("localhost", "ninb9915_rizal", ">R(xFzvAW#ln~1YB", "ninb9915_Krenova");
+
 
 $koneksi = mysqli_connect("127.0.0.1", "rizal", "rizal", "test4");
 
@@ -406,7 +408,7 @@ function registrasi($data)
 // 	$mm = $mpl['idBuku'];
 // 	mysqli_query($koneksi,"UPDATE $mm SET status = 1 WHERE RFID = '$rfidB'");
 // }
-    
+
 // mysqli_query($koneksi,"UPDATE peminjam SET bukuPinjam = NULL, status = 0 WHERE RFID = '$rfidP'");
 
 //}

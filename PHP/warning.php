@@ -1,7 +1,7 @@
 <?php
-require 'fungsi.php';
+require 'admin/fungsiAdmin.php';
 // warning (Kirim Pesan Email)
-    
+
 $pesanWarning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.namaBuku, kelas,  namaAnggota, email, tanggalPinjam, tanggalKembali, '$tanggal' AS tgl_sekarang, datediff('$tanggal', tanggalPinjam) AS selisih FROM peminjaman, anggota, buku, mapel WHERE peminjaman.RFIDP=anggota.RFIDP AND peminjaman.RFIDB=buku.RFIDB AND buku.idBuku=mapel.idBuku AND datediff('$tanggal', tanggalPinjam) >= 7 AND tanggalKembali LIKE '0000-00-00' AND warning = 0 ");
 // $tes = [];
 // echo(count($pesanWarning));

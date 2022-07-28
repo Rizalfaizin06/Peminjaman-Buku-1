@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "fungsiAdmin.php";
+
 if (isset($_SESSION["login"])) {
     header("location: index.php");
     exit;

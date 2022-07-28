@@ -7,6 +7,7 @@ if (isset($_POST["register"])) {
         echo "<script>
 				alert('Sign Up berhasil');
 			</script>";
+        header("location: login.php");
     } else {
         echo mysqli_error($koneksi);
     }
@@ -47,7 +48,7 @@ if (isset($_POST["register"])) {
 			</li>
 		</ul>
 	</form>
-
+	<a href="login.php">Back</a>
 </body>
 
 </html>

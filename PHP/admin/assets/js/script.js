@@ -17,6 +17,19 @@ $(document).ready(function () {
 	// 	}
 	// }
 
+	setInterval(function () {
+		jQuery.ajax({
+			type: "GET",
+			url: "assets/ajax/buku.php",
+			data: "",
+			success: function (data) {
+				$(".table-buku").html(data);
+				console.log("succ");
+			}
+		});
+	}, 1000);
+
+
 	$('#filter').change(function () {
 		// console.log($(this).val());
 		if ($(this).val() == '1') {

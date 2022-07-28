@@ -3,7 +3,7 @@ $(document).ready(function () {
 	setInterval(function () {
 		jQuery.ajax({
 			type: "GET",
-			url: "ajax/warning.php",
+			url: "admin/assets/ajax/warning-public.php",
 			data: "",
 			success: function (data) {
 				$(".warning").html(data);
@@ -14,7 +14,7 @@ $(document).ready(function () {
 	setInterval(function () {
 		jQuery.ajax({
 			type: "GET",
-			url: "ajax/pengunjung.php",
+			url: "admin/assets/ajax/pengunjung-public.php",
 			data: "",
 			success: function (data) {
 				$(".pengunjung").html(data);
@@ -25,7 +25,7 @@ $(document).ready(function () {
 	setInterval(function () {
 		jQuery.ajax({
 			type: "GET",
-			url: "ajax/buku.php",
+			url: "admin/assets/ajax/buku-public.php",
 			data: "",
 			success: function (data) {
 				$(".tb1").html(data);
@@ -36,7 +36,7 @@ $(document).ready(function () {
 	setInterval(function () {
 		jQuery.ajax({
 			type: "GET",
-			url: "ajax/absensi.php",
+			url: "admin/assets/ajax/absensi-public.php",
 			data: "",
 			success: function (data) {
 				$(".tb2").html(data);

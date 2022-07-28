@@ -22,7 +22,7 @@ if (!empty($_POST['Data1'])) {
 
 <head>
 	<title>Krenova</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="admin/assets/css/style-public.css">
 </head>
 
 <body>
@@ -65,7 +65,7 @@ if (!empty($_POST['Data1'])) {
 					<?php
 
                 $jumlahPengunjung = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal'")[0]["COUNT(*)"];
-                $jumlahPengunjungWaspada = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal' AND suhu > 36")[0]["COUNT(*)"]; ?>
+$jumlahPengunjungWaspada = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal' AND suhu > 36")[0]["COUNT(*)"]; ?>
 					<td><?= "Jumlah pengunjung hari ini adalah : ",$jumlahPengunjung; ?>
 					</td>
 					<td><?= "Jumlah pengunjung waspada adalah : ",$jumlahPengunjungWaspada; ?>
@@ -85,8 +85,8 @@ if (!empty($_POST['Data1'])) {
 				</tr>
 				<?php
         $namaBuku = query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku");
-        $i = 1;
-        foreach ($namaBuku as $oneView) : ?>
+$i = 1;
+foreach ($namaBuku as $oneView) : ?>
 				<tr>
 					<td><?= $i; ?>
 					</td>
@@ -95,11 +95,11 @@ if (!empty($_POST['Data1'])) {
 					<td><?= $oneView["stock"]; ?>
 					</td>
 					<?php
-                if ($oneView["stock"] > 0) {
-                    $stat = 'Tersedia';
-                } else {
-                    $stat = 'Kosong';
-                }?>
+        if ($oneView["stock"] > 0) {
+            $stat = 'Tersedia';
+        } else {
+            $stat = 'Kosong';
+        }?>
 					<td><?= $stat; ?>
 					</td>
 
@@ -122,7 +122,7 @@ if (!empty($_POST['Data1'])) {
 
             $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP ORDER BY id DESC LIMIT 5");
 
-            foreach ($absen as $oneView) : ?>
+foreach ($absen as $oneView) : ?>
 				<tr class="trLower">
 					<td><?= $oneView["namaAnggota"]; ?>
 					</td>
@@ -145,8 +145,8 @@ if (!empty($_POST['Data1'])) {
 		</div>
 	</div>
 
-	<script src="js/jquery-3.6.0.min.js"></script>
-	<script src="js/script.js"></script>
+	<script src="admin/assets/js/jquery-3.6.0.min.js"></script>
+	<script src="admin/assets/js/script-public.js"></script>
 </body>
 
 </html>

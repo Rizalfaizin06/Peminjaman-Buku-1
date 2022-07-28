@@ -48,7 +48,7 @@
 </div>
 
 
-<table class="table">
+<table class="table table-buku">
     <tr class="table-dark">
         <th>No.</th>
         <th>Nama Buku</th>
