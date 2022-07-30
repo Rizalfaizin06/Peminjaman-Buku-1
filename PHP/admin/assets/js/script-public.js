@@ -6,7 +6,7 @@ $(document).ready(function () {
 			url: "admin/assets/ajax/warning-public.php",
 			data: "",
 			success: function (data) {
-				$(".warning").html(data);
+				$("#tablePeringatan").html(data);
 			}
 		});
 	}, 60000);
@@ -17,7 +17,7 @@ $(document).ready(function () {
 			url: "admin/assets/ajax/pengunjung-public.php",
 			data: "",
 			success: function (data) {
-				$(".pengunjung").html(data);
+				$("#listPengunjung").html(data);
 			}
 		});
 	}, 1000);
@@ -28,7 +28,7 @@ $(document).ready(function () {
 			url: "admin/assets/ajax/buku-public.php",
 			data: "",
 			success: function (data) {
-				$(".tb1").html(data);
+				$("#tableBuku").html(data);
 			}
 		});
 	}, 1000);
@@ -39,7 +39,7 @@ $(document).ready(function () {
 			url: "admin/assets/ajax/absensi-public.php",
 			data: "",
 			success: function (data) {
-				$(".tb2").html(data);
+				$("#tableAbsen").html(data);
 			}
 		});
 	}, 1000);
