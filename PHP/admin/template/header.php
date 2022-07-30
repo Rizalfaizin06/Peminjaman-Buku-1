@@ -48,6 +48,9 @@ if (!isset($_SESSION["login"])) {
                         <a class="nav-link" href="rekapPengunjung.php">Rekap Pengunjung</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../">Tampilan Umum</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active fw-bold" href="logout.php">Logout</a>
                     </li>
                 </ul>

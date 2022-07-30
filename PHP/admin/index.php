@@ -8,11 +8,10 @@
 
 
 <div class="container" style="min-height: 405px;">
-    <div class="text-center mb-3">
-        <h1>WIRAPUSTAKA</h1>
-        <h3>SMKN 1 WIROSARI</h3>
-    </div>
-    <?php include "home.php"; ?>
+    <?php include "../index.php"; ?>
 </div>
+<script>
+    document.getElementById("loginAdmin").style.visibility = "hidden";
+</script>
 
 <?php include "template/footer.php";

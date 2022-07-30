@@ -1,6 +1,9 @@
 <?php
-session_start();
-require 'admin/fungsiAdmin.php';
+if (!session_id()) {
+    session_start();
+    require 'admin/fungsiAdmin.php';
+}
+
 
 if (!empty($_POST['Data1'])) {
     if ($_POST['sendMode'] == 'pinjam') {
@@ -315,7 +318,11 @@ $warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.
 
 
 
-		<a href="dst.php">destroy</a>
+		<div class="card shadow mt-4" id="loginAdmin">
+			<div class="card-body text-center">
+				<a href="admin/login.php" class="text-decoration-none text-dark fw-bold">Sign in Admin</a>
+			</div>
+		</div>
 	</div>
 
 	<script src="admin/assets/js/jquery-3.6.0.min.js"></script>

@@ -45,22 +45,6 @@ if (isset($_POST["login"])) {
 <body>
 
 
-    <!-- <form action="" method="post">
-    <ul>
-        <li>
-            <label for="username">username :</label>
-            <input type="text" name="username" id="username">
-        </li>
-        <li>
-            <label for="password">password :</label>
-            <input type="password" name="password" id="password">
-        </li>
-        <li>
-            <button type="submit" name="login">Login</button>
-        </li>
-    </ul>
-</form> -->
-
     <!-- Section: Design Block -->
     <section class="">
         <!-- Jumbotron -->
@@ -133,6 +117,8 @@ if (isset($_POST["login"])) {
                                         </p>
                                     </div>
                                 </form>
+                                <a href="../" class="text-decoration-none text text-black fw-bold text-center">
+                                    Back</a>
                             </div>
                         </div>
                     </div>
