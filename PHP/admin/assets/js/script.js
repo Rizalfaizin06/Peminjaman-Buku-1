@@ -17,6 +17,9 @@ $(document).ready(function () {
 	// 	}
 	// }
 
+	$('#loginAdmin').hide();
+
+	// ---------------Start Home Script
 
 	setInterval(function () {
 		jQuery.ajax({
@@ -63,26 +66,71 @@ $(document).ready(function () {
 	}, 1000);
 
 
+	// ---------------End Home Script
 
-
-
-
-
-
-
-
+	// ---------------Start Kelola Script
 
 	setInterval(function () {
 		jQuery.ajax({
 			type: "GET",
-			url: "assets/ajax/buku.php",
+			url: "assets/ajax/ajaxKelolaBuku.php",
 			data: "",
 			success: function (data) {
-				$(".table-buku").html(data);
-				console.log("succ");
+				$("#kelolaBuku").html(data);
 			}
 		});
 	}, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// setInterval(function () {
+	// 	jQuery.ajax({
+	// 		type: "GET",
+	// 		url: "assets/ajax/buku.php",
+	// 		data: "",
+	// 		success: function (data) {
+	// 			$(".table-buku").html(data);
+	// 			console.log("succ");
+	// 		}
+	// 	});
+	// }, 1000);
 
 
 	$('#filter').change(function () {
