@@ -2,7 +2,7 @@
 
 
 
-<div class="container" style="min-height: 405px;">
+<div class="container" style="min-height: 65vh;">
 
 
     <form action="?halaman=1" method="post">
@@ -72,7 +72,7 @@
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
             // echo $_SESSION['tanggalPeminjaman'];
-            echo '<b>Data Transaksi Tanggal '.$tgls.'</b><br /><br />';
+            echo '<b>Data Peminjam Tanggal '.$tgls.'</b><br /><br />';
 
             $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND DATE(tanggalPinjam)= '$tgls' LIMIT $awalData, $jumlahDataPerHalaman");
 
@@ -96,7 +96,7 @@
             $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
-            echo '<b>Data Transaksi Bulan '.date("F", strtotime($_SESSION['bulanTahunPeminjaman'])).', Tahun '.$thn.'</b><br /><br />';
+            echo '<b>Data Peminjam Bulan '.date("F", strtotime($_SESSION['bulanTahunPeminjaman'])).', Tahun '.$thn.'</b><br /><br />';
 
             $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND MONTH(tanggalPinjam)= '$bln' AND YEAR(tanggalPinjam)='$thn' LIMIT $awalData, $jumlahDataPerHalaman");
 
@@ -117,7 +117,7 @@
             $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
-            echo '<b>Data Transaksi Tahun '.$thn.'</b><br /><br />';
+            echo '<b>Data Peminjam Tahun '.$thn.'</b><br /><br />';
 
             $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND YEAR(tanggalPinjam)='$thn' LIMIT $awalData, $jumlahDataPerHalaman");
 
@@ -166,96 +166,99 @@
     <h1>Filter>hariinidate/tanggal/tahun</h1> -->
     <!-- $tanggalLahir = date("Y-m-d", strtotime($data['tanggalLahir'])); -->
 
+    <div class="table-responsive">
+        <table class="table">
 
-    <table class="table">
+            <tr class="table-dark">
+                <th>No.</th>
+                <th>Nama</th>
+                <th>Buku</th>
+                <th>Tanggal</th>
+                <th>Status</th>
+            </tr>
 
-        <tr class="table-dark">
-            <th>No.</th>
-            <th>Nama</th>
-            <th>Buku</th>
-            <th>Tanggal</th>
-            <th>Status</th>
-        </tr>
-
-        <?php
+            <?php
         $i = $awalData + 1;
 foreach ($absen as $oneView) : ?>
-        <tr class="trLower">
-            <td><?= $i; $i++?>
-            </td>
-            <td><?= $oneView["namaAnggota"]; ?>
-            </td>
-            <td><?= $oneView["namaBuku"]; ?>
-            </td>
-            <td><?= $oneView["tanggalPinjam"]; ?>
-            </td>
-            <?= ($oneView["tanggalKembali"] != "0000-00-00")? "<td>Sudah dikembalikan</td>" : "<td style='color: red; font-style: italic;'>Belum dikembalikan</td>" ; ?>
+            <tr class="trLower">
+                <td><?= $i;
+    $i++?>
+                </td>
+                <td><?= $oneView["namaAnggota"]; ?>
+                </td>
+                <td><?= $oneView["namaBuku"]; ?>
+                </td>
+                <td><?= $oneView["tanggalPinjam"]; ?>
+                </td>
+                <?= ($oneView["tanggalKembali"] != "0000-00-00")? "<td>Sudah dikembalikan</td>" : "<td style='color: red; font-style: italic;'>Belum dikembalikan</td>" ; ?>
 
 
-        </tr>
-        <?php endforeach; if ($jumlahData == '0') {
-            echo "<tr>
+            </tr>
+            <?php endforeach;
+if ($jumlahData == '0') {
+    echo "<tr>
                 <td colspan='5' align='center' style='color: red; font-style: italic; font-size: 20px;'>Data tidak ditemukan</td>
             </tr>";
-        }?>
+}?>
 
-    </table>
-
-
-    <?php if ($jumlahData != 0) :
-        echo "Total Data : ". $jumlahData;
-    endif; ?>
+        </table>
 
 
-    <!-- navigasi -->
-    <?php $banyakNavigasi = 2;
+        <?php if ($jumlahData != 0) :
+            echo "Total Data : ". $jumlahData;
+        endif; ?>
+
+
+        <!-- navigasi -->
+        <?php $banyakNavigasi = 2;
 
 $awalNavigasi = (($halamanAktif - $banyakNavigasi) < 1)? 1 :$halamanAktif - $banyakNavigasi;
 
 $akhirNavigasi = (($halamanAktif + $banyakNavigasi) > $jumlahHalaman)? $jumlahHalaman :$halamanAktif + $banyakNavigasi;
 
 ?>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
 
-            <?php if ($halamanAktif > $banyakNavigasi + 1 && $jumlahData !=0) : ?>
-            <li class="page-item"><a class="page-link" href="?halaman=1">Awal</a>
-            </li>
-            <?php endif; ?>
+                <?php if ($halamanAktif > $banyakNavigasi + 1 && $jumlahData !=0) : ?>
+                <li class="page-item"><a class="page-link" href="?halaman=1">Awal</a>
+                </li>
+                <?php endif; ?>
 
-            <?php if ($halamanAktif > 1 && $jumlahData !=0) : ?>
-            <li class="page-item"><a class="page-link"
-                    href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
-            </li>
-            <?php endif; ?>
+                <?php if ($halamanAktif > 1 && $jumlahData !=0) : ?>
+                <li class="page-item"><a class="page-link"
+                        href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
+                </li>
+                <?php endif; ?>
 
-            <?php for ($i = $awalNavigasi; $i <= $akhirNavigasi; $i++) :
-                if ($i == $halamanAktif) :?>
-            <li class="page-item"><a class="page-link"
-                    href="?halaman=<?= $i ?>"
-                    style="font-size: 20px; color: red;"><?= $i ?></a></li>
-            <?php else : ?>
-            <li class="page-item"><a class="page-link"
-                    href="?halaman=<?= $i ?>"><?= $i ?></a></li>
-            <?php endif;?>
-            <?php endfor;?>
+                <?php for ($i = $awalNavigasi; $i <= $akhirNavigasi; $i++) :
+                    if ($i == $halamanAktif) :?>
+                <li class="page-item"><a class="page-link"
+                        href="?halaman=<?= $i ?>"
+                        style="font-size: 20px; color: red;"><?= $i ?></a></li>
+                <?php else : ?>
+                <li class="page-item"><a class="page-link"
+                        href="?halaman=<?= $i ?>"><?= $i ?></a></li>
+                <?php endif;?>
+                <?php endfor;?>
 
-            <?php if ($halamanAktif < $jumlahHalaman) : ?>
-            <li class="page-item"><a class="page-link"
-                    href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
-            </li>
+                <?php if ($halamanAktif < $jumlahHalaman) : ?>
+                <li class="page-item"><a class="page-link"
+                        href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
+                </li>
 
-            <?php if ($halamanAktif < $jumlahHalaman - $banyakNavigasi && $jumlahData !=0) : ?>
-            <li class="page-item"><a class="page-link"
-                    href="?halaman=<?= $jumlahHalaman ?>">Akhir</a>
-            </li>
-            <?php endif; ?>
+                <?php if ($halamanAktif < $jumlahHalaman - $banyakNavigasi && $jumlahData !=0) : ?>
+                <li class="page-item"><a class="page-link"
+                        href="?halaman=<?= $jumlahHalaman ?>">Akhir</a>
+                </li>
+                <?php endif; ?>
 
-            <?php endif; ?>
+                <?php endif; ?>
 
 
-        </ul>
-    </nav>
+            </ul>
+        </nav>
+    </div>
 </div>
 
 <script src="assets/js/jquery-3.6.0.min.js"></script>

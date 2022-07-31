@@ -9,7 +9,7 @@ if (!session_id()) {
 $jumlahData = count(query("SELECT * FROM absensi WHERE DATE(tanggal)= '$tanggal'"));
 $jumlahDataPerHalaman = 5;
 $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
-$halamanAktif = (isset($_SESSION['sessionHalaman'])) ? $_SESSION['sessionHalaman'] : 1;
+$halamanAktif = (isset($_SESSION['sessionHalamanhome'])) ? $_SESSION['sessionHalamanhome'] : 1;
 $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
 $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tanggal'  ORDER BY id DESC LIMIT $awalData, $jumlahDataPerHalaman");

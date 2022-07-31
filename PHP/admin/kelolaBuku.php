@@ -5,7 +5,7 @@ if (isset($_GET["halaman"])) {
 
 
 
-<div class="container" style="min-height: 405px;">
+<div class="container" style="min-height: 65vh;">
     <h1>Kelola Buku</h1>
 
     <div class="row">

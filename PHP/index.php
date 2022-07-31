@@ -19,7 +19,7 @@ if (!empty($_POST['Data1'])) {
 
 
 if (isset($_GET["halaman"])) {
-    $_SESSION['sessionHalaman'] = $_GET["halaman"];
+    $_SESSION['sessionHalamanhome'] = $_GET["halaman"];
 }
 
 ?>
@@ -156,7 +156,7 @@ if ($oneView["stock"] > 0) {
 $jumlahDataPerHalaman = 5;
 $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
 
-$halamanAktif = (isset($_SESSION['sessionHalaman'])) ? $_SESSION['sessionHalaman'] : 1;
+$halamanAktif = (isset($_SESSION['sessionHalamanhome'])) ? $_SESSION['sessionHalamanhome'] : 1;
 $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
 $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tanggal'  ORDER BY id DESC LIMIT $awalData, $jumlahDataPerHalaman");
