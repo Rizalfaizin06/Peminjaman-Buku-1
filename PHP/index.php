@@ -18,8 +18,11 @@ if (!empty($_POST['Data1'])) {
 }
 
 
-if (isset($_GET["halaman"])) {
-    $_SESSION['sessionHalamanhome'] = $_GET["halaman"];
+if (isset($_GET["halamanAbsen"])) {
+    $_SESSION['sessionHalamanAbsenHome'] = $_GET["halamanAbsen"];
+}
+if (isset($_GET["halamanBuku"])) {
+    $_SESSION['sessionHalamanBukuHome'] = $_GET["halamanBuku"];
 }
 
 ?>
@@ -55,7 +58,7 @@ if (isset($_GET["halaman"])) {
 
 				<div class="row mt-2">
 					<div class="col-12 col-md-6 col-lg-4">
-						<form action="" method="post">
+						<form action="?halamanBuku=1" method="post">
 							<div class="input-group mb-3">
 								<input type="text" class="form-control" placeholder="Cari Buku" name="keywordBuku"
 									value="<?php if (isset($_POST['keywordBuku'])) {
@@ -72,21 +75,20 @@ if (isset($_GET["halaman"])) {
 						</form>
 					</div>
 				</div>
-
-				<table class="table" id="tableBuku">
-					<thead class="table-light">
-						<tr>
-							<th>No.</th>
-							<th>Nama Buku</th>
-							<th>Stock</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody class="table-group-divider">
-						<?php
+				<div id="tableBuku">
+					<table class="table" id="tableBuku">
+						<thead class="table-light">
+							<tr>
+								<th>No.</th>
+								<th>Nama Buku</th>
+								<th>Stock</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody class="table-group-divider">
+							<?php
                 
-$i = 1;
-
+                
 if (isset($_POST["buttonCariBuku"]) || isset($_SESSION['sessionKeywordBuku'])) {
     if (isset($_SESSION['sessionKeywordBuku'])) {
         if (isset($_POST["keywordBuku"]) && $_SESSION['sessionKeywordBuku'] != $_POST["keywordBuku"]) {
@@ -100,24 +102,49 @@ if (isset($_POST["buttonCariBuku"]) || isset($_SESSION['sessionKeywordBuku'])) {
         $_SESSION['sessionKeywordBuku'] = $keywordBuku;
     }
         
-    
-    $buku = query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku HAVING namaBuku LIKE '%$keywordBuku%'");
+
+
+    $jumlahDataBuku = count(query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku HAVING namaBuku LIKE '%$keywordBuku%' ORDER BY namaBuku"));
+    $jumlahDataPerHalamanBuku = 5;
+    $jumlahHalamanBuku = ceil($jumlahDataBuku / $jumlahDataPerHalamanBuku);
+
+    $halamanAktifBuku = (isset($_SESSION['sessionHalamanBukuHome'])) ? $_SESSION['sessionHalamanBukuHome'] : 1;
+    $awalDataBuku = ($jumlahDataPerHalamanBuku * $halamanAktifBuku) - $jumlahDataPerHalamanBuku;
+
+    $buku = query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku HAVING namaBuku LIKE '%$keywordBuku%' ORDER BY namaBuku LIMIT $awalDataBuku, $jumlahDataPerHalamanBuku");
+
+
+
+
+// $buku = query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku HAVING namaBuku LIKE '%$keywordBuku%'");
 } else {
-    $buku = query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku");
+    $jumlahDataBuku = count(query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku ORDER BY namaBuku"));
+    $jumlahDataPerHalamanBuku = 5;
+    $jumlahHalamanBuku = ceil($jumlahDataBuku / $jumlahDataPerHalamanBuku);
+
+    $halamanAktifBuku = (isset($_SESSION['sessionHalamanBukuHome'])) ? $_SESSION['sessionHalamanBukuHome'] : 1;
+    $awalDataBuku = ($jumlahDataPerHalamanBuku * $halamanAktifBuku) - $jumlahDataPerHalamanBuku;
+
+    $buku = query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku ORDER BY namaBuku LIMIT $awalDataBuku, $jumlahDataPerHalamanBuku");
+
+    // $buku = query("SELECT RFIDB, mapel.idBuku, namaBuku, COUNT(case when status = 1 then RFIDB end) stock FROM mapel LEFT JOIN buku ON buku.idBuku = mapel.idBuku GROUP BY mapel.idBuku");
 }
 
 if ((empty($buku))) {
     echo "<tr><td class='text-center' colspan='4' style='color: red; font-style: italic; font-size: 20px;'>Buku tidak ditemukan</td></tr>";
 }
+
+$i = $awalDataBuku + 1;
+
 foreach ($buku as $oneView) : ?>
-						<tr>
-							<td><?= $i; ?>
-							</td>
-							<td><?= $oneView["namaBuku"]; ?>
-							</td>
-							<td><?= $oneView["stock"]; ?>
-							</td>
-							<?php
+							<tr>
+								<td><?= $i; ?>
+								</td>
+								<td><?= $oneView["namaBuku"]; ?>
+								</td>
+								<td><?= $oneView["stock"]; ?>
+								</td>
+								<?php
 if ($oneView["stock"] > 0) {
     $stat = 'Tersedia';
 } else {
@@ -125,14 +152,108 @@ if ($oneView["stock"] > 0) {
 }
 
     ?>
-							<td><?= $stat; ?>
-							</td>
-						</tr>
-						<?php $i++; endforeach; ?>
-					</tbody>
-				</table>
+								<td><?= $stat; ?>
+								</td>
+							</tr>
+							<?php $i++; endforeach; ?>
+						</tbody>
+					</table>
+
+
+					<?php if ($jumlahDataBuku != 0) :
+    
+					    echo "<p>Total Buku : ". $jumlahDataBuku . "</p>";
+					endif;
+?>
+
+					<!-- navigasi -->
+					<?php $banyakNavigasi = 2;
+
+$awalNavigasi = (($halamanAktifBuku - $banyakNavigasi) < 1)? 1 :$halamanAktifBuku - $banyakNavigasi;
+
+$akhirNavigasi = (($halamanAktifBuku + $banyakNavigasi) > $jumlahHalamanBuku)? $jumlahHalamanBuku :$halamanAktifBuku + $banyakNavigasi;
+
+?>
+					<nav aria-label="Page navigation example">
+						<ul class="pagination">
+
+							<?php if ($halamanAktifBuku > $banyakNavigasi + 1 && $jumlahDataBuku !=0) : ?>
+							<li class="page-item"><a class="page-link" href="?halamanBuku=1">Awal</a>
+							</li>
+							<?php endif; ?>
+
+							<?php if ($halamanAktifBuku > 1 && $jumlahDataBuku !=0) : ?>
+							<li class="page-item"><a class="page-link"
+									href="?halamanBuku=<?= $halamanAktifBuku - 1 ?>">&laquo;</a>
+							</li>
+							<?php endif; ?>
+
+							<?php for ($i = $awalNavigasi; $i <= $akhirNavigasi; $i++) :
+							    if ($i == $halamanAktifBuku) :?>
+							<li class="page-item"><a class="page-link"
+									href="?halamanBuku=<?= $i ?>"
+									style="font-size: 20px; color: red;"><?= $i ?></a></li>
+							<?php else : ?>
+							<li class="page-item"><a class="page-link"
+									href="?halamanBuku=<?= $i ?>"><?= $i ?></a></li>
+							<?php endif;?>
+							<?php endfor;?>
+
+							<?php if ($halamanAktifBuku < $jumlahHalamanBuku) : ?>
+							<li class="page-item"><a class="page-link"
+									href="?halamanBuku=<?= $halamanAktifBuku + 1 ?>">&raquo;</a>
+							</li>
+							<?php endif; ?>
+
+							<?php if ($halamanAktifBuku < $jumlahHalamanBuku - $banyakNavigasi && $jumlahDataBuku !=0) : ?>
+							<li class="page-item"><a class="page-link"
+									href="?halamanBuku=<?= $jumlahHalamanBuku ?>">Akhir</a>
+							</li>
+							<?php endif; ?>
+						</ul>
+					</nav>
+				</div>
 			</div>
 		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -149,17 +270,67 @@ if ($oneView["stock"] > 0) {
 				<h3 class="text-center">Pengunjung Hari Ini</h3>
 			</div>
 			<div class="card-body">
+
+				<div class="row mt-2">
+					<div class="col-12 col-md-6 col-lg-4">
+						<form action="?halamanAbsen=1" method="post">
+							<div class="input-group mb-3">
+								<input type="text" class="form-control" placeholder="Cari Buku" name="KeywordAbsen"
+									value="<?php if (isset($_POST['KeywordAbsen'])) {
+									    echo $_POST['KeywordAbsen'];
+									} elseif (isset($_SESSION["sessionKeywordAbsen"])) {
+									    echo $_SESSION["sessionKeywordAbsen"];
+									} else {
+									    echo '';
+									}
+?>">
+								<button class="btn btn-outline-dark" type="submit" id="button-addon2"
+									name="btnTest">Cari</button>
+							</div>
+						</form>
+					</div>
+				</div>
+
 				<div id="tableAbsen">
 					<table class="table">
 						<?php
-            $jumlahData = count(query("SELECT * FROM absensi WHERE DATE(tanggal)= '$tanggal'"));
-$jumlahDataPerHalaman = 5;
-$jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
 
-$halamanAktif = (isset($_SESSION['sessionHalamanhome'])) ? $_SESSION['sessionHalamanhome'] : 1;
-$awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+            
+if (isset($_POST["btnTest"]) || isset($_SESSION['sessionKeywordAbsen'])) {
+    if (isset($_SESSION['sessionKeywordAbsen'])) {
+        if (isset($_POST["KeywordAbsen"]) && $_SESSION['sessionKeywordAbsen'] != $_POST["KeywordAbsen"]) {
+            $keywordAbsen = $_POST['KeywordAbsen'];
+            $_SESSION['sessionKeywordAbsen'] = $keywordAbsen;
+        } else {
+            $keywordAbsen = $_SESSION['sessionKeywordAbsen'];
+        }
+    } else {
+        $keywordAbsen = $_POST['KeywordAbsen'];
+        $_SESSION['sessionKeywordAbsen'] = $keywordAbsen;
+    }
 
-$absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tanggal'  ORDER BY id DESC LIMIT $awalData, $jumlahDataPerHalaman");
+    $jumlahData = count(query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tanggal' AND namaAnggota LIKE '%$keywordAbsen%'"));
+    $jumlahDataPerHalaman = 5;
+    $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+
+    $halamanAktif = (isset($_SESSION['sessionHalamanAbsenHome'])) ? $_SESSION['sessionHalamanAbsenHome'] : 1;
+    $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+
+    $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tanggal' AND namaAnggota LIKE '%$keywordAbsen%' ORDER BY jam DESC LIMIT $awalData, $jumlahDataPerHalaman");
+} else {
+    $jumlahData = count(query("SELECT * FROM absensi WHERE DATE(tanggal)= '$tanggal'"));
+    $jumlahDataPerHalaman = 5;
+    $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+
+    $halamanAktif = (isset($_SESSION['sessionHalamanAbsenHome'])) ? $_SESSION['sessionHalamanAbsenHome'] : 1;
+    $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+
+    $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tanggal' ORDER BY jam DESC LIMIT $awalData, $jumlahDataPerHalaman");
+}
+
+
+
+
 ?>
 						<thead class="table-light">
 							<tr>
@@ -172,7 +343,7 @@ $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP
 						</thead>
 						<tbody class="table-group-divider">
 							<?php
-        $i = $awalData + 1;
+    $i = $awalData + 1;
 foreach ($absen as $oneView) : ?>
 							<tr class="trLower">
 								<td><?= $i;
@@ -191,8 +362,8 @@ foreach ($absen as $oneView) : ?>
 							<?php endforeach;
 if ($jumlahData == '0') {
     echo "<tr>
-                <td colspan='5' align='center' style='color: red; font-style: italic; font-size: 20px;'>Belum ada data absensi</td>
-            </tr>";
+			<td colspan='5' align='center' style='color: red; font-style: italic; font-size: 20px;'>Belum ada data absensi</td>
+		</tr>";
 }?>
 						</tbody>
 					</table>
@@ -211,37 +382,37 @@ $akhirNavigasi = (($halamanAktif + $banyakNavigasi) > $jumlahHalaman)? $jumlahHa
 						<ul class="pagination">
 
 							<?php if ($halamanAktif > $banyakNavigasi + 1 && $jumlahData !=0) : ?>
-							<li class="page-item"><a class="page-link" href="?halaman=1">Awal</a>
+							<li class="page-item"><a class="page-link" href="?halamanAbsen=1">Awal</a>
 							</li>
 							<?php endif; ?>
 
 							<?php if ($halamanAktif > 1 && $jumlahData !=0) : ?>
 							<li class="page-item"><a class="page-link"
-									href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
+									href="?halamanAbsen=<?= $halamanAktif - 1 ?>">&laquo;</a>
 							</li>
 							<?php endif; ?>
 
 							<?php for ($i = $awalNavigasi; $i <= $akhirNavigasi; $i++) :
 							    if ($i == $halamanAktif) :?>
 							<li class="page-item"><a class="page-link"
-									href="?halaman=<?= $i ?>"
+									href="?halamanAbsen=<?= $i ?>"
 									style="font-size: 20px; color: red;"><?= $i ?></a></li>
 							<?php else : ?>
 							<li class="page-item"><a class="page-link"
-									href="?halaman=<?= $i ?>"><?= $i ?></a></li>
+									href="?halamanAbsen=<?= $i ?>"><?= $i ?></a></li>
 							<?php endif;?>
 							<?php endfor;?>
 
 							<?php if ($halamanAktif < $jumlahHalaman) : ?>
 							<li class="page-item"><a class="page-link"
-									href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
+									href="?halamanAbsen=<?= $halamanAktif + 1 ?>">&raquo;</a>
 							</li>
+							<?php endif; ?>
 
 							<?php if ($halamanAktif < $jumlahHalaman - $banyakNavigasi && $jumlahData !=0) : ?>
 							<li class="page-item"><a class="page-link"
-									href="?halaman=<?= $jumlahHalaman ?>">Akhir</a>
+									href="?halamanAbsen=<?= $jumlahHalaman ?>">Akhir</a>
 							</li>
-							<?php endif; ?>
 
 							<?php endif; ?>
 
@@ -249,12 +420,14 @@ $akhirNavigasi = (($halamanAktif + $banyakNavigasi) > $jumlahHalaman)? $jumlahHa
 						</ul>
 					</nav>
 					<?php if ($jumlahData != 0) :
-                    
+                
+					    $jumlahPengunjung = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal'")[0]["COUNT(*)"];
 					    $jumlahPengunjungWaspada = query("SELECT COUNT(*) FROM absensi WHERE tanggal='$tanggal' AND suhu > 36")[0]["COUNT(*)"];
-
-					    echo "<p>Total Pengunjung : ". $jumlahData . "</p>";
+            
+					    echo "<p>Total Pengunjung : ". $jumlahPengunjung . "</p>";
 					    echo "<p>Pengunjung Waspada : " . $jumlahPengunjungWaspada . "</p>";
-					endif; ?>
+					endif;
+?>
 				</div>
 			</div>
 		</div>
@@ -272,10 +445,10 @@ $warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.
 
 
 					<?php
-					    if (empty($warning)) {
-					        echo "<li class='list-group-item text-center'>Tidak ada peringatan</li>";
-					    }
-					    foreach ($warning as $oneView) : ?>
+       if (empty($warning)) {
+           echo "<li class='list-group-item text-center'>Tidak ada peringatan</li>";
+       }
+       foreach ($warning as $oneView) : ?>
 
 					<?= "<li class='list-group-item'><marquee direction='left'>"; ?>
 					<?php printf("Peringatan!! Atas Nama %s dari kelas %s untuk segera mengembalikan buku %s.", $oneView["namaAnggota"], $oneView["kelas"], $oneView["namaBuku"]); ?>
@@ -285,6 +458,22 @@ $warning = query("SELECT peminjaman.RFIDP, peminjaman.RFIDB, buku.idBuku, mapel.
 				</ul>
 			</div>
 		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
