@@ -29,7 +29,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
         // echo $_SESSION['tanggal'];
         echo '<b>Data Pengunjung Tanggal '.$tgls.'</b><br /><br />';
 
-        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tgls' LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND DATE(tanggal)= '$tgls' ORDER BY tanggal DESC, jam DESC LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$tgls."'";
     } elseif ($filter == '2') {
@@ -52,7 +52,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
 
         echo '<b>Data Pengunjung Bulan '.date("F", strtotime($_SESSION['bulanTahun'])).', Tahun '.$thn.'</b><br /><br />';
 
-        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND MONTH(tanggal)= '$bln' AND YEAR(tanggal)='$thn' LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND MONTH(tanggal)= '$bln' AND YEAR(tanggal)='$thn' ORDER BY tanggal DESC, jam DESC LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$bln."'";
     } elseif ($filter == '3') {
@@ -72,7 +72,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
 
         echo '<b>Data Pengunjung Tahun '.$thn.'</b><br /><br />';
 
-        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND YEAR(tanggal)='$thn' LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP AND YEAR(tanggal)='$thn' ORDER BY tanggal DESC, jam DESC LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$thn."'";
     } else {
@@ -89,7 +89,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
 
         echo '<b>Menampilkan Semua Data</b><br /><br />';
 
-        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT * FROM absensi, anggota WHERE absensi.RFIDP=anggota.RFIDP ORDER BY tanggal DESC, jam DESC LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT * FROM absensi";
     }

@@ -29,7 +29,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
         // echo $_SESSION['tanggalPeminjaman'];
         echo '<b>Data Peminjam Tanggal '.$tgls.'</b><br /><br />';
 
-        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND DATE(tanggalPinjam)= '$tgls' LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND DATE(tanggalPinjam)= '$tgls' ORDER BY tanggalPinjam DESC, namaAnggota, tanggalKembali LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT * FROM peminjaman WHERE DATE(tanggalPinjam)='".$tgls."'";
     } elseif ($filter == '2') {
@@ -53,7 +53,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
 
         echo '<b>Data Peminjam Bulan '.date("F", strtotime($_SESSION['bulanTahunPeminjaman'])).', Tahun '.$thn.'</b><br /><br />';
 
-        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND MONTH(tanggalPinjam)= '$bln' AND YEAR(tanggalPinjam)='$thn' LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND MONTH(tanggalPinjam)= '$bln' AND YEAR(tanggalPinjam)='$thn' ORDER BY tanggalPinjam DESC, namaAnggota, tanggalKembali LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT * FROM peminjaman WHERE DATE(tanggalPinjam)='".$bln."'";
     } elseif ($filter == '3') {
@@ -74,7 +74,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
 
         echo '<b>Data Peminjam Tahun '.$thn.'</b><br /><br />';
 
-        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND YEAR(tanggalPinjam)='$thn' LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND YEAR(tanggalPinjam)='$thn' ORDER BY tanggalPinjam DESC, namaAnggota, tanggalKembali LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP AND DATE(tanggalPinjam)='".$thn."'";
     } else {
@@ -91,7 +91,7 @@ if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['
 
         echo '<b>Menampilkan Semua Data</b><br /><br />';
 
-        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP LIMIT $awalData, $jumlahDataPerHalaman");
+        $absen = query("SELECT namaAnggota, namaBuku, tanggalPinjam, tanggalKembali FROM peminjaman P, buku B, mapel M, anggota A WHERE P.RFIDB=B.RFIDB AND B.idBuku=M.idBuku AND P.RFIDP=A.RFIDP ORDER BY tanggalPinjam DESC, namaAnggota, tanggalKembali LIMIT $awalData, $jumlahDataPerHalaman");
 
         $query = "SELECT * FROM absensi";
     }
