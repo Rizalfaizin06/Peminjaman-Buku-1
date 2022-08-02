@@ -26,7 +26,7 @@ if (isset($_POST["submit"])) {
 
 
 ?>
-<div class="container" style="min-height: 600px;">
+<div class="container" style="min-height: 65vh;">
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="card">

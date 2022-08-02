@@ -93,7 +93,6 @@
             $bln = date("m", strtotime($_SESSION['bulanTahun']));
 
             $thn = date("Y", strtotime($_SESSION['bulanTahun']));
-
             
             $jumlahData = count(query("SELECT * FROM absensi WHERE MONTH(tanggal)= '$bln' AND YEAR(tanggal)='$thn'"));
             $jumlahDataPerHalaman = 8;
@@ -107,7 +106,6 @@
 
             $query = "SELECT * FROM absensi WHERE DATE(tanggal)='".$bln."'";
         } elseif ($filter == '3') {
-            // echo "masuk tahum";
             if (!isset($_SESSION['tahun']) || !empty($_POST['tahun'])) {
                 $_SESSION['filter'] = $filter;
                 $thn= $_POST['tahun'];
@@ -148,21 +146,6 @@
     }
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

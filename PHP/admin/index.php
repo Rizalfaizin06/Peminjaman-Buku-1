@@ -3,7 +3,7 @@
 
 
 
-<div class="container" style="min-height: 405px;">
+<div class="container" style="min-height: 65vh;">
     <?php include "../index.php"; ?>
 </div>
 

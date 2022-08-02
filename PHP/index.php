@@ -75,7 +75,7 @@ if (isset($_GET["halamanBuku"])) {
 						</form>
 					</div>
 				</div>
-				<div id="tableBuku">
+				<div class="table-responsive" id="tableBuku">
 					<table class="table" id="tableBuku">
 						<thead class="table-light">
 							<tr>
@@ -158,7 +158,6 @@ if ($oneView["stock"] > 0) {
 							<?php $i++; endforeach; ?>
 						</tbody>
 					</table>
-
 
 					<?php if ($jumlahDataBuku != 0) :
     
@@ -291,7 +290,7 @@ $akhirNavigasi = (($halamanAktifBuku + $banyakNavigasi) > $jumlahHalamanBuku)? $
 					</div>
 				</div>
 
-				<div id="tableAbsen">
+				<div class="table-responsive" id="tableAbsen">
 					<table class="table">
 						<?php
 

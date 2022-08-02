@@ -19,6 +19,44 @@ $(document).ready(function () {
 
 	$('#loginAdmin').hide();
 
+	// $(document).on('click', '.delete', function () {
+	// 	var id = $(this).attr("id");
+	// 	if (confirm("Are you sure you want to remove this?")) {
+	// 		location.href = 'ubahBuku.php?rfidb=' + id;
+	// 	}
+	// });
+
+	// $(".del").click(function () {
+	// 	if (confirm('Are you sure to hide')) {
+	// 		location.href = 'newPage.html';
+	// 	}
+	// });
+
+	$(".remove").click(function () {
+		var id = $(this).parents("tr").attr("id");
+
+
+		if (confirm('Are you sure to remove this record ?')) {
+			$.ajax({
+				url: 'hapusBuku.php',
+				type: 'GET',
+				data: {
+					id: id
+				},
+				error: function () {
+					alert('Something is wrong');
+				},
+				success: function (data) {
+					$("#" + id).remove();
+					alert("Record removed successfully");
+				}
+			});
+		}
+	});
+
+
+
+
 	// ---------------Start Home Script
 
 	setInterval(function () {

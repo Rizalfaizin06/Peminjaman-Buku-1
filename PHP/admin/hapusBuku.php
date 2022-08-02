@@ -1,7 +1,7 @@
 <?php
 
 require 'fungsiAdmin.php';
-    
+
 $rfidb = $_GET["rfidb"];
 
 if (hapusBuku($rfidb) > 0) {
