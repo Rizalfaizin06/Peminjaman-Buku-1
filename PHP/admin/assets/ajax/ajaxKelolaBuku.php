@@ -87,7 +87,13 @@ foreach ($namaBuku as $oneView) : ?>
                     class="btn btn-danger" onclick="return confirm('yakin?');">hapus</a>
             </td>
         </tr>
-        <?php $i++; endforeach; ?>
+        <?php $i++; endforeach;
+if ($jumlahData == '0') {
+    echo "<tr>
+                    <td colspan='6' align='center' style='color: red; font-style: italic; font-size: 20px;'>Tidak ada data Buku</td>
+                </tr>";
+}
+?>
     </tbody>
 </table>
 

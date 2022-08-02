@@ -32,27 +32,27 @@ $(document).ready(function () {
 	// 	}
 	// });
 
-	$(".remove").click(function () {
-		var id = $(this).parents("tr").attr("id");
+	// $(".remove").click(function () {
+	// 	var id = $(this).parents("tr").attr("id");
 
 
-		if (confirm('Are you sure to remove this record ?')) {
-			$.ajax({
-				url: 'hapusBuku.php',
-				type: 'GET',
-				data: {
-					id: id
-				},
-				error: function () {
-					alert('Something is wrong');
-				},
-				success: function (data) {
-					$("#" + id).remove();
-					alert("Record removed successfully");
-				}
-			});
-		}
-	});
+	// 	if (confirm('Are you sure to remove this record ?')) {
+	// 		$.ajax({
+	// 			url: 'hapusBuku.php',
+	// 			type: 'GET',
+	// 			data: {
+	// 				id: id
+	// 			},
+	// 			error: function () {
+	// 				alert('Something is wrong');
+	// 			},
+	// 			success: function (data) {
+	// 				$("#" + id).remove();
+	// 				alert("Record removed successfully");
+	// 			}
+	// 		});
+	// 	}
+	// });
 
 
 
@@ -119,17 +119,27 @@ $(document).ready(function () {
 		});
 	}, 1000);
 
+	setInterval(function () {
+		jQuery.ajax({
+			type: "GET",
+			url: "assets/ajax/ajaxKelolaMapel.php",
+			data: "",
+			success: function (data) {
+				$("#kelolaMapel").html(data);
+			}
+		});
+	}, 1000);
 
-
-
-
-
-
-
-
-
-
-
+	setInterval(function () {
+		jQuery.ajax({
+			type: "GET",
+			url: "assets/ajax/ajaxKelolaAnggota.php",
+			data: "",
+			success: function (data) {
+				$("#kelolaAnggota").html(data);
+			}
+		});
+	}, 1000);
 
 
 
