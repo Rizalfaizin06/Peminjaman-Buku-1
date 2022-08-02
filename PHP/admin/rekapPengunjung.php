@@ -5,12 +5,17 @@
 //     $tgl = $_SESSION['tanggal'];
 // // }
 // echo $_SESSION['filter'];
+
+if (isset($_GET["halamanRekapPengunjung"])) {
+    $_SESSION['SessionHalamanRekapPengunjung'] = $_GET["halamanRekapPengunjung"];
+}
+
 ?>
 
 <div class="container" style="min-height: 65vh;">
 
 
-    <form action="?halaman=1" method="post">
+    <form action="?halamanRekapPengunjung=1" method="post">
         <div class="filter">
             <label>Filter Berdasarkan</label><br>
             <select name="filter" id="filter">
@@ -53,7 +58,14 @@
 
 
 
-    <?php
+
+    <!-- 
+
+    <h1>Filter>hariinidate/tanggal/tahun</h1> -->
+    <!-- $tanggalLahir = date("Y-m-d", strtotime($data['tanggalLahir'])); -->
+
+    <div id="rekapPengunjung" class="table-responsive">
+        <?php
     if ((isset($_POST['filter']) && ! empty($_POST['filter'])) || !empty($_SESSION['filter'])) {
         if (!empty($_POST['filter']) && $_POST['filter'] != $_SESSION['filter']) {
             $filter = $_POST['filter'];
@@ -73,7 +85,7 @@
             $jumlahData = count(query("SELECT * FROM absensi WHERE DATE(tanggal)= '$tgls'"));
             $jumlahDataPerHalaman = 8;
             $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
-            $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+            $halamanAktif = (isset($_SESSION["SessionHalamanRekapPengunjung"])) ? $_SESSION["SessionHalamanRekapPengunjung"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
             // echo $_SESSION['tanggal'];
@@ -97,7 +109,7 @@
             $jumlahData = count(query("SELECT * FROM absensi WHERE MONTH(tanggal)= '$bln' AND YEAR(tanggal)='$thn'"));
             $jumlahDataPerHalaman = 8;
             $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
-            $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+            $halamanAktif = (isset($_SESSION["SessionHalamanRekapPengunjung"])) ? $_SESSION["SessionHalamanRekapPengunjung"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
             echo '<b>Data Pengunjung Bulan '.date("F", strtotime($_SESSION['bulanTahun'])).', Tahun '.$thn.'</b><br /><br />';
@@ -117,7 +129,7 @@
             $jumlahData = count(query("SELECT * FROM absensi WHERE YEAR(tanggal)='$thn'"));
             $jumlahDataPerHalaman = 8;
             $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
-            $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+            $halamanAktif = (isset($_SESSION["SessionHalamanRekapPengunjung"])) ? $_SESSION["SessionHalamanRekapPengunjung"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
             echo '<b>Data Pengunjung Tahun '.$thn.'</b><br /><br />';
@@ -134,7 +146,7 @@
             $jumlahData = count(query("SELECT * FROM absensi"));
             $jumlahDataPerHalaman = 8;
             $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
-            $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+            $halamanAktif = (isset($_SESSION["SessionHalamanRekapPengunjung"])) ? $_SESSION["SessionHalamanRekapPengunjung"] : 1;
             $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 
             echo '<b>Menampilkan Semua Data</b><br /><br />';
@@ -149,12 +161,6 @@
 
 
 
-    <!-- 
-
-    <h1>Filter>hariinidate/tanggal/tahun</h1> -->
-    <!-- $tanggalLahir = date("Y-m-d", strtotime($data['tanggalLahir'])); -->
-
-    <div id="rekapPengunjung" class="table-responsive">
         <table class="table">
 
             <tr class="table-dark">
@@ -209,35 +215,35 @@ $akhirNavigasi = (($halamanAktif + $banyakNavigasi) > $jumlahHalaman)? $jumlahHa
             <ul class="pagination">
 
                 <?php if ($halamanAktif > $banyakNavigasi + 1 && $jumlahData !=0) : ?>
-                <li class="page-item"><a class="page-link" href="?halaman=1">Awal</a>
+                <li class="page-item"><a class="page-link" href="?halamanRekapPengunjung=1">Awal</a>
                 </li>
                 <?php endif; ?>
 
                 <?php if ($halamanAktif > 1 && $jumlahData !=0) : ?>
                 <li class="page-item"><a class="page-link"
-                        href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
+                        href="?halamanRekapPengunjung=<?= $halamanAktif - 1 ?>">&laquo;</a>
                 </li>
                 <?php endif; ?>
 
                 <?php for ($i = $awalNavigasi; $i <= $akhirNavigasi; $i++) :
                     if ($i == $halamanAktif) :?>
                 <li class="page-item"><a class="page-link"
-                        href="?halaman=<?= $i ?>"
+                        href="?halamanRekapPengunjung=<?= $i ?>"
                         style="font-size: 20px; color: red;"><?= $i ?></a></li>
                 <?php else : ?>
                 <li class="page-item"><a class="page-link"
-                        href="?halaman=<?= $i ?>"><?= $i ?></a></li>
+                        href="?halamanRekapPengunjung=<?= $i ?>"><?= $i ?></a></li>
                 <?php endif;?>
                 <?php endfor;?>
 
                 <?php if ($halamanAktif < $jumlahHalaman) : ?>
                 <li class="page-item"><a class="page-link"
-                        href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
+                        href="?halamanRekapPengunjung=<?= $halamanAktif + 1 ?>">&raquo;</a>
                 </li>
 
                 <?php if ($halamanAktif < $jumlahHalaman - $banyakNavigasi && $jumlahData !=0) : ?>
                 <li class="page-item"><a class="page-link"
-                        href="?halaman=<?= $jumlahHalaman ?>">Akhir</a>
+                        href="?halamanRekapPengunjung=<?= $jumlahHalaman ?>">Akhir</a>
                 </li>
                 <?php endif; ?>
 

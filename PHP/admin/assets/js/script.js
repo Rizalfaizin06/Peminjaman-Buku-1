@@ -141,6 +141,28 @@ $(document).ready(function () {
 		});
 	}, 1000);
 
+	setInterval(function () {
+		jQuery.ajax({
+			type: "GET",
+			url: "assets/ajax/ajaxRekapPengunjung.php",
+			data: "",
+			success: function (data) {
+				$("#rekapPengunjung").html(data);
+			}
+		});
+	}, 1000);
+
+	setInterval(function () {
+		jQuery.ajax({
+			type: "GET",
+			url: "assets/ajax/ajaxRekapPeminjam.php",
+			data: "",
+			success: function (data) {
+				$("#rekapPeminjam").html(data);
+			}
+		});
+	}, 1000);
+
 
 
 
