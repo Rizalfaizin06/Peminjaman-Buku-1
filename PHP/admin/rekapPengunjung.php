@@ -154,7 +154,7 @@
     <h1>Filter>hariinidate/tanggal/tahun</h1> -->
     <!-- $tanggalLahir = date("Y-m-d", strtotime($data['tanggalLahir'])); -->
 
-    <div class="table-responsive">
+    <div id="rekapPengunjung" class="table-responsive">
         <table class="table">
 
             <tr class="table-dark">

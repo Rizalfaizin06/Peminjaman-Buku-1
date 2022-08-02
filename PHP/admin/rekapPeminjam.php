@@ -166,7 +166,7 @@
     <h1>Filter>hariinidate/tanggal/tahun</h1> -->
     <!-- $tanggalLahir = date("Y-m-d", strtotime($data['tanggalLahir'])); -->
 
-    <div class="table-responsive">
+    <div id="rekapPeminjam" class="table-responsive">
         <table class="table">
 
             <tr class="table-dark">
