@@ -274,8 +274,8 @@ $akhirNavigasi = (($halamanAktifBuku + $banyakNavigasi) > $jumlahHalamanBuku)? $
 					<div class="col-12 col-md-6 col-lg-4">
 						<form action="?halamanAbsen=1" method="post">
 							<div class="input-group mb-3">
-								<input type="text" class="form-control" placeholder="Cari Buku" name="KeywordAbsen"
-									value="<?php if (isset($_POST['KeywordAbsen'])) {
+								<input type="text" class="form-control" placeholder="Cari Pengunjung"
+									name="KeywordAbsen" value="<?php if (isset($_POST['KeywordAbsen'])) {
 									    echo $_POST['KeywordAbsen'];
 									} elseif (isset($_SESSION["sessionKeywordAbsen"])) {
 									    echo $_SESSION["sessionKeywordAbsen"];
@@ -284,7 +284,7 @@ $akhirNavigasi = (($halamanAktifBuku + $banyakNavigasi) > $jumlahHalamanBuku)? $
 									}
 ?>">
 								<button class="btn btn-outline-dark" type="submit" id="button-addon2"
-									name="btnTest">Cari</button>
+									name="btnCariAbsen">Cari</button>
 							</div>
 						</form>
 					</div>
@@ -295,7 +295,7 @@ $akhirNavigasi = (($halamanAktifBuku + $banyakNavigasi) > $jumlahHalamanBuku)? $
 						<?php
 
             
-if (isset($_POST["btnTest"]) || isset($_SESSION['sessionKeywordAbsen'])) {
+if (isset($_POST["btnCariAbsen"]) || isset($_SESSION['sessionKeywordAbsen'])) {
     if (isset($_SESSION['sessionKeywordAbsen'])) {
         if (isset($_POST["KeywordAbsen"]) && $_SESSION['sessionKeywordAbsen'] != $_POST["KeywordAbsen"]) {
             $keywordAbsen = $_POST['KeywordAbsen'];

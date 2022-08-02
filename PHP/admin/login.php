@@ -11,23 +11,28 @@ if (isset($_POST["login"])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    $result = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username' ");
+    $result = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username'");
     //cek username
     if (mysqli_num_rows($result) === 1) {
         //cek password
         $row = mysqli_fetch_assoc($result);
+        
         if (password_verify($password, $row["password"])) {
-            //set session
-            $_SESSION["login"] = true;
-            $_SESSION["filter"] = "4";
-            $_SESSION["filterPeminjaman"] = "4";
-
-            header("location: index.php");
-            exit;
+            if ($row['status'] == 1) {
+                //set session
+                $_SESSION["login"] = true;
+                $_SESSION["filter"] = "4";
+                $_SESSION["filterPeminjaman"] = "4";
+                header("location: index.php");
+                exit;
+            }
+            $error = "Akun anda masih menunggu persetujuan";
+        } else {
+            $error = "Password salah";
         }
+    } else {
+        $error = "Username salah";
     }
-
-    $error = true;
 }
 ?>
 
@@ -72,7 +77,8 @@ if (isset($_POST["login"])) {
                                     <!-- 2 column grid layout with text inputs for the first and last names -->
                                     <h1 class="mb-3 fw-bold">LOGIN</h1>
                                     <?php if (isset($error)) : ?>
-                                    <p style="color: red; font-style: italic;">Username / password salah</p>
+                                    <p style="color: red; font-style: italic;"><?= $error ?>
+                                    </p>
                                     <?php endif; ?>
                                     <!-- Email input -->
                                     <div class="form-outline mb-4">

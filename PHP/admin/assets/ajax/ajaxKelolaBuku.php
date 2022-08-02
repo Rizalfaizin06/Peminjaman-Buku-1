@@ -6,14 +6,46 @@ require '../../fungsiAdmin.php';
 ?>
 <table class="table">
     <?php
-        $jumlahData = count(query("SELECT * FROM buku"));
-$jumlahDataPerHalaman = 8;
-$jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
 
-$halamanAktif = (isset($_SESSION['sessionHalamanKelolaBuku'])) ? $_SESSION['sessionHalamanKelolaBuku'] : 1;
-$awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+if (isset($_POST["btnCariKelBuku"]) || isset($_SESSION['sessionKeywordKelBuku'])) {
+    if (isset($_SESSION['sessionKeywordKelBuku'])) {
+        if (isset($_POST["KeywordKelBuku"]) && $_SESSION['sessionKeywordKelBuku'] != $_POST["KeywordKelBuku"]) {
+            $keywordKelBuku = $_POST['KeywordKelBuku'];
+            $_SESSION['sessionKeywordKelBuku'] = $keywordKelBuku;
+        } else {
+            $keywordKelBuku = $_SESSION['sessionKeywordKelBuku'];
+        }
+    } else {
+        $keywordKelBuku = $_POST['KeywordKelBuku'];
+        $_SESSION['sessionKeywordKelBuku'] = $keywordKelBuku;
+    }
 
-$namaBuku = query("SELECT RFIDB, mapel.idBuku, namaBuku, status FROM mapel RIGHT JOIN buku ON buku.idBuku = mapel.idBuku ORDER BY idBuku, status DESC, RFIDB LIMIT $awalData, $jumlahDataPerHalaman");
+    $jumlahData = count(query("SELECT RFIDB, mapel.idBuku, namaBuku, status FROM mapel RIGHT JOIN buku ON buku.idBuku = mapel.idBuku WHERE namaBuku LIKE '%$keywordKelBuku%'"));
+    $jumlahDataPerHalaman = 5;
+    $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+
+    $halamanAktif = (isset($_SESSION['sessionHalamanKelolaBuku'])) ? $_SESSION['sessionHalamanKelolaBuku'] : 1;
+    $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+
+    $namaBuku = query("SELECT RFIDB, mapel.idBuku, namaBuku, status FROM mapel RIGHT JOIN buku ON buku.idBuku = mapel.idBuku WHERE namaBuku LIKE '%$keywordKelBuku%' ORDER BY idBuku, status DESC, RFIDB LIMIT $awalData, $jumlahDataPerHalaman");
+} else {
+    $jumlahData = count(query("SELECT * FROM buku"));
+    $jumlahDataPerHalaman = 5;
+    $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+
+    $halamanAktif = (isset($_SESSION['sessionHalamanKelolaBuku'])) ? $_SESSION['sessionHalamanKelolaBuku'] : 1;
+    $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+
+    $namaBuku = query("SELECT RFIDB, mapel.idBuku, namaBuku, status FROM mapel RIGHT JOIN buku ON buku.idBuku = mapel.idBuku ORDER BY idBuku, status DESC, RFIDB LIMIT $awalData, $jumlahDataPerHalaman");
+}
+
+
+
+
+
+
+
+
 ?>
     <thead class="table-dark">
         <tr>
@@ -75,36 +107,36 @@ $akhirNavigasi = (($halamanAktif + $banyakNavigasi) > $jumlahHalaman)? $jumlahHa
     <ul class="pagination">
 
         <?php if ($halamanAktif > $banyakNavigasi + 1 && $jumlahData !=0) : ?>
-        <li class="page-item"><a class="page-link" href="?halaman=1">Awal</a>
+        <li class="page-item"><a class="page-link" href="?halamanKelBuku=1">Awal</a>
         </li>
         <?php endif; ?>
 
         <?php if ($halamanAktif > 1 && $jumlahData !=0) : ?>
         <li class="page-item"><a class="page-link"
-                href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
+                href="?halamanKelBuku=<?= $halamanAktif - 1 ?>">&laquo;</a>
         </li>
         <?php endif; ?>
 
         <?php for ($i = $awalNavigasi; $i <= $akhirNavigasi; $i++) :
             if ($i == $halamanAktif) :?>
         <li class="page-item"><a class="page-link"
-                href="?halaman=<?= $i ?>"
+                href="?halamanKelBuku=<?= $i ?>"
                 style="font-size: 20px; color: red;"><?= $i ?></a>
         </li>
         <?php else : ?>
         <li class="page-item"><a class="page-link"
-                href="?halaman=<?= $i ?>"><?= $i ?></a></li>
+                href="?halamanKelBuku=<?= $i ?>"><?= $i ?></a></li>
         <?php endif;?>
         <?php endfor;?>
 
         <?php if ($halamanAktif < $jumlahHalaman) : ?>
         <li class="page-item"><a class="page-link"
-                href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
+                href="?halamanKelBuku=<?= $halamanAktif + 1 ?>">&raquo;</a>
         </li>
 
         <?php if ($halamanAktif < $jumlahHalaman - $banyakNavigasi && $jumlahData !=0) : ?>
         <li class="page-item"><a class="page-link"
-                href="?halaman=<?= $jumlahHalaman ?>">Akhir</a>
+                href="?halamanKelBuku=<?= $jumlahHalaman ?>">Akhir</a>
         </li>
         <?php endif; ?>
 
