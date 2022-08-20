@@ -143,14 +143,11 @@ void loop() {
 }
 
 String scann() {
-  while ( ! mfrc522.PICC_IsNewCardPresent()) 
+  while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
   {
     delay(50);
   }
-  while ( ! mfrc522.PICC_ReadCardSerial()) 
-  {
-    delay(50);
-  }
+  
   buzer1();
 //  Serial.print("UID :");
   String guid;

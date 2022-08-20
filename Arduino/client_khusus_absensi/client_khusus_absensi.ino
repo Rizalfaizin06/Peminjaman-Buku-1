@@ -139,11 +139,9 @@ void loop() {
 
 String scann() {
   int hir = digitalRead(ir);
-  while ( ! mfrc522.PICC_IsNewCardPresent()) 
+  while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
   {
-  }
-  while ( ! mfrc522.PICC_ReadCardSerial()) 
-  {
+    delay(50);
   }
   buzer1();
 //  Serial.print("UID :");
