@@ -36,8 +36,11 @@ Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 int Led_OnBoard = 2;
 const int buzz = 0;
-const int btn = 25;
+const int btn1 = 27;
+const int btn2 = 26;
+const int btn3 = 25;
 
+int button3;
 
 bool quit = 0;
 String iData1 = "1";
@@ -70,7 +73,9 @@ String dataUpload[10];
 
 void setup() {
   Serial.begin(115200);
-  pinMode(btn, INPUT_PULLUP);
+  pinMode(btn1, INPUT_PULLUP);
+  pinMode(btn2, INPUT_PULLUP);
+  pinMode(btn3, INPUT_PULLUP);
   pinMode(Led_OnBoard, OUTPUT);
   pinMode(buzz, OUTPUT);
   SPI.begin();
@@ -94,7 +99,7 @@ void setup() {
     Serial.print(".");
     delay(250);
   }
-  
+  buzzer(2);
   Serial.println("OK.");
   Serial.println("Connected to Network/SSID");
   Serial.print("IP address: ");
@@ -109,29 +114,61 @@ void setup() {
 }
 
 void loop() {
-  lcd.setCursor (3,0);
-  lcd.print("PEMINJAMAN");
-  lcd.setCursor (6,1);
-  lcd.print("BUKU");
-  int button = digitalRead(btn);
+  opsi();
+}
+
+void cancel() {
+  return opsi();
+}
+
+void opsi() {
+  lcd.setCursor (1,0);
+  lcd.print("SILAHKAN PILIH");
+  lcd.setCursor (0,1);
+  lcd.print("PINJAM / KEMBALI");
+  int button1 = digitalRead(btn1);
+  int button2 = digitalRead(btn2);
   delay(50);
-  if ( button == 0 ) {
+  while (button1 == 1 && button2 == 1) {
+    button1 = digitalRead(btn1);
+    button2 = digitalRead(btn2);
+    delay(50);
+    Serial.print(button1);
+  }
+  Serial.print("masuk");
+  if ( button1 == 0 ) {
     lcd.clear();
     lcd.setCursor (2,0);
     lcd.print("PENGEMBALIAN");
     lcd.setCursor (6,1);
     lcd.print("BUKU");
-    buzer1();
+    buzzer(1);
     Serial.println("Kembali");
+    while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
+    {
+    delay(50);
+    button3 = digitalRead(btn3);
+      if ( button3 == 0 ) {
+        buzzer(2);
+        return opsi();   
+      }
+    }
     perpus("kembali");
   }
-  if ( ! mfrc522.PICC_IsNewCardPresent()) 
-  {
-    return;
+  
+  if ( button2 == 0 ) {
+    lcd.clear();
+    lcd.setCursor (3,0);
+    lcd.print("PEMINJAMAN");
+    lcd.setCursor (6,1);
+    lcd.print("BUKU");
+    buzzer(1);
+    Serial.println("Pinjam");
+    
+    perpus("pinjam");
   }
   
-  Serial.println("Pinjam");
-  perpus("pinjam");
+  
   
   
   Serial.print("suadah enddd");
@@ -145,10 +182,11 @@ void loop() {
 String scann() {
   while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
   {
+    
     delay(50);
   }
   
-  buzer1();
+  buzzer(1);
 //  Serial.print("UID :");
   String guid;
   String content= "";
@@ -205,6 +243,11 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   delay(1500);
   int c = 0;
   while (httpCode != 200){
+            button3 = digitalRead(btn3);
+            if ( button3 == 0 ) {
+              buzzer(2);
+              return opsi();
+            }
             c++;
             if (c == 4 ) {
               WiFi.disconnect();
@@ -274,9 +317,11 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   if (statusKirim == "BERHASIL") {
     lcd.setCursor (4,1);
     lcd.print("BERHASIL");
+    buzzer(1);
   } else {
     lcd.setCursor (5,1);
     lcd.print("GAGAL");
+    buzzer(5);
   }
   http.end();
   delay(1000);
@@ -289,7 +334,15 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
 
 void perpus(String SM) {
   sendMode = SM;
-  
+  while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
+  {
+    delay(50);
+    button3 = digitalRead(btn3);
+    if ( button3 == 0 ) {
+      buzzer(2);
+      return opsi();   
+    }
+  }
   dataUpload[0] = scann();
   Serial.print(dataUpload[0]);
   delay(700);
@@ -299,12 +352,30 @@ void perpus(String SM) {
   lcd.setCursor (6,1);
   lcd.print("BUKU");
   int i = 1;
+  while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
+  {
+    delay(50);
+    button3 = digitalRead(btn3);
+    if ( button3 == 0 ) {
+      buzzer(2);
+      return opsi();   
+    }
+  }
   dataUpload[i] = scann();
   delay(700);
   
   while (dataUpload[0] != dataUpload[i]) {
     Serial.print(dataUpload[i]);
     i++;
+    while ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial()) 
+    {
+      delay(50);
+      button3 = digitalRead(btn3);
+      if ( button3 == 0 ) {
+        buzzer(2);
+        return opsi();   
+      }
+    }
     dataUpload[i] = scann();
       delay(700);
     
@@ -365,7 +436,7 @@ void perpus(String SM) {
 //  temp = mlx.readObjectTempC();
 //  temp = temp + 1.7;
 //  Serial.println(temp);
-//  buzer1();
+//  buzzer(1);
 //  if (temp >= 37){
 //    stats = "Bahaya";
 //  }
@@ -398,9 +469,11 @@ String ambilData(String dataPayload, String varr) {
   return responseData;
 }
 
-void buzer1() {
-  digitalWrite(buzz, HIGH);
-  delay(100);
-  digitalWrite(buzz, LOW);
-  delay(100);
+void buzzer(int banyakLoop) {
+  for (int i = 1; i <= banyakLoop; i++) {
+    digitalWrite(buzz, HIGH);
+    delay(100);
+    digitalWrite(buzz, LOW);
+    delay(100); 
+  }
 }
