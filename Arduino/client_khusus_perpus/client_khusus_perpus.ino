@@ -63,8 +63,10 @@ String host = "wirapustaka.ninapst.com";
 
 //const char* ssid = "LIMITED";
 //const char* password = "12344321";
-const char* ssid = "Redmi Note 10S";
-const char* password = "11111111";
+//const char* ssid = "Redmi Note 10S";
+//const char* password = "11111111";
+const char* ssid = "STAR";
+const char* password = "skansawira";
 
 //String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";

@@ -58,8 +58,10 @@ String host = "wirapustaka.ninapst.com";
 
 //const char* ssid = "LIMITED";
 //const char* password = "12344321";
-const char* ssid = "Redmi Note 10S";
-const char* password = "11111111";
+//const char* ssid = "Redmi Note 10S";
+//const char* password = "11111111";
+const char* ssid = "STAR";
+const char* password = "skansawira";
 
 //String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
@@ -125,7 +127,7 @@ void loop() {
     
     return;
   }
-  buzer1();
+  buzzer(1);
   absen();
   
   
@@ -143,7 +145,7 @@ String scann() {
   {
     delay(50);
   }
-  buzer1();
+  buzzer(1);
 //  Serial.print("UID :");
   String guid;
   String content= "";
@@ -286,9 +288,11 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
   if (statusKirim == "BERHASIL") {
     lcd.setCursor (8,0);
     lcd.print("BERHASIL");
+    buzzer(1);
   } else {
     lcd.setCursor (8,0);
     lcd.print("GAGAL");
+    buzzer(5);
   }
   http.end();
   delay(1000);
@@ -301,7 +305,7 @@ void uploadDB(String satu,String dua, String tiga, String empat) {
 
 void perpus(String SM) {
   sendMode = SM;
-  buzer1();
+  buzzer(1);
   dataUpload[0] = scann();
   Serial.print(dataUpload[0]);
   delay(700);
@@ -378,7 +382,7 @@ void absen() {
   temp = mlx.readObjectTempC();
   temp = temp + 1.7;
   Serial.println(temp);
-  buzer1();
+  buzzer(1);
   if (temp >= 37){
     stats = "Bahaya";
   }
@@ -411,9 +415,12 @@ String ambilData(String dataPayload, String varr) {
   return responseData;
 }
 
-void buzer1() {
-  digitalWrite(buzz, HIGH);
-  delay(100);
-  digitalWrite(buzz, LOW);
-  delay(100);
+
+void buzzer(int banyakLoop) {
+  for (int i = 1; i <= banyakLoop; i++) {
+    digitalWrite(buzz, HIGH);
+    delay(100);
+    digitalWrite(buzz, LOW);
+    delay(100); 
+  }
 }

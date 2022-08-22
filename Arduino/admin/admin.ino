@@ -42,8 +42,8 @@ String Data4;
 //String host = "192.168.43.160";
 //String host = "testingstarproject.000webhostapp.com";
 String host = "wirapustaka.ninapst.com";
-const char* ssid = "Redmi Note 10S";
-const char* password = "11111111";
+const char* ssid = "STAR";
+const char* password = "skansawira";
 
 //String url = "http://" + host + "/Krenova/GitFolder/Peminjaman-Buku-1/PHP/admin/fungsiAdmin.php";
 //String url = "https://" + host + "/index.php";
