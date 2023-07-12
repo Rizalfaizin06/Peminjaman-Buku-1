@@ -1,5 +1,5 @@
 <?php include "template/header.php";
-if (isset($_GET["halaman"])) {
+    if (isset($_GET["halaman"])) {
     $_SESSION['sessionHalamanAbsenHome'] = $_GET["halaman"];
 }
 ?>

@@ -30,6 +30,9 @@
 //BUZZ
 //+ - G0
 
+
+
+
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 LiquidCrystal_I2C lcd (0x27, 16, 2);
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();

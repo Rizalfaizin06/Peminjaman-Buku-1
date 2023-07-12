@@ -16,7 +16,7 @@ if (isset($_POST["login"])) {
     if (mysqli_num_rows($result) === 1) {
         //cek password
         $row = mysqli_fetch_assoc($result);
-        
+
         if (password_verify($password, $row["password"])) {
             if ($row['status'] == 1) {
                 //set session
@@ -76,10 +76,10 @@ if (isset($_POST["login"])) {
                                 <form action="" method="post">
                                     <!-- 2 column grid layout with text inputs for the first and last names -->
                                     <h1 class="mb-3 fw-bold">LOGIN</h1>
-                                    <?php if (isset($error)) : ?>
-                                    <p style="color: red; font-style: italic;"><?= $error ?>
+                                    <?php if (isset($error)): ?>
+                                    <p style="color: red; font-style: italic;"><?=$error?>
                                     </p>
-                                    <?php endif; ?>
+                                    <?php endif;?>
                                     <!-- Email input -->
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="username">Username</label>
